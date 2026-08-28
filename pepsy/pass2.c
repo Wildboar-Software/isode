@@ -17,20 +17,20 @@ static void gen_enctbl(FILE *fp, SY sy);
 static void gen_dectbl(FILE *fp, SY sy);
 static void gen_prnttbl(FILE *fp, SY sy);
 static void gen_tpe(FILE *fp);
-static void gen_modtype(FILE *fp, int no, int f1, int f2, int f3);
+static void gen_modtype(FILE *fp, const int no, const int f1, const int f2, const int f3);
 static void gen_actfunct(FILE *fp);
 static void gen_lint(FILE *fp);
 static int scmp (const char *s1, const char *s2);
-static void dumpact(FILE *fp, YAL yal, int form, int ret);
-static void gen_actions(FILE *fp, YP oyp, int form);
+static void dumpact(FILE *fp, YAL yal, const int form, const int ret);
+static void gen_actions(FILE *fp, YP oyp, const int form);
 static void file_header(FILE *fp, char *act);
 static void open_func(FILE *fp);
 void close_func(FILE *fp);
 static void print_table(void);
-SY syfind(char *name);
+SY syfind(const char *name);
 static struct univ_typ *simptyp(YP yp);
 YP lkup(YP yp);
-int comptag(int tag, YP yp);
+int comptag(const int tag, YP yp);
 void dump_ptrtab(FILE *fp);
 char *getfldbit(char *p, char **pstr);
 char *skipspace(char *p);
@@ -46,15 +46,15 @@ extern char *eval;
 
 extern int Aflag;
 extern SY mysymbols;
-extern char *modsym(char *module, char *id, char *prefix), *gfree(char *module, char *id, char *parm);
-extern char *my_strcat(char *s1, char *s2);
-extern char *notidtoid(char *s);
+extern char *modsym(const char *module, const char *id, char *prefix), *gfree(const char *module, const char *id, char *parm);
+extern char *my_strcat(const char *s1, char *s2);
+extern char *notidtoid(const char *s);
 extern char	*rm_indirect(char *p);
 extern char	*getid(char *p, char *buf, int len);
 extern char	*getidordot(char *p, char *buf, int len);
 extern char	*getfield(char *p);
 extern char	*sym2type(SY sy);
-extern YP	lookup_type(char *mod, char *id);
+extern YP	lookup_type(const char *mod, const char *id);
 extern MD	lookup_module (char *module, OID oid);
 
 char	*tab;	/* mymodule - with - changed to _ */
@@ -94,7 +94,7 @@ void peri_pass2(void) {
  */
 static void gen_tablefile (char *inc) {
 	int     nentries;
-	int     encflag = 1, decflag = 1, prntflag = 1;
+	const int     encflag = 1, decflag = 1, prntflag = 1;
 	SY      sy;
 	YP      yp;
 	FILE   *fphh, *fptab;
@@ -441,7 +441,7 @@ static void gen_tpe(FILE *fp) {
 /*
  * output the module structure for this module
  */
-static void gen_modtype(FILE *fp, int no, int f1, int f2, int f3) {
+static void gen_modtype(FILE *fp, const int no, const int f1, const int f2, const int f3) {
 	if (!f1)
 		fprintf(fp, "extern PE\t%s%s();\n", ENC_FNCNAME, tab);
 	if (!f2)
@@ -679,7 +679,7 @@ static int scmp (const char *s1, const char *s2) {
 /*
  * lookup a symbol and return a pointer to it
  */
-SY syfind (char *name) {
+SY syfind (const char *name) {
 	SY      sy;
 
 	for (sy = mysymbols; sy; sy = sy->sy_next) {
@@ -760,7 +760,7 @@ YP lkup(YP yp) {
  * compute the type of tag it should be given the tag and the type it is
  * being applied to
  */
-int comptag(int tag, YP yp) {
+int comptag(const int tag, YP yp) {
 	static int	warned = 0;
 	YP	yp1;
 	struct univ_typ	*p;
@@ -913,7 +913,7 @@ static int ptr_max = 0;
 /*
  * add the given pointer to the pointer table and return its index
  */
-int addptr (char *p) {
+int addptr (const char *p) {
 	int	ind;
 	int i;
 	char *s;
@@ -1232,7 +1232,7 @@ static void gen_actfunct(FILE *fp) {
 /*
  * generate the actions for this YP unit and all its children
  */
-static void gen_actions(FILE *fp, YP oyp, int form) {
+static void gen_actions(FILE *fp, YP oyp, const int form) {
 	YP	yp;
 	YAL	yal;
 
@@ -1274,7 +1274,7 @@ static void gen_actions(FILE *fp, YP oyp, int form) {
 /*
  * dump out a single action
  */
-static void dumpact(FILE *fp, YAL yal, int form, int ret) {
+static void dumpact(FILE *fp, YAL yal, const int form, const int ret) {
 	char	*comm = yal->yal_comment;
 	char	*type = yal->yal_type;
 	Action	act;

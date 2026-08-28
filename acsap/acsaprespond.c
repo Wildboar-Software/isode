@@ -12,7 +12,7 @@
 
 /* A-ASSOCIATE.INDICATION */
 
-int AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *aci) {
+int AcInit (const int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *aci) {
 	int    i;
 	int	    ctx,
 			result;
@@ -172,17 +172,17 @@ out1:
 /* A-ASSOCIATE.RESPONSE */
 
 int AcAssocResponse (
-	int sd,
+	const int sd,
 	int status,
 	int reason,
 	OID context,
 	AEI respondtitle,
-	struct PSAPaddr *respondaddr,
+	const struct PSAPaddr *respondaddr,
 	struct PSAPctxlist *ctxlist,
-	int defctxresult,
-	int prequirements,
-	int srequirements,
-	long isn,
+	const int defctxresult,
+	const int prequirements,
+	const int srequirements,
+	const long isn,
 	int settings,
 	struct SSAPref *ref,
 	PE *data,

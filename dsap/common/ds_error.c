@@ -9,8 +9,8 @@
 #include "quipu/attrvalue.h"
 #include "quipu/attr.h"
 
-static void ds_bind_error_aux (PS ps, struct ds_bind_error *err, int mode);
-static char *print_bind_error (struct ds_bind_error *err, int mode);
+static void ds_bind_error_aux (PS ps, struct ds_bind_error *err, const int mode);
+static char *print_bind_error (struct ds_bind_error *err, const int mode);
 
 
 extern LLog * log_dsap;
@@ -79,7 +79,7 @@ static char * update [] = {
 	"Object class modifications Prohibited"
 };
 
-void de_print (PS ps, struct DSError *err, int format)
+void de_print (PS ps, struct DSError *err, const int format)
 {
 	ds_error (ps, err);
 }
@@ -176,7 +176,7 @@ void ds_error (PS ps, struct DSError *err)
 	ds_error_free (err);
 }
 
-void log_ds_error (struct DSError *err) {
+void log_ds_error (const struct DSError *err) {
 	struct DSE_at_problem *at_prob;
 
 	switch (err->dse_type) {
@@ -300,7 +300,7 @@ void ds_error_free (struct DSError *err) {
 	err->dse_type = DSE_NOERROR;
 }
 
-void ds_bind_error_aux (PS ps, struct ds_bind_error *err, int mode)
+void ds_bind_error_aux (PS ps, struct ds_bind_error *err, const int mode)
 {
 	switch (err->dbe_type) {
 	case DBE_TYPE_SERVICE:
@@ -328,7 +328,7 @@ void ds_bind_error(PS ps, struct ds_bind_error *err)
 
 static PS ps = NULLPS;
 
-char *print_bind_error (struct ds_bind_error *err, int mode) {
+char *print_bind_error (struct ds_bind_error *err, const int mode) {
 	char       *cp;
 
 	if (ps == NULL

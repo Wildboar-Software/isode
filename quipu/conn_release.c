@@ -9,7 +9,7 @@ extern	time_t	  timenow;
 
 struct connection* conn_alloc(void);
 void conn_free (struct connection *conn);
-void ds_log(struct DSAPabort *da, char *str, int fd);
+void ds_log(const struct DSAPabort *da, char *str, const int fd);
 
 int conn_release (struct connection *conn) {
 	int				  result;

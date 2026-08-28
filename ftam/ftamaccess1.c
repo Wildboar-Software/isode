@@ -5,14 +5,14 @@
 #include <stdlib.h>
 #include "fpkt.h"
 
-static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentity *identity, int lock, struct FTAMindication *fti);
+static int FAccessRequestAux (struct ftamblk *fsb, const int state, struct FADUidentity *identity, const int lock, struct FTAMindication *fti);
 
 /*    F-{LOCATE,ERASE}.REQUEST */
 int FAccessRequest (
-	int sd,
-	int operation,
+	const int sd,
+	const int operation,
 	struct FADUidentity *identity,
-	int lock,	/* F-LOCATE.REQUEST only */
+	const int lock,	/* F-LOCATE.REQUEST only */
 	struct FTAMindication *fti
 ) {
 	SBV      smask;
@@ -42,7 +42,7 @@ int FAccessRequest (
 	return result;
 }
 
-static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentity *identity, int lock, struct FTAMindication *fti) {
+static int FAccessRequestAux (struct ftamblk *fsb, const int state, struct FADUidentity *identity, const int lock, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;

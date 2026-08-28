@@ -20,11 +20,11 @@
 int makeconn (char *thehost);
 int closeconn (void);
 int invoke (int op, caddr_t arg, modtyp *mod, int ind, IFP rfx, IFP efx);
-static void  _advise (char *what, char *fmt, va_list ap);
+static void  _advise (char *what, const char *fmt, va_list ap);
 
 
-void	adios (char *, char *, ...);
-void	advise (char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (char *, const char *, ...);
 void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event), acs_advise (struct AcSAPabort *aca, char *event), acs_adios (struct AcSAPabort *aca, char *event);
 
 char *getstring (char *prompt);
@@ -245,9 +245,9 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_advise (char *what, char *fmt, va_list ap);
+static void	_advise (char *what, const char *fmt, va_list ap);
 
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -259,13 +259,13 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (char *what, char *fmt, ...) {
+void	advise (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -273,7 +273,7 @@ void	advise (char *what, char *fmt, ...) {
 	va_end (ap);
 }
 
-static void  _advise (char *what, char *fmt, va_list ap) {
+static void  _advise (char *what, const char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);
@@ -286,13 +286,13 @@ static void  _advise (char *what, char *fmt, va_list ap) {
 #else
 /* VARARGS */
 
-void advise (char *what, char *fmt) {
+void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	ryr_advise (char *what, char *fmt, ...) {
+void	ryr_advise (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -302,7 +302,7 @@ void	ryr_advise (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, const char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

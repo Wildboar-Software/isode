@@ -217,21 +217,21 @@ struct RoSAPindication {
 
 extern char *rosapversion;
 
-int	RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, char *arg1, char *arg2, int (*hook)(struct isoservent *is, struct RoSAPindication *roi), int (*setperms)(struct isoservent *is));		/* SERVER only */
-int	RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi);		/* RO-BEGIN.INDICATION */
+int	RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, const char *arg1, const char *arg2, int (*hook)(struct isoservent *is, struct RoSAPindication *roi), int (*setperms)(struct isoservent *is));		/* SERVER only */
+int	RoInit (const int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi);		/* RO-BEGIN.INDICATION */
 
 int	RoBeginResponse (int sd, int status, PE data, struct RoSAPindication *roi);	/* RO-BEGIN.RESPONSE */
-int	RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi);	/* RO-BEGIN.REQUEST */
-int	RoEndRequest (int sd, int priority, struct RoSAPindication *roi);	/* RO-END.REQUEST */
+int	RoBeginRequest (const struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi);	/* RO-BEGIN.REQUEST */
+int	RoEndRequest (int sd, const int priority, struct RoSAPindication *roi);	/* RO-END.REQUEST */
 int	RoEndResponse (int sd, struct RoSAPindication *roi);	/* RO-END.RESPONSE */
 
-int	RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi);	/* RO-INVOKE.REQUEST */
-int	RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi);	/* RO-RESULT.REQUEST */
-int	RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi);	/* RO-ERROR.REQUEST */
-int	RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPindication *roi);	/* RO-U-REJECT.REQUEST */
+int	RoInvokeRequest (int sd, const int op, const int class, PE args, const int invokeID, const int *linkedID, const int priority, struct RoSAPindication *roi);	/* RO-INVOKE.REQUEST */
+int	RoResultRequest (int sd, const int invokeID, const int op, PE result, const int priority, struct RoSAPindication *roi);	/* RO-RESULT.REQUEST */
+int	RoErrorRequest (int sd, const int invokeID, const int error, PE params, const int priority, struct RoSAPindication *roi);	/* RO-ERROR.REQUEST */
+int	RoURejectRequest (int sd, const int *invokeID, int reason, const int priority, struct RoSAPindication *roi);	/* RO-U-REJECT.REQUEST */
 #define	RoRejectURequest	RoURejectRequest
-int	RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi);	/* RO-INVOKE.REQUEST (interruptable) */
-int	RoWaitRequest (int sd, int secs, struct RoSAPindication *roi);	/* RO-WAIT.REQUEST (pseudo) */
+int	RoIntrRequest (int sd, const int op, PE args, const int invokeID, const int *linkedID, const int priority, struct RoSAPindication *roi);	/* RO-INVOKE.REQUEST (interruptable) */
+int	RoWaitRequest (int sd, const int secs, struct RoSAPindication *roi);	/* RO-WAIT.REQUEST (pseudo) */
 
 int	RoSetIndications (int sd, int (*indication)(int sd, struct RoSAPindication *roi), struct RoSAPindication *roi);	/* define vectors for INDICATION events */
 int	RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi);	/* map remote operation descriptors for

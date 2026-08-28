@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "psap2.h"
 
-static char *reject_err0[] = {
+static const char *reject_err0[] = {
 	"Rejected by peer",
 	"Reason not specified",
 	"Temporary congestion",

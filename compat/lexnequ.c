@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "general.h"
 
-int lexnequ (char *str1, char *str2, int len) {
+int lexnequ (const char *str1, const char *str2, int len) {
 	int count = 1;
 
 	if (str1 == NULL)

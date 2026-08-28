@@ -142,15 +142,15 @@ typedef struct _objclass {
 
 oid_table_attr * oid2attr(OID oid);
 oid_table_attr * name2attr(char *nodename);
-char * attr2name(oid_table_attr *oa, int format);
+char * attr2name(oid_table_attr *oa, const int format);
 #define attr2name_aux(x)	((x) ? (x)->oa_ot.ot_name : NULLCP)
 
 objectclass * oid2oc(OID oid);
 objectclass * name2oc(char *nodename);
-char *oc2name(objectclass *oc, int format);
-char *oid2name(OID oid, int format);
+char *oc2name(objectclass *oc, const int format);
+char *oid2name(OID oid, const int format);
 OID name2oid(char *str);
-void oidprint (PS ps, OID o, int format);
+void oidprint (PS ps, OID o, const int format);
 int load_oid_table (char *table);
 void want_oc_hierarchy (void);
 objectclass * oc_add (OID oid);

@@ -5,21 +5,21 @@
 
 int find_entry (
 	DN object,
-	common_args *ca,
+	const common_args *ca,
 	DN acl_who,
-	struct dn_seq *dn_stack,
+	const struct dn_seq *dn_stack,
 	int master,
 	Entry *ent_p,
 	struct DSError *err,
 	struct di_block **di_p,
-	int optype
+	const int optype
 );
 
 int find_child_entry (
 	DN object,
-	common_args *ca,
+	const common_args *ca,
 	DN acl_who,
-	struct dn_seq *dn_stack,
+	const struct dn_seq *dn_stack,
 	int master,
 	Entry *ent_p,
 	struct DSError *err,
@@ -28,9 +28,9 @@ int find_child_entry (
 
 int really_find_entry (
 	DN object,
-	int deref,
-	struct dn_seq *dn_stack,
-	int master,	/* Generate only master references - NB
+	const int deref,
+	const struct dn_seq *dn_stack,
+	const int master,	/* Generate only master references - NB
 				   does not imply returned entry is master */
 	Entry *ent_p,
 	struct DSError *err,

@@ -3,7 +3,7 @@
 
 %{
 struct table {
-    char   *t_keyword;
+    const char   *t_keyword;
     int	    t_value;
     int	    t_porting;
 };

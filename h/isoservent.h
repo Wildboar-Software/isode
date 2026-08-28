@@ -20,16 +20,16 @@ struct isoservent {
 	char        **is_tail;	/* next free slot in vector */
 };
 
-int	setisoservent (int f), endisoservent (void);
+int	setisoservent (const int f), endisoservent (void);
 
 struct isoservent *getisoservent (void);
 
-struct isoservent *getisoserventbyname (char *entity, char *provider);
-struct isoservent *getisoserventbyselector (char *provider, char *selector, int selectlen);
-struct isoservent *getisoserventbyport (char *, short unsigned int);
+struct isoservent *getisoserventbyname (const char *entity, const char *provider);
+struct isoservent *getisoserventbyselector (const char *provider, char *selector, const int selectlen);
+struct isoservent *getisoserventbyport (const char *, const short unsigned int);
 
 #ifdef DEBUG
-int _printsrv (struct isoservent *is);
+int _printsrv (const struct isoservent *is);
 #endif
 
 #endif

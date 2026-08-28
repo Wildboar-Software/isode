@@ -13,12 +13,12 @@ static int ParseRoBindResponse(struct AcSAPconnect *acc, struct RoNOTindication 
 /* RO-BIND.REQUEST */
 
 int RoAsynBindRequest(OID context, AEI callingtitle, AEI calledtitle,
-                      struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr,
+                      const struct PSAPaddr *callingaddr, const struct PSAPaddr *calledaddr,
                       struct PSAPctxlist *ctxlist, OID defctxname,
-                      int prequirements, int srequirements, long isn,
+                      const int prequirements, const int srequirements, const long isn,
                       int settings, struct SSAPref *ref, PE bindargpe,
-                      struct QOStype *qos, struct AcSAPconnect *acc,
-                      struct RoNOTindication *rni, int async) {
+                      const struct QOStype *qos, struct AcSAPconnect *acc,
+                      struct RoNOTindication *rni, const int async) {
   int result;
   PE user_data;
   PE *user_data_p = &(user_data);
@@ -95,7 +95,7 @@ int RoAsynBindRequest(OID context, AEI callingtitle, AEI calledtitle,
 
 /* RO-BIND.RETRY */
 
-int RoAsynBindRetry(int ad, int do_next_nsap, struct AcSAPconnect *acc,
+int RoAsynBindRetry(const int ad, const int do_next_nsap, struct AcSAPconnect *acc,
                     struct RoNOTindication *rni) {
   int result;
   struct AcSAPindication aci_s;

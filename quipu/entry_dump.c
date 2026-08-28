@@ -63,7 +63,7 @@ static void entry_block_print (PS psa, Entry block) {
 	}
 }
 
-int write_edb (Entry ptr, char *filename) {
+int write_edb (Entry ptr, const char *filename) {
 	mode_t um, mask;
 	FILE * fptr;
 	PS entryps;

@@ -6,11 +6,11 @@
 #include "quipu/entry.h"
 #include "quipu/common.h"
 
-struct dn_seq *dn_seq_push(DN dn, struct dn_seq *dnseq);
+struct dn_seq *dn_seq_push(DN dn, const struct dn_seq *dnseq);
 struct dn_seq *dn_seq_pop (struct dn_seq *dnseq);
 
 
-void dn_seq_free (struct dn_seq *dnseq) {
+void dn_seq_free (const struct dn_seq *dnseq) {
 	struct dn_seq * ptr;
 	struct dn_seq * next;
 
@@ -21,7 +21,7 @@ void dn_seq_free (struct dn_seq *dnseq) {
 	}
 }
 
-struct dn_seq *dn_seq_cpy (struct dn_seq *dnseq) {
+struct dn_seq *dn_seq_cpy (const struct dn_seq *dnseq) {
 	struct dn_seq * ptr;
 	struct dn_seq * ptr2;
 	struct dn_seq * result = NULLDNSEQ;
@@ -35,7 +35,7 @@ struct dn_seq *dn_seq_cpy (struct dn_seq *dnseq) {
 	return (result);
 }
 
-int check_dnseq (struct dn_seq *dnseq, DN who)
+int check_dnseq (const struct dn_seq *dnseq, DN who)
 {
 	struct dn_seq * ptr;
 
@@ -46,7 +46,7 @@ int check_dnseq (struct dn_seq *dnseq, DN who)
 	return (NOTOK);
 }
 
-int dn_seq_cmp (struct dn_seq *a, struct dn_seq *b) {
+int dn_seq_cmp (const struct dn_seq *a, const struct dn_seq *b) {
 	struct dn_seq	* dns1;
 	struct dn_seq	* dns2;
 
@@ -75,7 +75,7 @@ int dn_seq_cmp (struct dn_seq *a, struct dn_seq *b) {
 	return (0);
 }
 
-int check_dnseq_prefix (struct dn_seq *dnseq, DN who)
+int check_dnseq_prefix (const struct dn_seq *dnseq, DN who)
 {
 	struct dn_seq * ptr;
 
@@ -86,7 +86,7 @@ int check_dnseq_prefix (struct dn_seq *dnseq, DN who)
 	return (NOTOK);
 }
 
-void dn_seq_print (PS ps, struct dn_seq *dnseq, int format)
+void dn_seq_print (PS ps, const struct dn_seq *dnseq, const int format)
 {
 	if (dnseq == NULLDNSEQ)
 		return;
@@ -144,7 +144,7 @@ struct dn_seq *str2dnseq (char *str) {
 	return (dns);
 }
 
-int	dn_in_dnseq(DN dn, struct dn_seq *dnseq)
+int	dn_in_dnseq(DN dn, const struct dn_seq *dnseq)
 {
 	struct dn_seq	* ptr;
 	int 	i = 1;
@@ -157,7 +157,7 @@ int	dn_in_dnseq(DN dn, struct dn_seq *dnseq)
 	return(i);
 }
 
-struct dn_seq *dn_seq_push(DN dn, struct dn_seq *dnseq)
+struct dn_seq *dn_seq_push(DN dn, const struct dn_seq *dnseq)
 {
 	struct dn_seq * ret;
 	ret = dn_seq_alloc();

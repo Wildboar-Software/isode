@@ -8,7 +8,7 @@
 
 #define	QUOTE	'\\'
 
-int str2vecX (char *s, char **vec, int nmask, int *mask, char brk, int docomma) {
+int str2vecX (char *s, char **vec, const int nmask, int *mask, const char brk, const int docomma) {
 	int    i;
 	char    comma = docomma ? ',' : ' ';
 

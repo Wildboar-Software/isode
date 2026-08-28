@@ -44,7 +44,7 @@ void StripSpace (char *b)
 	*a = 0;
 }
 
-void StripSpace2 (char *b)
+void StripSpace2 (const char *b)
 /* copy b to a less spaces and comments */
 {
 	char *a;
@@ -65,7 +65,7 @@ void StripSpace2 (char *b)
 	*a = 0;
 }
 
-char *TidyString2 (char *a) {
+char *TidyString2 (const char *a) {
 	char * b;
 	char * c;
 	int i = 0;
@@ -134,7 +134,7 @@ char *TidyString (char *a) {
 	return (c);
 }
 
-int test_prim_pe (PE pe, PElementClass class, PElementID id)
+int test_prim_pe (PE pe, const PElementClass class, const PElementID id)
 {
 	if (pe == NULLPE)
 		return FALSE;
@@ -150,7 +150,7 @@ int test_prim_pe (PE pe, PElementClass class, PElementID id)
 }
 
 #ifndef lint
-void ps_printf (PS ps, char *fmt, ...) {
+void ps_printf (PS ps, const char *fmt, ...) {
 	extern int std_flush (PS ps);
 	va_list ap;
 	va_start (ap, fmt);
@@ -169,12 +169,12 @@ void ps_printf (PS ps, char *fmt, ...) {
 }
 #else
 /* VARARGS2 */
-void ps_printf (PS ps, char *fmt) {
+void ps_printf (PS ps, const char *fmt) {
 	ps_printf (ps,fmt);
 }
 #endif
 
-void fatal (int code, char *fmt) {
+void fatal (int code, const char *fmt) {
 	if (dsa_mode)
 		log_dsap -> ll_syslog = LLOG_FATAL;
 	LLOG (log_dsap,LLOG_FATAL,("Quipu failure (%d): %s",code,fmt));

@@ -3,17 +3,17 @@
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
-static PElementLen str_get_len (char *s, int len, int *result);
+static PElementLen str_get_len (const char *s, int len, int *result);
 
 
-static PElementLen	str_get_len (char *s, int len, int *result);
+static PElementLen	str_get_len (const char *s, int len, int *result);
 static int  str_get_start (char **sp, int *n, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *plen, int *result);
 
 #define	seterr(e,v)		(*result = (e), (v))
 
 PE str2pe (char *s, int len, int *advance, int *result) {
 #ifdef	DEBUG
-	int	    n = len;
+	const int	    n = len;
 #endif
 	char   *sp;
 	PElementClass   class;
@@ -128,7 +128,7 @@ static int str_get_start (char **sp, int *n, PElementClass *class, PElementForm 
 	return OK;
 }
 
-static PElementLen str_get_len (char *s, int len, int *result) {
+static PElementLen str_get_len (const char *s, int len, int *result) {
 	char   *sp;
 	PElementClass class;
 	PElementForm form;

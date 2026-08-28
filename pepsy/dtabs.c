@@ -8,10 +8,10 @@
 #include "mine.h"
 #include <ctype.h>
 void tdec_typ(FILE *fp, YP yp, char *id, char *type);
-static YP tdec_loop(FILE *fp, YP yp, char *id, char *type);
+static YP tdec_loop(FILE *fp, YP yp, const char *id, const char *type);
 
 void tdec_typ(FILE *fp, YP yp, char *id, char *type);
-static YP tdec_loop(FILE *fp, YP yp, char *id, char *type);
+static YP tdec_loop(FILE *fp, YP yp, const char *id, const char *type);
 void genmalloc(FILE *fp, YP yp);
 int hasdatstr(YP yp);
 int control_act (Action act);
@@ -19,19 +19,19 @@ int gen_freefn(FILE *fp, YP yp);
 
 extern char *c_tag(YP yp), *c_class(YP yp);
 extern char *ec_tag(YP yp), *ec_class(YP yp);
-extern char *strip_last(char *s);
+extern char *strip_last(const char *s);
 extern char *str_yp_code[];
-extern char *get_val(char **s), *get_comp(char **s), *strp2name(char *s1, char *s2);
+extern char *get_val(char **s), *get_comp(char **s), *strp2name(const char *s1, const char *s2);
 extern s_table *lookup_list(void), *get_offset(void);
-extern char *concat(char *s1, char *s2);
-extern char *my_strcat(char *s1, char *s2);
+extern char *concat(const char *s1, const char *s2);
+extern char *my_strcat(const char *s1, char *s2);
 extern char	*rm_indirect(char *p);
 extern char	*getfield(char *p);
 extern char	*setfield(char *p);
-extern char	*modsym (char *module, char *id, char *prefix);
+extern char	*modsym (const char *module, const char *id, char *prefix);
 extern char	*genstrform (YP yp);
 extern int	gen_sentry(void);
-extern char *c_flags(YP yp, PElementClass cl);
+extern char *c_flags(YP yp, const PElementClass cl);
 
 /* extern int explicit; */
 
@@ -672,7 +672,7 @@ out:
 /*
  * generate tables for encoding a contructed type
  */
-YP tdec_loop(FILE *fp, YP yp, char *id, char *type)
+YP tdec_loop(FILE *fp, YP yp, const char *id, const char *type)
 {
 	for (; yp != NULL; yp = yp->yp_next) {
 		tdec_typ(fp, yp, id, type);

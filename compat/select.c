@@ -327,8 +327,8 @@ again:
 static int (*sfnx[FD_SETSIZE])(int, void *) = { NULL };
 static caddr_t	sdata[FD_SETSIZE] = { NULL };
 
-int (*set_check_fd (int fd, int (*fnx)(int, void *), void *data))(int, void *);
-int (*set_check_fd (int fd, int (*fnx)(int, void *), void *data))(int, void *)
+int (*set_check_fd (const int fd, int (*fnx)(int, void *), const void *data))(int, void *);
+int (*set_check_fd (const int fd, int (*fnx)(int, void *), const void *data))(int, void *)
 {
 	int (*ofnx)(int, void *) = sfnx[fd];
 
@@ -342,8 +342,8 @@ int (*set_check_fd (int fd, int (*fnx)(int, void *), void *data))(int, void *)
 #if !(defined(_AIX) && defined(X25))
 /* We have an AIX specific version if X25 is defined */
 
-int xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs);
-int	xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
+int xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, const int secs);
+int	xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, const int secs) {
 	int    fd;
 	int	    n;
 	fd_set  ifds,

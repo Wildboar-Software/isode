@@ -8,7 +8,7 @@
 #include "tailor.h"
 #include "pvpdu.h"
 
-static int  PRelResponseAux (struct psapblk *pb, PE data, struct PSAPindication *pi);
+static int  PRelResponseAux (const struct psapblk *pb, PE data, struct PSAPindication *pi);
 
 /* P-RELEASE.RESPONSE */
 
@@ -34,7 +34,7 @@ int	PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication
 	return result;
 }
 
-static int PRelResponseAux (struct psapblk *pb, PE data, struct PSAPindication *pi) {
+static int PRelResponseAux (const struct psapblk *pb, PE data, struct PSAPindication *pi) {
 	int	    result;
 	PE	    pe;
 	PS	    ps;

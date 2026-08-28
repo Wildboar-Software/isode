@@ -450,7 +450,7 @@ extern char *paddr (struct Naddr *addr), *ntoa (struct sockaddr_in *nsin);
 extern long lseek ();
 extern long random ();
 
-extern void advise (int, char *, char *, ...), avoid ();
+extern void advise (int, char *, const char *, ...), avoid ();
 
 extern double s_fixed_to_double(struct s_fixedpt *t), ul_fixed_to_double(struct l_fixedpt *t);
 extern double	atof();

@@ -33,8 +33,8 @@ extern	char	dad_flag;
 char            fname[128];
 static char	new_draft;
 
-void make_old (char *file, char commit);
-static int add_template (char *name, char *objclass);
+void make_old (char *file, const char commit);
+static int add_template (const char *name, char *objclass);
 
 void call_add (int argc, char **argv) {
 	Entry           entry_ptr;
@@ -46,7 +46,7 @@ void call_add (int argc, char **argv) {
 #else
 	Attr_Sequence   get_attributes(FILE *file);
 #endif
-	extern int	parse_status;
+	extern const int	parse_status;
 
 	int             x;
 	char            draft_flag = 0;
@@ -193,7 +193,7 @@ void call_add (int argc, char **argv) {
 	make_old (fname,draft_flag);
 }
 
-void make_old (char *file, char commit) {
+void make_old (char *file, const char commit) {
 	char newname[LINESIZE];
 	if (dad_flag) {
 		unlink (file);
@@ -233,7 +233,7 @@ Attr_Sequence make_template_as (AV_Sequence oc)
 	return (as);
 }
 
-static int add_template (char *name, char *objclass) {
+static int add_template (const char *name, char *objclass) {
 	FILE           *fptr;
 	PS              ps;
 	char            obuf[LINESIZE];

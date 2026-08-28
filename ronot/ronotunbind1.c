@@ -10,7 +10,7 @@ static int ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindicati
 
 /* RO-UNBIND.REQUEST */
 
-int RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
+int RoUnBindRequest (int sd, PE unbindargpe, const int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);
@@ -58,7 +58,7 @@ int RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr,
 
 /* RO-UNBIND.RETRY */
 
-int RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
+int RoUnBindRetry (int sd, const int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);

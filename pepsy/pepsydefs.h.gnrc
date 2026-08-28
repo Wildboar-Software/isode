@@ -20,9 +20,9 @@
 
 struct tuple {
     int     t_type;
-    char   *t_class;
-    char   *t_form;
-    char   *t_id;
+    const char   *t_class;
+    const char   *t_form;
+    const char   *t_id;
     PElementClass t_classnum;
     int	    t_idnum;
 };
@@ -346,12 +346,12 @@ extern char *pepyversion;
 %END(PEPY)%
 
 extern int yysection;
-extern char *yyencpref;
-extern char *yydecpref;
-extern char *yyprfpref;
-extern char *yyencdflt;
-extern char *yydecdflt;
-extern char *yyprfdflt;
+extern const char *yyencpref;
+extern const char *yydecpref;
+extern const char *yyprfpref;
+extern const char *yyencdflt;
+extern const char *yydecdflt;
+extern const char *yyprfdflt;
 
 extern int yydebug;
 extern int yylineno;
@@ -385,10 +385,10 @@ int is_any_type (YP yp);
 void peri_pass2(void);
 int ferr (int n, char *mesg);
 int is_stand (char *file);
-void yyerror (char *s);
+void yyerror (const char *s);
 void addtableref (char *name, OID id, int lt);
 void check_impexp (YP yp);
-void yyprint (char *s, int f, int top);
+void yyprint (const char *s, const int f, const int top);
 void pass1(void);
 void pass2(void);
 void addtable (
@@ -396,7 +396,7 @@ void addtable (
 	int lt,
 	int typ	/* Does it allow implicit's to work or not */
 );
-void myyerror (char*fmt, ...);
+void myyerror (const char *fmt, ...);
 void pass1_type (
 	char *encpref,
 	char *decpref,
@@ -406,7 +406,7 @@ void pass1_type (
 	YP yp
 );
 void pass1(void);
-void warning (char*fmt, ...);
+void warning (const char *fmt, ...);
 int setvaltype(YP yp, char *str);
 void gen_dflts(FILE *fp, YP yp, char *type);
 void tenc_typ(FILE *fp, YP yp, char *id, char *type);

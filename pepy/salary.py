@@ -12,7 +12,7 @@ static struct salary_record {
     int     salary;
 } salary;
 
-static void	adios (char *, char *, ...);
+static void	adios (char *, const char *, ...);
 
 int main (int argc, char **argv, char **envp) {
     PE	    pe;
@@ -59,7 +59,7 @@ END
 #ifndef	lint
 static void	_advise ();
 
-static void adios (char *what, char *fmt, ...) {
+static void adios (char *what, const char *fmt, ...) {
     va_list ap;
     va_start (ap, fmt);
     _advise (what, fmt, ap);
@@ -67,13 +67,13 @@ static void adios (char *what, char *fmt, ...) {
     _exit (1);
 }
 #else
-static void  adios (char *what, char *fmt) {
+static void  adios (char *what, const char *fmt) {
     adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-static void _advise (char *what, char *fmt, va_list ap) {
+static void _advise (char *what, const char *fmt, va_list ap) {
     char buffer[BUFSIZ];
     _asprintf (buffer, what, fmt, ap);
     (void) fflush (stdout);

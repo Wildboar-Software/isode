@@ -33,9 +33,9 @@ typedef struct s_filter {
 } s_filter, *Filter;
 
 void filter_free (Filter filt);
-struct s_filter *filter_cpy (struct s_filter *flt);
+struct s_filter *filter_cpy (const struct s_filter *flt);
 void filter_append (Filter a, Filter b);
-void fi_print (PS ps, Filter fi, int format);
+void fi_print (PS ps, Filter fi, const int format);
 void print_filter (PS nps, Filter fi, int level);
 int optimized_filter (Filter f);
 
@@ -81,7 +81,7 @@ struct ds_search_result {
 };
 #define NULLSRR	((struct ds_search_result *) 0)
 
-int dap_search (int ad, int *id, struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result);
+int dap_search (const int ad, int *id, struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result);
 void search_arg_free (struct ds_search_arg *arg);
 int search_arg_dup (struct ds_search_arg *src, struct ds_search_arg *tgt);
 
@@ -128,7 +128,7 @@ typedef struct ftype {
 #define NULLFTL	((Ftypelist) 0)
 
 void ftype_free (Ftypelist ft);
-void ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr);
+void ftype_add (Ftypelist *l, AttributeType type, int len, const char *inequstr);
 
 /* allows a reference count for things all search tasks reference */
 typedef struct thing_header {
@@ -175,7 +175,7 @@ struct ds_search_task {
 
 void st_comp_free (struct ds_search_task *st);
 void st_free (struct ds_search_task **st);
-void st_free_dis (struct ds_search_task **st, int internals);
+void st_free_dis (struct ds_search_task **st, const int internals);
 struct ds_search_task *st_done (struct ds_search_task **st);
 static int check_filter_presrch (Filter fltr, struct DSError *error, DN dn);
 
@@ -185,7 +185,7 @@ int check_ancestor_sacls (
 	Entry e,
 	int scope,
 	struct ds_search_task *local,
-	char authtype,
+	const char authtype,
 	int *saclerror
 );
 
@@ -194,7 +194,7 @@ void search_refer (
 	Entry entryptr,
 	struct ds_search_task **local,
 	struct ds_search_task **refer,
-	int ismanager
+	const int ismanager
 );
 int do_alias (struct ds_search_arg *arg, Entry eptr, struct ds_search_task **local);
 

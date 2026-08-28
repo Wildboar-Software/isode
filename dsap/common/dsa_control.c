@@ -22,18 +22,18 @@ static void dsa_control_free (void *value);
 static void *str2dsa_control (char *str);
 static PE quipu_call_enc (void *value);
 static void * quipu_call_decode (PE pe);
-static struct quipu_call *str2quipu_call_aux (char *str, struct quipu_call *item);
+static struct quipu_call *str2quipu_call_aux (const char *str, const struct quipu_call *item);
 static void *str2quipu_call (char *str);
-static void sub_ch_list_print(PS ps, struct sub_ch_list * item, int format);
-static void chain_list_print(PS ps, struct chain_list * item, int format);
-static int ops_print(PS ps, struct ops * item, int format);
-static int op_list_print(PS ps, struct op_list * item, int format);
+static void sub_ch_list_print(PS ps, const struct sub_ch_list * item, const int format);
+static void chain_list_print(PS ps, const struct chain_list * item, const int format);
+static int ops_print(PS ps, const struct ops * item, const int format);
+static int op_list_print(PS ps, const struct op_list * item, const int format);
 static void quipu_call_print(PS ps, void *value, int format);
 static void *quipu_call_cpy (void *value);
-static struct op_list * op_list_cpy (struct op_list *item);
-static struct ops * ops_cpy (struct ops *item);
-static struct chain_list * chain_list_cpy (struct chain_list *item);
-static struct sub_ch_list * sub_ch_list_cpy (struct sub_ch_list *item);
+static struct op_list * op_list_cpy (const struct op_list *item);
+static struct ops * ops_cpy (const struct ops *item);
+static struct chain_list * chain_list_cpy (const struct chain_list *item);
+static struct sub_ch_list * sub_ch_list_cpy (const struct sub_ch_list *item);
 static int quipu_call_cmp (void *value1, void *value2);
 static void quipu_call_free (void *value);
 static void auth_level_free (struct auth_level *item);
@@ -41,21 +41,21 @@ void quipu_call_syntax (void);
 void dsa_control_syntax (void);
 
 
-extern struct qbuf *str2qb(char *str, int len, int head) ;
+extern struct qbuf *str2qb(char *str, int len, const int head) ;
 extern struct qbuf *qb_cpy(struct qbuf *qb) ;
 
 static PE dsa_control_enc(void *value) ;
 static void * dsa_control_cpy(void *value) ;
-static struct dsa_control * str2dsa_control_aux(char *str, struct dsa_control *item) ;
-static int op_list_free (struct op_list *elem) ;
+static struct dsa_control * str2dsa_control_aux(const char *str, struct dsa_control *item) ;
+static int op_list_free (const struct op_list *elem) ;
 static int ops_free (struct ops *elem) ;
-static int chain_list_free (struct chain_list *elem) ;
+static int chain_list_free (const struct chain_list *elem) ;
 
 void        auth_level_free(struct auth_level *item) ;
-struct op_list    *op_list_cpy(struct op_list *item) ;
-struct ops        *ops_cpy(struct ops *item) ;
-struct chain_list *chain_list_cpy(struct chain_list *item) ;
-struct sub_ch_list *sub_ch_list_cpy(struct sub_ch_list *item) ;
+struct op_list    *op_list_cpy(const struct op_list *item) ;
+struct ops        *ops_cpy(const struct ops *item) ;
+struct chain_list *chain_list_cpy(const struct chain_list *item) ;
+struct sub_ch_list *sub_ch_list_cpy(const struct sub_ch_list *item) ;
 
 static PE dsa_control_enc (void *value) {
 	struct dsa_control * control_option = (struct dsa_control *) value;
@@ -259,7 +259,7 @@ static void *str2dsa_control (char *str) {
 	return ((struct dsa_control *) 0);
 }
 
-static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *item) {
+static struct dsa_control *str2dsa_control_aux (const char *str, struct dsa_control *item) {
 	/*	format: number $ string */
 	char * ptr_to_num, *ptr_to_string ;
 
@@ -418,7 +418,7 @@ static void * quipu_call_decode (PE pe) {
 	return (quipu_callptr);
 }
 
-static struct quipu_call *str2quipu_call_aux (char *str, struct quipu_call *item) {
+static struct quipu_call *str2quipu_call_aux (const char *str, const struct quipu_call *item) {
 	/* SPT: Forget it! The structure is horrible
 	 and should be filled in by hand!
 	 Read only structure. */
@@ -436,11 +436,11 @@ static void *str2quipu_call (char *str) {
 	return ((struct quipu_call *) 0);
 }
 
-static void sub_ch_list_print(PS ps, struct sub_ch_list * item, int format) {
+static void sub_ch_list_print(PS ps, const struct sub_ch_list * item, const int format) {
 	ps_printf(ps, "%d, %d", item->assoc_id, item->invok_id) ;
 }
 
-static void chain_list_print(PS ps, struct chain_list * item, int format) {
+static void chain_list_print(PS ps, const struct chain_list * item, const int format) {
 	while (item != (struct chain_list *) 0) {
 		sub_ch_list_print(ps, item->sub_chained_ops, format) ;
 		item = item->next ;
@@ -450,7 +450,7 @@ static void chain_list_print(PS ps, struct chain_list * item, int format) {
 	}
 }
 
-static int ops_print(PS ps, struct ops * item, int format) {
+static int ops_print(PS ps, const struct ops * item, const int format) {
 	ps_printf(ps, "\t\t   Invoke_id %d, ", item->invoke_id) ;
 	ps_printf(ps, "Op Id. %d, ", item->operation_id) ;
 	dn_print(ps, item->base_object, format) ;
@@ -467,7 +467,7 @@ static int ops_print(PS ps, struct ops * item, int format) {
 	ps_print(ps, "\n") ;
 }
 
-static int op_list_print(PS ps, struct op_list * item, int format) {
+static int op_list_print(PS ps, const struct op_list * item, const int format) {
 	while (item != (struct op_list *) 0) {
 		ps_print(ps, "\t\tOperation List:\n") ;
 		ops_print(ps, item->operation_list, format) ;
@@ -564,7 +564,7 @@ static void *quipu_call_cpy (void *value) {
 }
 
 static struct op_list *
-op_list_cpy (struct op_list *item) {
+op_list_cpy (const struct op_list *item) {
 	struct op_list * new_item = (struct op_list *) 0 ;
 	struct op_list * tmp_item = (struct op_list *) 0 ;
 
@@ -587,7 +587,7 @@ op_list_cpy (struct op_list *item) {
 }
 
 static struct ops *
-ops_cpy (struct ops *item) {
+ops_cpy (const struct ops *item) {
 	struct ops * tmp_item = (struct ops *) malloc (sizeof (struct ops)) ;
 
 	tmp_item->invoke_id = item->invoke_id ;
@@ -627,7 +627,7 @@ ops_cpy (struct ops *item) {
 }
 
 static struct chain_list *
-chain_list_cpy (struct chain_list *item) {
+chain_list_cpy (const struct chain_list *item) {
 	struct chain_list * new_item = (struct chain_list *) 0 ;
 	struct chain_list * tmp_item = (struct chain_list *) 0 ;
 
@@ -650,7 +650,7 @@ chain_list_cpy (struct chain_list *item) {
 }
 
 static struct sub_ch_list *
-sub_ch_list_cpy (struct sub_ch_list *item) {
+sub_ch_list_cpy (const struct sub_ch_list *item) {
 	struct sub_ch_list *new_item = (struct sub_ch_list *) malloc (sizeof (struct sub_ch_list)) ;
 
 	new_item->assoc_id = item->assoc_id ;
@@ -691,7 +691,7 @@ static void quipu_call_free (void *value) {
 	free((char *)item_to_free) ;
 }
 
-static int op_list_free (struct op_list *elem) {
+static int op_list_free (const struct op_list *elem) {
 	struct op_list * tmp_elem ;
 
 	while (elem != (struct op_list *) 0) {
@@ -718,7 +718,7 @@ static int ops_free (struct ops *elem) {
 	free((char *)elem) ;
 }
 
-static int chain_list_free (struct chain_list *elem) {
+static int chain_list_free (const struct chain_list *elem) {
 	struct chain_list * tmp_elem ;
 
 	while (elem != (struct chain_list *) 0) {

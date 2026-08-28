@@ -15,7 +15,7 @@ int ds_unbind (void) {
 	return(dap_unbind(dsap_ad));
 }
 
-int dap_unbind (int ad) {
+int dap_unbind (const int ad) {
 	int				  ret;
 	struct DAPrelease         dr_s;
 	struct DAPrelease         *dr = &dr_s;
@@ -36,7 +36,7 @@ int dap_unbind (int ad) {
 	return(DS_OK);
 }
 
-int DapUnBindRequest (int sd, int secs, struct DAPrelease *dr, struct DAPindication *di) {
+int DapUnBindRequest (int sd, const int secs, struct DAPrelease *dr, struct DAPindication *di) {
 	int			  result;
 	struct AcSAPrelease	  acr_s;
 	struct AcSAPrelease	* acr = &(acr_s);
@@ -58,7 +58,7 @@ int DapUnBindRequest (int sd, int secs, struct DAPrelease *dr, struct DAPindicat
 
 /* D-UNBIND.RETRY */
 
-int DapUnBindRetry (int sd, int secs, struct DAPrelease *dr, struct DAPindication *di) {
+int DapUnBindRetry (int sd, const int secs, struct DAPrelease *dr, struct DAPindication *di) {
 	int			  result;
 	struct AcSAPrelease	  acr_s;
 	struct AcSAPrelease	* acr = &(acr_s);

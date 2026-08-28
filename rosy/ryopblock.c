@@ -9,7 +9,7 @@ static struct opsblk *OPHead = &opsque;
 
 /* OPERATION BLOCKS */
 
-struct opsblk *newopblk (int sd, int id) {
+struct opsblk *newopblk (int sd, const int id) {
 	struct opsblk *opb;
 
 	opb = (struct opsblk   *) calloc (1, sizeof *opb);
@@ -44,7 +44,7 @@ void freeopblk (struct opsblk *opb) {
 	free ((char *) opb);
 }
 
-struct opsblk *findopblk (int sd, int id, int flags) {
+struct opsblk *findopblk (int sd, const int id, int flags) {
 	struct opsblk *opb;
 
 	if (once_only == 0)
@@ -93,7 +93,7 @@ void loseopblk (int sd, int reason) {
 }
 
 #ifdef	lint
-int rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
+int rosaplose (struct RoSAPindication *roi, int reason, char *what, const char *fmt) {
 	return rosaplose (roi, reason, what, fmt);
 }
 #endif

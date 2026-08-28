@@ -15,7 +15,7 @@
 #include "quipu/cache.h"
 static int addrdn_attribute ( Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn );
 
-int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
+int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype);
 
 
 extern LLog * log_dsap;
@@ -40,7 +40,7 @@ static int addrdn_attribute (
 
 extern int check_schema_type (Entry eptr, AttributeType attr, struct DSError *error);
 
-int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
+int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype) {
 	Entry  entryptr;
 	RDN rdn;
 	Attr_Sequence as;
@@ -49,7 +49,7 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 	char * new_version(void);
 	int retval;
 	int authp, pauthp;
-	extern int read_only;
+	extern const int read_only;
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_modifyrdn"));
 	if (!dsp)

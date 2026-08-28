@@ -16,7 +16,7 @@ struct passwd *getpwuid (uid_t uid);
 #endif
 
 static struct type_IMISC_IA5List *vec2ia5list (char **vec);
-static void print_ia5list (struct type_IMISC_IA5List *ia5);
+static void print_ia5list (const struct type_IMISC_IA5List *ia5);
 static int do_finger (int sd, struct dispatch *ds, char **args, void *parameter);
 static int do_tell (int sd, struct dispatch *ds, char **args, void *parameter);
 static int do_data (int sd, struct dispatch *ds, char **args, void *parameter);
@@ -32,11 +32,11 @@ static void imisc_error (int sd, int id, int error, caddr_t p, struct RoSAPindic
 
 #define	gentime_result	utctime_result
 
-static char *myservice = "isode miscellany";/* should be something other
+static const char *myservice = "isode miscellany";/* should be something other
 					       than mycontext */
 
-static char *mycontext = "isode miscellany";
-static char *mypci = "isode miscellany pci";
+static const char *mycontext = "isode miscellany";
+static const char *mypci = "isode miscellany pci";
 
 extern int length;
 static type_IMISC_Data *data = NULLPE;
@@ -139,7 +139,7 @@ static struct type_IMISC_IA5List *vec2ia5list (char **vec) {
 	return ia5;
 }
 
-static void print_ia5list (struct type_IMISC_IA5List *ia5) {
+static void print_ia5list (const struct type_IMISC_IA5List *ia5) {
 	struct qbuf *p, *q;
 
 	for (; ia5; ia5 = ia5 -> next) {

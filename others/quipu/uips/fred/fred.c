@@ -18,7 +18,7 @@
 static arginit (char **vec);
 int str2vecY (char *buffer, char **vec);
 static rcmap (struct sockaddr_in *isock);
-static void  _advise (char *what, char *fmt, va_list ap);
+static void  _advise (char *what, const char *fmt, va_list ap);
 static	void log_utmp (void);
 
 
@@ -503,7 +503,7 @@ static	SFD intrser (int sig) {
 }
 
 #ifndef	lint
-int	ask (char *fmt, ...)
+int	ask (const char *fmt, ...)
 {
 	int     x, y, result;
 	char    buffer[BUFSIZ];
@@ -559,7 +559,7 @@ again:
 #else
 /* VARARGS */
 
-int ask (char *fmt) {
+int ask (const char *fmt) {
 	return ask (fmt);
 }
 #endif
@@ -653,9 +653,9 @@ done:
 }
 
 #ifndef	lint
-static void	_advise (char *what, char *fmt, va_list ap);
+static void	_advise (char *what, const char *fmt, va_list ap);
 
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	static int	latch = 0;
 
@@ -673,13 +673,13 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (char *what, char *fmt, ...) {
+void	advise (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -687,7 +687,7 @@ void	advise (char *what, char *fmt, ...) {
 	va_end (ap);
 }
 
-static void  _advise (char *what, char *fmt, va_list ap)
+static void  _advise (char *what, const char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
 	FILE   *fp = network ? stdfp : stderr;
@@ -702,7 +702,7 @@ static void  _advise (char *what, char *fmt, va_list ap)
 #else
 /* VARARGS */
 
-void advise (char *what, char *fmt) {
+void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif

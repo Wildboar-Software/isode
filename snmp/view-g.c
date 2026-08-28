@@ -10,9 +10,9 @@
 #include "tailor.h"
 static int  o_viewPrim (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int  o_viewAcl (OI oi, struct type_SNMP_VarBind *v, int offset);
-static struct community *get_acent (unsigned int *ip, int len, int isnext);
+static struct community *get_acent (const unsigned int *ip, int len, const int isnext);
 static int  o_viewTrap (OI oi, struct type_SNMP_VarBind *v, int offset);
-static struct trap *get_trent (unsigned int *ip, int len, int isnext);
+static struct trap *get_trent (const unsigned int *ip, int len, const int isnext);
 static int  view_compar (const void *p, const void *q);
 static int  comm_compar (const void *p, const void *q);
 static int  trap_compar (const void *p, const void *q);
@@ -35,8 +35,8 @@ static int	viewmask = 0x1;
 static OID	localAgent = NULLOID;
 static OID	rfc1157Domain = NULLOID;
 
-static struct view *get_prent (unsigned int *ip, int len, int isnext);
-static int str2sa (char *s, struct NSAPaddr *na, struct sockaddr *sock, int proxy);
+static struct view *get_prent (const unsigned int *ip, int len, const int isnext);
+static int str2sa (char *s, struct NSAPaddr *na, struct sockaddr *sock, const int proxy);
 int f_view (char **vec);
 int f_community (char **vec);
 int f_proxy (char **vec);
@@ -149,7 +149,7 @@ static int  o_viewPrim (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	}
 }
 
-static struct view *get_prent (unsigned int *ip, int len, int isnext) {
+static struct view *get_prent (const unsigned int *ip, int len, const int isnext) {
 	struct view *v;
 
 	for (v = VHead -> v_forw; v != VHead; v = v -> v_forw)
@@ -177,7 +177,7 @@ static struct view *get_prent (unsigned int *ip, int len, int isnext) {
 
 static struct community *CLex = NULL;
 
-static struct community *get_acent (unsigned int *ip, int len, int isnext);
+static struct community *get_acent (const unsigned int *ip, int len, const int isnext);
 
 static int  o_viewAcl (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
@@ -274,7 +274,7 @@ static int  o_viewAcl (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	}
 }
 
-static struct community *get_acent (unsigned int *ip, int len, int isnext) {
+static struct community *get_acent (const unsigned int *ip, int len, const int isnext) {
 	struct community *c;
 
 	for (c = CLex; c; c = c -> c_next)
@@ -297,7 +297,7 @@ static struct community *get_acent (unsigned int *ip, int len, int isnext) {
 
 static OID    trapview = NULLOID;
 
-static struct trap *get_trent (unsigned int *ip, int len, int isnext);
+static struct trap *get_trent (const unsigned int *ip, int len, const int isnext);
 
 static int  o_viewTrap (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
@@ -395,7 +395,7 @@ static int  o_viewTrap (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	}
 }
 
-static struct trap *get_trent (unsigned int *ip, int len, int isnext) {
+static struct trap *get_trent (const unsigned int *ip, int len, const int isnext) {
 	struct trap *t;
 
 	for (t = UHead -> t_forw; t != UHead; t = t -> t_forw)
@@ -1012,7 +1012,7 @@ extern	int	tcpservice;
 extern	int	udport;
 extern	int	traport;
 
-static int  str2sa (char *s, struct NSAPaddr *na, struct sockaddr *sock, int proxy) {
+static int  str2sa (char *s, struct NSAPaddr *na, struct sockaddr *sock, const int proxy) {
 #ifdef	TCP
 	struct hostent *hp;
 #endif

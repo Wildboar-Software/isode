@@ -12,7 +12,7 @@
 
 /* STR2SEL */
 
-int str2sel (char *s, int quoted, char *sel, int n) {
+int str2sel (char *s, const int quoted, char *sel, int n) {
 	int     i,
 			r;
 	char  *cp;

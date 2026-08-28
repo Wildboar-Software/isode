@@ -29,11 +29,11 @@ char *getnextline (void);
 #endif
 static Attr_Sequence get_attributes_aux (FILE *file);
 Attr_Sequence get_attributes (FILE *file);
-Entry get_entry_aux (FILE *file, Entry parent, int dtype);
-Entry get_entry (FILE *file, Entry parent, int dtype);
-static char *unesc_cont (char *ptr, int len);
-static void fpwr_esc (FILE *fp, char *line, int wl);
-static void pswr_esc (PS ps, char *line, int wl);
+Entry get_entry_aux (FILE *file, Entry parent, const int dtype);
+Entry get_entry (FILE *file, Entry parent, const int dtype);
+static char *unesc_cont (const char *ptr, int len);
+static void fpwr_esc (FILE *fp, char *line, const int wl);
+static void pswr_esc (PS ps, char *line, const int wl);
 static Entry new_constructor (Entry parent);
 Entry make_path (DN dn);
 
@@ -57,9 +57,9 @@ GDBM_FILE	save_db;
 
 extern char	*unesc_char(void);
 extern char *getstring(void);
-char *srealloc(char *p, int nsize);
+char *srealloc(const char *p, const int nsize);
 char	*brkl(void);
-static int cnt_escp (char *ptr, int len);
+static int cnt_escp (const char *ptr, int len);
 
 #ifdef TURBO_DISK
 
@@ -333,7 +333,7 @@ char * getnextline (void)
  * un-escape a continued line and return pointer to end of the buffer
  * if the line is continued
  */
-static char *unesc_cont (char *ptr, int len) {
+static char *unesc_cont (const char *ptr, int len) {
 	char	*p;
 	int		cnt;
 
@@ -353,7 +353,7 @@ static char *unesc_cont (char *ptr, int len) {
  * write no more than wl characters of the line out escaping any
  * characters at the end to a file pointer.
  */
-void fpwr_esc(FILE *fp, char *line, int wl)
+void fpwr_esc(FILE *fp, char *line, const int wl)
 {
 	int		len;	/* length of line left */
 	int		pos;	/* position we are going to break line at */
@@ -392,7 +392,7 @@ void fpwr_esc(FILE *fp, char *line, int wl)
  * write no more than wl characters of the line out escaping any
  * characters at the end.
  */
-void pswr_esc(PS ps, char *line, int wl)
+void pswr_esc(PS ps, char *line, const int wl)
 {
 	int		len;	/* length of line left */
 	int		pos;	/* position we are going to break line at */
@@ -438,7 +438,7 @@ void pswr_esc(PS ps, char *line, int wl)
 	}
 }
 
-static int cnt_escp (char *ptr, int len) {
+static int cnt_escp (const char *ptr, int len) {
 	char	*p;
 	int		cnt;
 
@@ -450,7 +450,7 @@ static int cnt_escp (char *ptr, int len) {
 	return (cnt);
 }
 
-char *srealloc (char *p, int nsize) {
+char *srealloc (const char *p, const int nsize) {
 	char *ptr;
 	if ((ptr = realloc(p, (unsigned) nsize)) == NULL) {
 		LLOG (compat_log,LLOG_FATAL, ("realloc() failure"));
@@ -496,7 +496,7 @@ static Attr_Sequence get_attributes_aux (FILE *file)
 #endif
 {
 	Attr_Sequence as = NULLATTR;
-	Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull);
+	Attr_Sequence as_combine (Attr_Sequence as, char * str, const char allownull);
 	char * ptr;
 	if ((ptr = _getline (file)) == NULLCP)
 		return (NULLATTR);
@@ -522,7 +522,7 @@ Attr_Sequence get_attributes (FILE *file)
 	return (get_attributes_aux (file));
 }
 
-Entry get_entry_aux (FILE *file, Entry parent, int dtype)
+Entry get_entry_aux (FILE *file, Entry parent, const int dtype)
 #ifdef TURBO_DISK
          	     
 #else
@@ -535,7 +535,7 @@ Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 	char * ptr;
 	extern RDN parse_rdn;
 	struct DSError err;
-	extern int print_parse_errors;
+	extern const int print_parse_errors;
 	extern int parse_line;
 	int save;
 	extern PS _opt;
@@ -599,7 +599,7 @@ Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 	return (eptr);
 }
 
-Entry get_entry (FILE *file, Entry parent, int dtype)
+Entry get_entry (FILE *file, Entry parent, const int dtype)
 #ifdef TURBO_DISK
          	     
 #else

@@ -23,7 +23,7 @@ extern char *default_arr[];
 
 extern char mvalue[];
 
-void tprint(char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j), cleartext(void);
+void tprint(const char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j), cleartext(void);
 
 void make_type(char *name_val, filt_struct *filt) {
 	filttype[curr_filt] = strdup(name_val);

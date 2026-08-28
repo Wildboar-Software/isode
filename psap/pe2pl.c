@@ -54,7 +54,7 @@ static int pe2pl_aux (PS ps, PE pe, int level) {
 	int    i,
 		   ia5,
 		   ia5ok;
-	char  *bp;
+	const char  *bp;
 	char    buffer[BUFSIZ];
 	PE	    p;
 	PElementID id;
@@ -91,15 +91,7 @@ static int pe2pl_aux (PS ps, PE pe, int level) {
 		} else
 			goto no_code;
 	case PE_CLASS_PRIV:
-		if ((int)(id = pe -> pe_id) < pe_maxpriv && (bp = pe_privlist[id])) {
-			{
-				int n;
-
-				if (sizet2int (strlen (bp), &n) != 0
-						|| ps_write (ps, (PElementData) bp, n) == NOTOK)
-					return NOTOK;
-			}
-		}			/* else fall */
+		goto no_code;
 	case PE_CLASS_CONT:
 no_code:
 		;

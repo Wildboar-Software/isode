@@ -620,7 +620,7 @@ OT	text2obj (const char *text) {
 	return ot;
 }
 
-char   *oid2ode_aux (OID oid, int quoted) {
+char   *oid2ode_aux (OID oid, const int quoted) {
 	int    i;
 	char  *bp;
 	unsigned int *ip;

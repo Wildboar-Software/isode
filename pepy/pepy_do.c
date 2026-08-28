@@ -9,21 +9,21 @@
 extern struct tuple tuples[];
 extern int	rflag;
 
-char   *gensym (void), *modsym (char *module, char *id, int direct);
+char   *gensym (void), *modsym (const char *module, const char *id, const int direct);
 
-YP	lookup_type (char *mod, char *id), lookup_binding (char *mod, char *id, char *binding);
+YP	lookup_type (const char *mod, const char *id), lookup_binding (char *mod, char *id, char *binding);
 YT	lookup_tag (YP yp);
 static char	*add_point (char *arg);
 
 static void do_type_member (YP yp, int level, char *narg);
-static void do_type_choice (YP yp, int caseindex, int level, char *narg);
-static void do_type_element (YP yp, int level, int last, char *id, char *narg);
-static void do_components_seq (YP yp, int level, int last, char *id, char *arg, char *narg);
-static void do_components_set (YP yp, int level, char *arg, char *id, char *narg);
-static void emit_strlen2int (int level, char *dst_len, char *src, char *id);
+static void do_type_choice (YP yp, const int caseindex, int level, char *narg);
+static void do_type_element (YP yp, int level, const int last, const char *id, char *narg);
+static void do_components_seq (YP yp, const int level, const int last, char *id, char *arg, char *narg);
+static void do_components_set (YP yp, const int level, char *arg, char *id, char *narg);
+static void emit_strlen2int (const int level, char *dst_len, char *src, const char *id);
 
 static void
-emit_strlen2int (int level, char *dst_len, char *src, char *id)
+emit_strlen2int (const int level, char *dst_len, char *src, const char *id)
 {
 	printf ("%*sif (strlen2int (%s, &%s) != 0) {\n",
 			level * 4, "", src, dst_len);
@@ -33,7 +33,7 @@ emit_strlen2int (int level, char *dst_len, char *src, char *id)
 	printf ("%*s}\n", level * 4, "");
 }
 
-void do_type (YP yp, int level, char *id, char *arg)
+void do_type (YP yp, int level, const char *id, char *arg)
 {
 	int    i;
 	char  *narg;
@@ -558,8 +558,7 @@ void do_type (YP yp, int level, char *id, char *arg)
 			"%*sextern int %s (PE *pe, int explicit, int len, char *buffer, PEPYPARM parm);\n",
 			level * 4,
 			"",
-			modsym (yp -> yp_module, yp -> yp_identifier, YP_ENCODER),
-			yp -> yp_param_type ? yp -> yp_param_type : "PEPYPARM"
+			modsym (yp -> yp_module, yp -> yp_identifier, YP_ENCODER)
 		);
 		printf ("%*sif (%s (", level * 4, "", modsym (yp -> yp_module,
 				yp -> yp_identifier, YP_ENCODER));
@@ -639,7 +638,7 @@ static char *add_point (char *arg) {
 }
 
 static void do_type_member (YP yp, int level, char *narg) {
-	int     pushdown = (yp -> yp_flags & (YP_TAG | YP_IMPLICIT)) == YP_TAG;
+	const int     pushdown = (yp -> yp_flags & (YP_TAG | YP_IMPLICIT)) == YP_TAG;
 	char   *id = yp -> yp_flags & YP_ID ? yp -> yp_id : "member";
 
 	if (!(yp -> yp_flags & YP_TAG)) {
@@ -676,8 +675,8 @@ static void do_type_member (YP yp, int level, char *narg) {
 	printf ("%*s}\n", level * 4, "");
 }
 
-static void do_type_choice (YP yp, int caseindex, int level, char *narg) {
-	int     pushdown = (yp -> yp_flags & YP_TAG)
+static void do_type_choice (YP yp, const int caseindex, int level, char *narg) {
+	const int     pushdown = (yp -> yp_flags & YP_TAG)
 					   && !(yp -> yp_flags & YP_IMPLICIT);
 	char   *id = yp -> yp_flags & YP_ID ? yp -> yp_id : "member";
 
@@ -702,7 +701,7 @@ static void do_type_choice (YP yp, int caseindex, int level, char *narg) {
 	printf ("%*s}\n%*sbreak;\n", level * 4, "", level * 4, "");
 }
 
-int do_action (char *action, int level, char *arg, int lineno) {
+int do_action (char *action, const int level, char *arg, const int lineno) {
 	char c, d;
 
 	printf ("%*s{\n", level * 4, "");
@@ -740,7 +739,7 @@ int do_action (char *action, int level, char *arg, int lineno) {
 	printf ("%*s}\n", level * 4, "");
 }
 
-static void do_type_element (YP yp, int level, int last, char *id, char *narg) {
+static void do_type_element (YP yp, int level, const int last, const char *id, char *narg) {
 	printf ("%*s%s = NULLPE;\n\n", level * 4, "", narg);
 	if (yp -> yp_flags & (YP_OPTIONAL | YP_DEFAULT)) {
 		if (yp -> yp_flags & YP_OPTCONTROL)
@@ -761,7 +760,7 @@ static void do_type_element (YP yp, int level, int last, char *id, char *narg) {
 	printf ("%*s}\n\n", level * 4, "");
 }
 
-static void do_components_seq (YP yp, int level, int last, char *id, char *arg, char *narg) {
+static void do_components_seq (YP yp, const int level, const int last, char *id, char *arg, char *narg) {
 	YP	newyp, y;
 
 	if (yp -> yp_module) {
@@ -813,7 +812,7 @@ static void do_components_seq (YP yp, int level, int last, char *id, char *arg, 
 	return;
 }
 
-static void do_components_set (YP yp, int level, char *arg, char *id, char *narg) {
+static void do_components_set (YP yp, const int level, char *arg, char *id, char *narg) {
 	YP	newyp, y;
 
 	if (yp -> yp_module) {

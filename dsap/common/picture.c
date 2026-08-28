@@ -15,7 +15,7 @@
 #endif
 #include "quipu/syntaxes.h"
 
-char *show_picture (char *picture, char *picture_process, int len);
+char *show_picture (char *picture, const char *picture_process, int len);
 static void picture_print (PS ps, void *value, int format);
 static void *pe_cpy_void (void *value);
 static void pe_free_void (void *value);
@@ -29,7 +29,7 @@ typedef struct childList {
 
 static ChildList *rootChildList = NULL;
 
-char *show_picture (char *picture, char *picture_process, int len) {
+char *show_picture (char *picture, const char *picture_process, int len) {
 	int     ret;
 	int     pd[2];
 	int     pd2[2];
@@ -144,7 +144,7 @@ char *show_picture (char *picture, char *picture_process, int len) {
 void exec_print (
 	PS ps,
 	AttributeValue av,
-	char * proc
+	const char * proc
 ) {
 	char * ptr;
 	PS sps;

@@ -13,11 +13,11 @@
 #include "pepsycodec.h"
 #include "internet.h"
 
-static int  RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti);
+static int  RtBeginRequestAux (const struct RtSAPaddr *called, const struct RtSAPaddr *calling, const int mode, const int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti);
 
 /*    RT-BEGIN.REQUEST (X.410 OPEN.REQUEST) */
 
-int RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti) {
+int RtBeginRequest2 (const struct RtSAPaddr *called, const struct RtSAPaddr *calling, const int mode, const int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti) {
 	SBV     smask;
 	int     result;
 
@@ -55,7 +55,7 @@ int RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mo
 	return result;
 }
 
-static int RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti) {
+static int RtBeginRequestAux (const struct RtSAPaddr *called, const struct RtSAPaddr *calling, const int mode, const int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti) {
 	int	    len,
 			result,
 			settings;

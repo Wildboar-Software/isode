@@ -42,7 +42,7 @@ static int sendf (char *rname, int opts);
 static struct linkbuf *
 savelink (struct stat *sp, int opts);
 int update (char *rname, int opts, struct stat *sp);
-void log(FILE *fp, char *fmt, int a1, int a2, int a3);
+void log(FILE *fp, const char *fmt, int a1, int a2, int a3);
 int query (char *mess, int mode, char *name);
 
 
@@ -422,7 +422,7 @@ int update (char *rname, int opts, struct stat *sp) {
 	return(2);
 }
 
-void log(FILE *fp, char *fmt, int a1, int a2, int a3) {
+void log(FILE *fp, const char *fmt, int a1, int a2, int a3) {
 	/* Print changes locally if not quiet mode */
 	if (!qflag)
 		printf(fmt, a1, a2, a3);

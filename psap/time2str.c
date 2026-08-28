@@ -7,7 +7,7 @@
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
 #define	UNYEAR(y)	((y) < 1900 || (y) > 1999 ? (y) : (y) - 1900)
 
-char *time2str (UTC u, int generalized) {
+char *time2str (UTC u, const int generalized) {
 	int    hours,
 		   mins,
 		   zone;

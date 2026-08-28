@@ -11,11 +11,11 @@
 extern LLog * log_dsap;
 extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 
-static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level);
+static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, const int level);
 
-int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
+int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype);
 
-int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
+int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype) {
 	Entry  entryptr;
 	Attr_Sequence  as;
 	Attr_Sequence ias = NULLATTR;
@@ -186,7 +186,7 @@ int invalid_matching (AttributeType at, struct DSError *error, DN dn) {
 	return (DS_ERROR_REMOTE);
 }
 
-static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level) {
+static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, const int level) {
 	struct acl_attr * aa;
 	struct oid_seq * oidptr;
 

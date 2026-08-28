@@ -53,16 +53,16 @@ void dn_append (DN a, DN b);
 char *dn2edbfile (DN dn);
 
 char *dn2str (DN dn);
-char *dn2ufn (DN dn, int multiline);
-char *dn2rfc (DN dn, char *sep);
+char *dn2ufn (DN dn, const int multiline);
+char *dn2rfc (DN dn, const char *sep);
 
 void rdn_print (PS ps, RDN rdn, int format);
 void dn_print (PS ps, DN dn, int format);
-void dn_rfc_print (PS ps, DN dn, char *sep);
-void ufn_dn_print (PS ps, DN dn, int multiline);
+void dn_rfc_print (PS ps, DN dn, const char *sep);
+void ufn_dn_print (PS ps, DN dn, const int multiline);
 void ufn_rdn_print (PS ps, RDN rdn);
 
-int ufn_dn_print_aux (PS ps, DN dn, DN marker, int multiline);
+int ufn_dn_print_aux (PS ps, DN dn, DN marker, const int multiline);
 
 extern int ufn_indent;
 

@@ -18,11 +18,11 @@
 
 static int udpretry (struct psapblk *pb, int reason, struct PSAPindication *pi);
 static int udpcheck (struct psapblk *pb, struct PSAPindication *pi);
-static void PUservice (struct psapblk *pb, int fd);
+static void PUservice (struct psapblk *pb, const int fd);
 
 int udpopen (struct psapblk *pb, struct NSAPaddr *calling, struct NSAPaddr *called, struct PSAPindication *pi, int async);
-char *udpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
-int udprestore (struct psapblk *pb, char *buffer, struct PSAPindication *pi);
+char *udpsave (const int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
+int udprestore (struct psapblk *pb, const char *buffer, struct PSAPindication *pi);
 
 #define	MAXTRIES	 3		/* should be tailorable... */
 #define	WAITRIES	30		/* .. */
@@ -104,13 +104,13 @@ int	udpopen (
 		}
 }
 
-char *udpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
+char *udpsave (const int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
 	static char	buffer[BUFSIZ];
 	sprintf (buffer, "%c%d %s %s", PT_UDP, fd, cp1, cp2);
 	return buffer;
 }
 
-int	udprestore (struct psapblk *pb, char *buffer, struct PSAPindication *pi) {
+int	udprestore (struct psapblk *pb, const char *buffer, struct PSAPindication *pi) {
 	int	    fd;
 	char *cp;
 	char    domain1[NSAP_DOMAINLEN + 1 + 5 + 1],
@@ -216,7 +216,7 @@ static int  udpcheck (struct psapblk *pb, struct PSAPindication *pi) {
 #define	udpclose	close_udp_socket
 #define	udpselect	select_udp_socket
 
-static void PUservice (struct psapblk *pb, int fd) {
+static void PUservice (struct psapblk *pb, const int fd) {
 	pb -> pb_fd = fd;
 	pb -> pb_reliability = LOW_QUALITY;
 	pb -> pb_maxtries = MAXTRIES;

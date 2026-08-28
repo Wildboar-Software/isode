@@ -8,7 +8,7 @@
 
 struct connection *conn_alloc (void);
 void conn_free (struct connection *conn);
-void conn_list_log (struct connection *cn);
+void conn_list_log (const struct connection *cn);
 
 
 extern LLog * log_dsap;
@@ -111,7 +111,7 @@ void conn_extract (struct connection *conn) {
 	conn_free(conn);
 }
 
-void conn_log (struct connection *conn, int level) {
+void conn_log (const struct connection *conn, const int level) {
 	struct oper_act     * oper;
 	struct task_act     * task;
 	char * cntxt;
@@ -195,7 +195,7 @@ void conn_log (struct connection *conn, int level) {
 }
 
 #ifdef DEBUG
-void conn_list_log (struct connection *cn) {
+void conn_list_log (const struct connection *cn) {
 	struct connection	* cn_tmp;
 	DLOG(log_dsap, LLOG_DEBUG, ("Connection List:"));
 	for(cn_tmp=cn; cn_tmp!=NULLCONN; cn_tmp=cn_tmp->cn_next) {

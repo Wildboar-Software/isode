@@ -52,7 +52,7 @@ PE grab_filepe (AttributeValue av)
 	FILE * fptr;
 	struct file_syntax * fs;
 	sntx_table *tbl;
-	sntx_table * get_syntax_table(short x);
+	sntx_table * get_syntax_table(const short x);
 	PE ret_pe = NULLPE;
 	PE grab_pe(AttributeValue av);
 

@@ -7,7 +7,7 @@
 objectclass * str2oc (char *str);
 objectclass * oc_add (OID oid);
 static void *str2oc_void (char *str);
-static AV_Sequence new_oc_avs (objectclass *oc);
+static AV_Sequence new_oc_avs (const objectclass *oc);
 static AV_Sequence str2oc_hier (char *str);
 static int in_hierarchy (AV_Sequence a, AV_Sequence b);
 static void oc_print_avs (PS ps, AV_Sequence avs, int format);
@@ -25,8 +25,8 @@ extern short oc_sntx;
 extern AV_Sequence (*oc_hier)(char *);
 extern void (*oc_avsprint)(PS, AV_Sequence, int);
 
-static void add_hierarchy (objectclass *oc, AV_Sequence *avsp);
-static void add_oc_avs (objectclass *oc, AV_Sequence *avsp);
+static void add_hierarchy (const objectclass *oc, AV_Sequence *avsp);
+static void add_oc_avs (const objectclass *oc, AV_Sequence *avsp);
 void want_oc_hierarchy (void);
 
 objectclass * oc_add (OID oid)
@@ -70,7 +70,7 @@ static void *str2oc_void (char *str)
 	return str2oc (str);
 }
 
-static AV_Sequence new_oc_avs (objectclass *oc)
+static AV_Sequence new_oc_avs (const objectclass *oc)
 {
 	AV_Sequence avs;
 
@@ -115,7 +115,7 @@ static AV_Sequence str2oc_hier (char *str)
 	return (avs);
 }
 
-static void add_oc_avs (objectclass *oc, AV_Sequence *avsp)
+static void add_oc_avs (const objectclass *oc, AV_Sequence *avsp)
 {
 	AV_Sequence loop;
 	objectclass *ocp;
@@ -129,7 +129,7 @@ static void add_oc_avs (objectclass *oc, AV_Sequence *avsp)
 	*avsp = avs_merge (*avsp,new_oc_avs(oc));
 }
 
-static void add_hierarchy (objectclass *oc, AV_Sequence *avsp)
+static void add_hierarchy (const objectclass *oc, AV_Sequence *avsp)
 {
 	struct oc_seq * oidseq;
 
@@ -242,7 +242,7 @@ static void * oc_dec (PE pe)
 
 static void oc_print (PS ps, void *value, int format)
 {
-	extern int oidformat;
+	extern const int oidformat;
 	objectclass *oc = (objectclass *) value;
 
 	if ( format != READOUT)

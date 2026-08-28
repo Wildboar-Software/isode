@@ -44,7 +44,7 @@ static int _ronotlose (  /* what, fmt, args ... */
 
 /*    ACSAP interface */
 
-int acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca) {
+int acs2ronotlose (struct RoNOTindication *rni, const char *event, struct AcSAPabort *aca) {
 	char	* cp;
 
 	/*

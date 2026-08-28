@@ -6,7 +6,7 @@
 
 /*    BIND interface */
 
-int ronot2daplose (struct DAPindication * di, char * event, struct RoNOTindication * rni) {
+int ronot2daplose (struct DAPindication * di, const char * event, const struct RoNOTindication * rni) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 
@@ -27,7 +27,7 @@ int ronot2daplose (struct DAPindication * di, char * event, struct RoNOTindicati
 
 /*    ROS interface */
 
-int ros2daplose (struct DAPindication *di, char *event, struct RoSAPpreject *rop) {
+int ros2daplose (struct DAPindication *di, const char *event, struct RoSAPpreject *rop) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 
@@ -46,7 +46,7 @@ int ros2daplose (struct DAPindication *di, char *event, struct RoSAPpreject *rop
 		return (daplose (di, DA_ROS, NULLCP, "%s", cp));
 }
 
-int ros2dapreject (struct DAPindication *di, char *event, struct RoSAPureject *rou) {
+int ros2dapreject (struct DAPindication *di, const char *event, const struct RoSAPureject *rou) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 

@@ -17,18 +17,18 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include "quipu/turbo.h"
-static int fileexists (char *fname);
-static int dir_exists (char *fname);
-static int read_mapped_rdn (PS aps, char *name, char *file);
-static int write_mapped_rdn (PS aps, char *name, char *file);
-static int rdn2filename (PS aps, RDN rdn, char make);
-static int dn2filename (PS aps, DN dn, char make);
-static int file_check (int offset, Entry entryptr);
+static int fileexists (const char *fname);
+static int dir_exists (const char *fname);
+static int read_mapped_rdn (PS aps, char *name, const char *file);
+static int write_mapped_rdn (PS aps, char *name, const char *file);
+static int rdn2filename (PS aps, RDN rdn, const char make);
+static int dn2filename (PS aps, DN dn, const char make);
+static int file_check (const int offset, Entry entryptr);
 static int sibling_expected (Entry e);
 static int load_a_kid (caddr_t data, caddr_t arg);
 static int entry_load_kids (
-	Avlnode *entryptr,	/* in this case, entryptr is really a tree of kids */
-	int offset
+	const Avlnode *entryptr,	/* in this case, entryptr is really a tree of kids */
+	const int offset
 );
 static void check_entry_free (Entry e);
 int parent_link (caddr_t data, caddr_t arg);
@@ -52,7 +52,7 @@ static PS ps;
 
 #define EDBLEN	3	/* length of string "EDB" */
 
-static int fileexists (char *fname) {
+static int fileexists (const char *fname) {
 	struct stat buf;
 
 	if (stat (fname,&buf) != 0) {
@@ -63,7 +63,7 @@ static int fileexists (char *fname) {
 	return TRUE;
 }
 
-static int dir_exists (char *fname) {
+static int dir_exists (const char *fname) {
 	struct stat buf;
 
 	if (stat (fname,&buf) != 0) {
@@ -77,7 +77,7 @@ static int dir_exists (char *fname) {
 	return FALSE;
 }
 
-static int read_mapped_rdn (PS aps, char *name, char *file) {
+static int read_mapped_rdn (PS aps, char *name, const char *file) {
 	FILE * mapfp;
 #ifdef	TURBO_DISK
 	char *ptr, *newname, *tmp, *fgetline(FILE *file);
@@ -123,7 +123,7 @@ static int read_mapped_rdn (PS aps, char *name, char *file) {
 	return FALSE;
 }
 
-static int write_mapped_rdn (PS aps, char *name, char *file) {
+static int write_mapped_rdn (PS aps, char *name, const char *file) {
 	FILE * mapfp;
 	char mapname[LINESIZE];
 	char sname[LINESIZE];
@@ -207,7 +207,7 @@ static int write_mapped_rdn (PS aps, char *name, char *file) {
 	return TRUE;
 }
 
-static int rdn2filename (PS aps, RDN rdn, char make) {
+static int rdn2filename (PS aps, RDN rdn, const char make) {
 	char *start = aps->ps_ptr;
 	char mapbuf [LINESIZE];
 
@@ -249,7 +249,7 @@ static int rdn2filename (PS aps, RDN rdn, char make) {
 	return NOTOK;
 }
 
-static int dn2filename (PS aps, DN dn, char make) {
+static int dn2filename (PS aps, DN dn, const char make) {
 	if (treedir != NULLCP) {
 		ps_print (aps,isodefile(treedir,0));
 		if (make) {
@@ -302,7 +302,7 @@ char *dn2edbfile (DN dn) {
 	return result;
 }
 
-static int file_check (int offset, Entry entryptr) {
+static int file_check (const int offset, Entry entryptr) {
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
 	if (rdn2filename (ps,entryptr->e_name,FALSE) == OK) {
@@ -338,11 +338,11 @@ static int sibling_expected (Entry e) {
 
 static char got_all = TRUE;
 
-static int entry_load_kids(Avlnode *entryptr, int offset);
+static int entry_load_kids(const Avlnode *entryptr, const int offset);
 
 static int load_a_kid (caddr_t data, caddr_t arg) {
 	Entry e = (Entry) data;
-	int offset = (int) (size_t) arg;
+	const int offset = (int) (size_t) arg;
 	if ((!e->e_external) &&
 			(e->e_master == NULLAV) &&
 			(e->e_slave == NULLAV)) {
@@ -385,8 +385,8 @@ static int load_a_kid (caddr_t data, caddr_t arg) {
 }
 
 static int entry_load_kids (
-	Avlnode *entryptr,	/* in this case, entryptr is really a tree of kids */
-	int offset
+	const Avlnode *entryptr,	/* in this case, entryptr is really a tree of kids */
+	const int offset
 ) {
 	Entry	akid, parent;
 

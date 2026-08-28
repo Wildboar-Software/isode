@@ -10,7 +10,7 @@ struct ds_abandon_arg {
 	int aba_invokeid;
 };
 
-int dap_abandon (int ad, int *id, struct ds_abandon_arg *arg, struct DSError *error);
+int dap_abandon (const int ad, int *id, struct ds_abandon_arg *arg, struct DSError *error);
 int abandon_arg_dup (struct ds_abandon_arg *src, struct ds_abandon_arg *tgt);
 
 #endif

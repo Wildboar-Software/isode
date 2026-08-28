@@ -157,8 +157,6 @@ register char *s;
 	    if ((debug = (cp = getenv ("PEPYDEBUG")) && *cp ? atoi (cp)
 			: NOTOK) == NOTOK)
 		break;
-	    fprintf (stderr, "%s made with %s\n", myname, pepyid);
-
 	default: 
 	    fprintf (stderr, "%s\n", s);
 

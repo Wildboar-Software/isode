@@ -12,11 +12,11 @@
 #include "tailor.h"
 #include "pvpdu.h"
 
-static int rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct RtSAPabort *rta);
+static int rtslose (struct assocblk *acb, struct RoSAPindication *roi, const char *event, struct RtSAPabort *rta);
 static int rtsINDICATIONser (int sd, struct RtSAPindication *rti);
 
-static int doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *roi);
-static int doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi);
+static int doRTSturn (struct assocblk *acb, const struct RtSAPturn *rtu, struct RoSAPindication *roi);
+static int doRTSclose (struct assocblk *acb, const struct RtSAPclose *rtc, struct RoSAPindication *roi);
 static int doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi);
 static int doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi);
 
@@ -213,7 +213,7 @@ int ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPi
 	return NOTOK;
 }
 
-static int doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *roi) {
+static int doRTSturn (struct assocblk *acb, const struct RtSAPturn *rtu, struct RoSAPindication *roi) {
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
 	struct RtSAPabort *rta = &rti -> rti_abort;
@@ -226,7 +226,7 @@ static int doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPi
 	return OK;
 }
 
-static int doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi) {
+static int doRTSclose (struct assocblk *acb, const struct RtSAPclose *rtc, struct RoSAPindication *roi) {
 	if (acb -> acb_flags & ACB_INIT) {
 		ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 				   "association management botched");
@@ -408,7 +408,7 @@ out:
 	return NOTOK;
 }
 
-static int rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct RtSAPabort *rta) {
+static int rtslose (struct assocblk *acb, struct RoSAPindication *roi, const char *event, struct RtSAPabort *rta) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];

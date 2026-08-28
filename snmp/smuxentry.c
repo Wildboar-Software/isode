@@ -20,7 +20,7 @@ static int  stayopen = 0;
 
 static struct smuxEntry    ses;
 
-int	setsmuxEntry (int f) {
+int	setsmuxEntry (const int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (smuxEntries, 0), "r");
 	else
@@ -70,7 +70,7 @@ struct smuxEntry  *getsmuxEntry (void) {
 	return NULL;
 }
 
-struct smuxEntry *getsmuxEntrybyname (char *name) {
+struct smuxEntry *getsmuxEntrybyname (const char *name) {
 	struct smuxEntry *se;
 
 	setsmuxEntry (0);

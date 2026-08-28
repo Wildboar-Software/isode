@@ -55,8 +55,8 @@ extern double drift_comp, compliance;	/* logical clock variables */
 extern void make_new_peer(struct ntp_peer *peer), tstamp(struct l_fixedpt *stampp, struct timeval *tvp), clock_update (struct ntp_peer *peer),
 		receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock), clear (struct ntp_peer *peer), clock_filter (struct ntp_peer *peer, double new_delay, double new_offset),
 		select_clock (void), poll_update (struct ntp_peer *peer, int new_hpoll);
-extern void adios (char *, char *, ...);
-extern void advise (int, char *, char *, ...);
+extern void adios (char *, const char *, ...);
+extern void advise (int, char *, const char *, ...);
 extern struct ntp_peer *find_peer (int n);
 extern int demobilize (struct list *l, struct ntp_peer *peer);
 static double ul_fixed_to_doublep (struct l_fixedpt *t);

@@ -6,7 +6,7 @@
 #include "fpkt.h"
 
 struct type_FTAM_Access__Control__List *
-acl2fpm (struct ftamblk *fsb, struct FTAMacelement *fe, struct FTAMindication *fti) {
+acl2fpm (const struct ftamblk *fsb, struct FTAMacelement *fe, struct FTAMindication *fti) {
 	struct type_FTAM_Access__Control__List *fpmp;
 	struct type_FTAM_Access__Control__List  *fpm,
 			   **fpc;
@@ -65,7 +65,7 @@ out:
 	return fpmp;
 }
 
-int fpm2acl (struct ftamblk *fsb, struct type_FTAM_Access__Control__List *fpm, struct FTAMacelement **fe, struct FTAMindication *fti) {
+int fpm2acl (const struct ftamblk *fsb, const struct type_FTAM_Access__Control__List *fpm, struct FTAMacelement **fe, struct FTAMindication *fti) {
 	struct FTAMacelement *fc,
 			   **fl;
 	struct type_FTAM_Access__Control__Element *ace;

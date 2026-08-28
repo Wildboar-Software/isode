@@ -23,37 +23,37 @@
 #include "quipu/shadow.h"
 #include "quipu/database.h"
 
-static int fileexists (char *fname);
+static int fileexists (const char *fname);
 static int allowed_to_send (DN a, DN b);
 static int send_get_edb (char *version, DN dn, DN from);
 static int unravel_edb (Entry e, struct DSError *error);
 static int quick_unrav (Entry e, struct DSError *error);
 static int link_child (Entry e, Avlnode *oldkids);
-struct oper_act *make_get_edb_op (DN dn, char *version, struct di_block *di);
+struct oper_act *make_get_edb_op (DN dn, char *version, const struct di_block *di);
 static int edb_start (
-	struct getedb_arg *arg,
+	const struct getedb_arg *arg,
 	struct DSError *error,
 	struct getedb_result *result,
 	DN binddn,
-	int fd
+	const int fd
 );
 static int edb_continue (
-	struct getedb_arg *arg,
+	const struct getedb_arg *arg,
 	struct DSError *error,
 	struct getedb_result *result,
 	DN binddn,
-	int fd
+	const int fd
 );
 static void get_more_edb (struct oper_act *oper, struct oper_act **newop);
-static int pull_up_result (struct getedb_arg *arg, struct getedb_result *result);
+static int pull_up_result (const struct getedb_arg *arg, struct getedb_result *result);
 static int read_part_edb (PS ps, PE *pep, int n);
-void getedb_size (int x);
+void getedb_size (const int x);
 
 
 extern int parent_link(caddr_t data, caddr_t arg);
 
 extern LLog * log_dsap;
-static int fileexists (char *fname) {
+static int fileexists (const char *fname) {
 	struct stat buf;
 
 	if (stat (fname,&buf) != 0) {
@@ -76,36 +76,36 @@ extern int slave_edbs;
 extern Entry database_root;
 extern DN mydsadn;
 extern Attr_Sequence dsa_real_attr;
-extern Entry local_find_entry_aux(DN object, char deref);
+extern Entry local_find_entry_aux(DN object, const char deref);
 extern time_t lastedb_update, timenow;
 extern time_t	conn_timeout;
 extern time_t	nsap_timeout;
 extern struct oper_act * pending_ops;
 
 struct oper_act *	oper_alloc(void);
-struct oper_act *	make_get_edb_op(DN dn, char *version, struct di_block *di);
+struct oper_act *	make_get_edb_op(DN dn, char *version, const struct di_block *di);
 
 static int split_size = 10;
 static void get_more_edb (struct oper_act *oper, struct oper_act **newop);
 static int read_part_edb (PS ps, PE *pep, int n);
-static int pull_up_result (struct getedb_arg *arg, struct getedb_result *result);
+static int pull_up_result (const struct getedb_arg *arg, struct getedb_result *result);
 static int edb_start (
-	struct getedb_arg *arg,
+	const struct getedb_arg *arg,
 	struct DSError *error,
 	struct getedb_result *result,
 	DN binddn,
-	int fd
+	const int fd
 );
 static int edb_continue (
-	struct getedb_arg *arg,
+	const struct getedb_arg *arg,
 	struct DSError *error,
 	struct getedb_result *result,
 	DN binddn,
-	int fd
+	const int fd
 );
 static int send_get_edb (char *version, DN dn, DN from);
 
-int update_aux (DN dn, int isroot);
+int update_aux (DN dn, const int isroot);
 
 char * edbtmp_path = NULLCP;
 
@@ -187,7 +187,7 @@ void modify_attr (Entry eptr, DN who) {
 	AttributeValue av;
 	AV_Sequence avs;
 	Attr_Sequence as, old, entry_find_type(Entry a, AttributeType b);
-	extern int	  no_last_mod;
+	extern const int	  no_last_mod;
 
 	if (no_last_mod)
 		return;
@@ -246,11 +246,11 @@ static int allowed_to_send (DN a, DN b) {
 }
 
 int do_get_edb (
-	struct getedb_arg *arg,
+	const struct getedb_arg *arg,
 	struct DSError *error,
 	struct getedb_result *result,
 	DN binddn,
-	int fd
+	const int fd
 ) {
 	Entry eptr;
 	Entry my_entry;
@@ -351,7 +351,7 @@ void slave_update (void) {
 	lastedb_update = timenow;
 }
 
-int update_aux (DN dn, int isroot) {
+int update_aux (DN dn, const int isroot) {
 	Entry my_entry, make_path(DN dn);
 	Entry find_sibling(void);
 	extern DN mydsadn;
@@ -555,7 +555,7 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 	struct DSError  error;
 	struct getedb_result	* result = &(on->on_resp.di_res.dr_res.dcr_dsres.res_ge);
 	struct getedb_arg	* arg = &(on->on_req.dca_dsarg.arg_ge);
-	char got_subtree = TRUE;
+	const char got_subtree = TRUE;
 
 	if (result->gr_nextEntryPos != 0) {
 		/* more to come */
@@ -710,7 +710,7 @@ void get_edb_fail_wakeup (struct oper_act *on) {
 	oper_free(on);
 }
 
-struct oper_act *make_get_edb_op (DN dn, char *version, struct di_block *di) {
+struct oper_act *make_get_edb_op (DN dn, char *version, const struct di_block *di) {
 	struct di_block	* di_tmp;
 	struct oper_act	* on_tmp;
 	struct getedb_arg	* arg;
@@ -743,7 +743,7 @@ struct oper_act *make_get_edb_op (DN dn, char *version, struct di_block *di) {
 		/* Can't tell if new protocol supported */
 		/* If ISP this is reset later */
 		else {
-			int res = quipu_ctx_supported (di_tmp -> di_entry);
+			const int res = quipu_ctx_supported (di_tmp -> di_entry);
 			if ( ! (res == 5) || (res == 2))
 				edb_size = 0;	/* Old QSP */
 		}
@@ -770,11 +770,11 @@ struct edbops_list {
 static struct edbops_list * edbops = NULLEDBOP;
 
 static int edb_start (
-	struct getedb_arg *arg,
+	const struct getedb_arg *arg,
 	struct DSError *error,
 	struct getedb_result *result,
 	DN binddn,
-	int fd
+	const int fd
 ) {
 	PE spe, lpe, pe = NULLPE;
 	char buffer [LINESIZE];
@@ -892,7 +892,7 @@ out:
 	return edb_continue (arg,error,result,binddn,fd);
 }
 
-void check_getedb_ops (int fd) {
+void check_getedb_ops (const int fd) {
 	struct edbops_list * nextop, *loop, *trail = NULLEDBOP;
 
 	/* step through the list to find oper... */
@@ -918,11 +918,11 @@ void check_getedb_ops (int fd) {
 }
 
 static int edb_continue (
-	struct getedb_arg *arg,
+	const struct getedb_arg *arg,
 	struct DSError *error,
 	struct getedb_result *result,
 	DN binddn,
-	int fd
+	const int fd
 ) {
 	struct edbops_list * nextop, *trail = NULLEDBOP;
 	PE pe = NULLPE;
@@ -1023,7 +1023,7 @@ static void get_more_edb (struct oper_act *oper, struct oper_act **newop) {
 	*newop = on_tmp;
 }
 
-static int pull_up_result (struct getedb_arg *arg, struct getedb_result *result) {
+static int pull_up_result (const struct getedb_arg *arg, struct getedb_result *result) {
 	struct getedb_result *loop;
 	struct getedb_result *ln;
 	PE pe, npe, spe, lpe, zpe;	/* what useful names ! */
@@ -1138,6 +1138,6 @@ void set_edb_limit (struct oper_act *oper) {
 	oper->on_req.dca_dsarg.arg_ge.ga_maxEntries = split_size;
 }
 
-void getedb_size (int x) {
+void getedb_size (const int x) {
 	split_size = x;
 }

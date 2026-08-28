@@ -16,7 +16,7 @@
 
 /* RO-BEGIN.INDICATION */
 
-int RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi) {
+int RoInit (const int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi) {
 	int     result;
 	struct assocblk   *acb;
 	PE	pe;

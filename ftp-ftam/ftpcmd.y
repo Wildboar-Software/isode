@@ -67,7 +67,7 @@ static int ftp_port_octet (size_t n, char *out);
 extern void adios (char *, char *, ...);
 extern void advise (char *, char *, ...);
 extern void reply(int n, ...);
-extern void yyerror(char *s);
+extern void yyerror(const char *s);
 extern void ftp_delete(char *name);
 extern void makedir(char *name);
 extern void removedir(char *name);

@@ -30,7 +30,7 @@ static void call_bind_void(int argc, char **argv);
 static void unknown_cmd (int argc, char **argv);
 static void gnu_gets_setup (void);
 static char *gnu_gets (char *buf, int len);
-void advise (int code, char *what, char *fmt, ...);
+void advise (int code, char *what, const char *fmt, ...);
 
 #define MAXARGS 50
 
@@ -71,7 +71,7 @@ extern void call_list (int argc, char **argv), call_compare (int argc, char **ar
 	   call_quit (int argc, char **argv), call_moveto (int argc, char **argv), call_fred (int argc, char **argv);
 extern void call_help (int argc, char **argv);
 
-extern int call_bind (int argc, char **argv);
+extern int call_bind (const int argc, char **argv);
 
 static void call_bind_void(int argc, char **argv) {
 	call_bind (argc, argv);
@@ -552,7 +552,7 @@ void call_quit (int argc, char **argv) {
 	exit (0);
 }
 
-int set_cmd_default (char *cmd, char *dflt) {
+int set_cmd_default (const char *cmd, const char *dflt) {
 	int x;
 
 	for (x = 0; Commands[x].command != 0; x++)
@@ -583,7 +583,7 @@ dish_intr (int sd) {
 	longjmp (dish_env,2);
 }
 
-void    advise (int code, char *what, char *fmt, ...) {
+void    advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 	extern LLog    *log_dsap;
 

@@ -117,7 +117,7 @@ int	spktlose (int sd, ...) {
 #else
 /* VARARGS5 */
 
-int spktlose (int sd, struct SSAPindication *si, int reason, char *what, char *fmt) {
+int spktlose (int sd, struct SSAPindication *si, int reason, char *what, const char *fmt) {
 	return spktlose (sd, si, reason, what, fmt);
 }
 #endif
@@ -136,7 +136,7 @@ int	ssaplose (struct SSAPindication*si, ...) {
 #else
 /* VARARGS4 */
 
-int ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
+int ssaplose (struct SSAPindication *si, int reason, char *what, const char *fmt) {
 	return ssaplose (si, reason, what, fmt);
 }
 #endif
@@ -149,7 +149,7 @@ static int _ssaplose (	/* what, fmt, args ... */
 ) {
 	char  *bp;
 	char  *what;
-	char  *fmt;
+	const char  *fmt;
 	char    buffer[BUFSIZ];
 	struct SSAPabort *sa;
 

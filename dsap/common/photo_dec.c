@@ -4,9 +4,9 @@
 #include <signal.h>
 #include "quipu/photo.h"
 #include "psap.h"
-static node *find_node (bit_string *lineptr, node *tree_top);
+static node *find_node (bit_string *lineptr, const node *tree_top);
 static int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t4_lineptr);
-static int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, int twoD);
+static int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, const int twoD);
 static void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr);
 
 
@@ -14,18 +14,18 @@ static void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr);
 #define ERR_RUN		0x0f
 
 static void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr);
-static int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional);
-static int set_dinput (bit_string *lineptr, int length);
+static int decode_t4_aux (const char *inbuf, const char *winname, const int length, const int twoDimensional);
+static int set_dinput (bit_string *lineptr, const int length);
 static void set_doutput (bit_string *lineptr);
 static void flush_doutput (bit_string *lineptr);
 static void goto_b1 (bit_string *lineptr);
-static void put_run (bit_string *lineptr, int length, char xcolour);
+static void put_run (bit_string *lineptr, const int length, const char xcolour);
 static void resync (bit_string *lineptr);
-static void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char offset);
+static void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, const char offset);
 static int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr);
 static int decode_one (bit_string *lineptr, bit_string *t4_lineptr);
 static int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t4_lineptr);
-static int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, int twoD);
+static int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, const int twoD);
 
 /**
  * @file photo_dec.c
@@ -49,7 +49,7 @@ char *bitmap;
 static void  resync (bit_string *lineptr);
 static int seqerrs = 0;
 
-int decode_t4 (char *data, char *name, int size) {
+int decode_t4 (char *data, char *name, const int size) {
 	PE    member;
 	PE    pe;
 	PS    ps;
@@ -194,7 +194,7 @@ static int uc_black_pels [] = {
  * @param twoDimensional Non-zero if the image is two-dimensionally coded.
  * @return Result of photo_end on success, or -1 on failure.
  */
-static int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
+static int decode_t4_aux (const char *inbuf, const char *winname, const int length, const int twoDimensional) {
 	bit_string code_line,      /* output line */
 			   ref_line,       /* reference line */
 			   t4_line;        /* input line  */
@@ -280,7 +280,7 @@ static int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensi
  * @param tree_top Root of the tree to traverse.
  * @return The matching leaf node, or NULL if the sequence is invalid.
  */
-static node *find_node (bit_string *lineptr, node *tree_top)
+static node *find_node (bit_string *lineptr, const node *tree_top)
 {
 	node * ptr;
 
@@ -312,7 +312,7 @@ static node *find_node (bit_string *lineptr, node *tree_top)
  * @param xcolour Current run colour (BLACK or WHITE).
  * @return The decoded run, or an error/uncompressed-mode indicator.
  */
-run_type next_run (bit_string *lineptr, char xcolour)
+run_type next_run (bit_string *lineptr, const char xcolour)
 {
 	node *   ptr;
 	run_type result;
@@ -499,7 +499,7 @@ int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t
  * @return The next colour, -1 if too many sequencing errors, or -2 if
  *         resynchronisation was performed.
  */
-int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, int twoD)
+int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, const int twoD)
 {
 	int black_length;
 	int next_colour;
@@ -616,7 +616,7 @@ static int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
  * @param code_lineptr Line being decoded.
  * @param offset Vertical-mode offset from the reference change.
  */
-static void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char offset)
+static void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, const char offset)
 {
 	int   length;
 	goto_b1 (ref_lineptr);
@@ -681,7 +681,7 @@ static void resync (bit_string *lineptr)
  * @param length Number of bits in the run.
  * @param xcolour Colour of the run (WHITE or BLACK).
  */
-static void put_run (bit_string *lineptr, int length, char xcolour)
+static void put_run (bit_string *lineptr, const int length, const char xcolour)
 {
 	int i;
 	int l;
@@ -777,7 +777,7 @@ static void flush_doutput (bit_string *lineptr)
  * @param length Encoded length, or 0 to parse a BIT STRING header.
  * @return 0 on success, or -1 on error.
  */
-static int set_dinput (bit_string *lineptr, int length)
+static int set_dinput (bit_string *lineptr, const int length)
 {
 	unsigned char cbyte;
 	int count;

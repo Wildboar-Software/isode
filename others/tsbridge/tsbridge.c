@@ -50,8 +50,8 @@ static ContTbl *find_connection (struct TSAPaddr *ta);
 
 static void read_file (char *file);
 
-static void	adios (char *, char *, ...);
-static void	advise (int, char *, char *, ...);
+static void	adios (char *, const char *, ...);
+static void	advise (int, char *, const char *, ...);
 
 static void ts_adios (struct TSAPdisconnect *td, char *event), ts_advise (struct TSAPdisconnect *td, int code, char *event);
 static void ts_close (int sd, char *event), ts_discon (struct TSAPdisconnect *td, int sd);
@@ -625,7 +625,7 @@ static void envinit (void) {
 }
 
 #ifndef lint
-static void    adios (char *what, char *fmt, ...) {
+static void    adios (char *what, const char *fmt, ...) {
 	va_list ap;
 
     va_start (ap, fmt);
@@ -636,13 +636,13 @@ static void    adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-static void adios (char *what, char *fmt) {
+static void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef lint
-static void    advise (int code, char *what, char *fmt, ...) {
+static void    advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 
     va_start (ap, fmt);
@@ -652,7 +652,7 @@ static void    advise (int code, char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-static void advise (int code, char *what, char *fmt) {
+static void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

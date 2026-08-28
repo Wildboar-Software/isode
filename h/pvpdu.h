@@ -2,7 +2,7 @@
 #include "pepsy.h"
 #include "psap.h"
 
-void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
+void pvpdu (LLog *lp, const int ind, modtyp *mod, PE pe, const char *text, const int rw);
 
 #ifdef __STDC__
 
@@ -61,7 +61,7 @@ void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
 
 typedef int (*pepy_printfn)(PE pe, int explicit, int *len, char **buffer, char *parm);
 
-void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, char *text, int rw);
+void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, const char *text, const int rw);
 
 /**
  * For projects still built using pepy.

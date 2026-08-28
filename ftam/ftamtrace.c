@@ -11,7 +11,7 @@ LLog _ftam_log = {
 };
 LLog *ftam_log = &_ftam_log;
 
-static char *ftam_appls[] = {
+static const char *ftam_appls[] = {
 	"Abstract-Syntax-Name",
 	"Access-Context",
 	"Access-Passwords",

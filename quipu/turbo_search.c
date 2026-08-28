@@ -10,7 +10,7 @@
 #include "quipu/turbo.h"
 #include "config.h"
 static void apply_sacl (EntryInfo **list, Entry e, struct search_kid_arg *ska);
-static int eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel);
+static int eis_merge (EntryInfo *ei, EntryInfo **eilist, const int toplevel);
 static int entry_collect (Index_node *node, EntryInfo **eilist);
 
 
@@ -25,7 +25,7 @@ extern AttributeType	*turbo_index_types;
 extern int		turbo_index_num;
 extern Avlnode		*subtree_index;
 extern Avlnode		*sibling_index;
-int			idn_cmp(DN a, Index *b);
+int			idn_cmp(DN a, const Index *b);
 
 static struct search_kid_arg	*g_ska;
 static int			g_toplevel;
@@ -33,16 +33,16 @@ static int			g_count;
 static int			g_stopearly;
 static int			g_size_normalizer;
 
-static EntryInfo	*turbo_filterkids(Entry e, Filter f, struct search_kid_arg *ska, Index *pindex, int toplevel);
-static EntryInfo	*turbo_item(Entry e, struct filter_item *f, struct search_kid_arg *ska, Index *pindex, int toplevel);
-static EntryInfo	*turbo_and(Entry e, Filter f, struct search_kid_arg *ska, Index *pindex, int toplevel);
+static EntryInfo	*turbo_filterkids(Entry e, Filter f, struct search_kid_arg *ska, Index *pindex, const int toplevel);
+static EntryInfo	*turbo_item(Entry e, const struct filter_item *f, const struct search_kid_arg *ska, const Index *pindex, const int toplevel);
+static EntryInfo	*turbo_and(Entry e, Filter f, struct search_kid_arg *ska, Index *pindex, const int toplevel);
 static EntryInfo	*turbo_or(Entry e, Filter f, struct search_kid_arg *ska, Index *pindex, int toplevel);
-static EntryInfo	*eis_union(EntryInfo *a, EntryInfo *b, int toplevel);
-static void		subtree_refer(Index *pindex, struct search_kid_arg *ska);
+static EntryInfo	*eis_union(EntryInfo *a, EntryInfo *b, const int toplevel);
+static void		subtree_refer(const Index *pindex, const struct search_kid_arg *ska);
 static int build_indexnode (caddr_t data1, caddr_t data2);
 
-Attr_Sequence	eis_select(EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
-EntryInfo	*filterentry(struct ds_search_arg *arg, Entry entryptr, DN binddn, char authtype, int *saclerror, struct ds_search_task *local, char dosacl);
+Attr_Sequence	eis_select(const EntryInfoSelection eis, Entry entryptr, DN dn, const char qctx, DN node);
+EntryInfo	*filterentry(struct ds_search_arg *arg, Entry entryptr, DN binddn, const char authtype, int *saclerror, struct ds_search_task *local, const char dosacl);
 
 int optimized_filter (Filter f) {
 	struct filter_item	*fi;
@@ -218,7 +218,7 @@ void turbo_subtree_search (Entry e, struct search_kid_arg *ska) {
 	}
 }
 
-static void subtree_refer( Index *pindex, struct search_kid_arg *ska ) {
+static void subtree_refer( const Index *pindex, const struct search_kid_arg *ska ) {
 	Entry	*tmp;
 
 	for ( tmp = pindex->i_nonleafkids; *tmp != NULLENTRY; tmp++ ) {
@@ -240,7 +240,7 @@ static EntryInfo *turbo_filterkids(
 	Filter f,
 	struct search_kid_arg *ska,
 	Index *pindex,
-	int toplevel
+	const int toplevel
 ) {
 	if ( e == NULLENTRY || f == NULLFILTER ) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("bad turbo_filterkids pars") );
@@ -262,7 +262,7 @@ static EntryInfo *turbo_filterkids(
 	/* NOT REACHED */
 }
 
-static int eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel) {
+static int eis_merge (EntryInfo *ei, EntryInfo **eilist, const int toplevel) {
 	int		cmp;
 	EntryInfo	*eitmp;
 
@@ -410,10 +410,10 @@ static int build_indexnode (caddr_t data1, caddr_t data2) {
 
 static EntryInfo *turbo_item(
 	Entry e,
-	struct filter_item *f,
-	struct search_kid_arg *ska,
-	Index *pindex,
-	int toplevel
+	const struct filter_item *f,
+	const struct search_kid_arg *ska,
+	const Index *pindex,
+	const int toplevel
 ) {
 	int		i;
 	int		len;
@@ -423,7 +423,7 @@ static EntryInfo *turbo_item(
 	Avlnode		*theindex;
 	char		*thestring;
 	char		*word, *code, *small;
-	char		*next_word(char *ptr), *first_word(char *ptr), *strrev(char *s);
+	char		*next_word(char *ptr), *first_word(char *ptr), *strrev(const char *s);
 	int		index_soundex_cmp(caddr_t data1, caddr_t data2), index_soundex_prefix(caddr_t data1, caddr_t data2, caddr_t carg);
 	int		substring_prefix_cmp(caddr_t data1, caddr_t data2, caddr_t carg), substring_prefix_case_cmp(caddr_t data1, caddr_t data2, caddr_t carg);
 	int		substring_prefix_tel_cmp(caddr_t data1, caddr_t data2, caddr_t carg);
@@ -603,7 +603,7 @@ static EntryInfo *turbo_and(
 	Filter f,
 	struct search_kid_arg *ska,
 	Index *pindex,
-	int toplevel
+	const int toplevel
 ) {
 	for ( ; f != NULLFILTER; f = f->flt_next )
 		if ( optimized_filter( f ) )
@@ -648,7 +648,7 @@ static EntryInfo *turbo_or(
 	return( result );
 }
 
-static EntryInfo *eis_union (EntryInfo *a, EntryInfo *b, int toplevel) {
+static EntryInfo *eis_union (EntryInfo *a, EntryInfo *b, const int toplevel) {
 	EntryInfo	*result, *rtail;
 	EntryInfo	*next;
 

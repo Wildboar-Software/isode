@@ -23,11 +23,11 @@
 
 static int tcpretry (struct psapblk *pb, int reason, struct PSAPindication *pi);
 static int tcpready (struct psapblk *pb, struct PSAPindication *pi);
-static void PTservice (struct psapblk *pb, int fd);
+static void PTservice (struct psapblk *pb, const int fd);
 
 int tcpopen (struct psapblk *pb, struct NSAPaddr *calling, struct NSAPaddr *called, struct PSAPindication *pi, int async);
-char *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
-int tcprestore (struct psapblk *pb, char *buffer, struct PSAPindication *pi);
+char *tcpsave (const int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
+int tcprestore (struct psapblk *pb, const char *buffer, struct PSAPindication *pi);
 
 #ifdef	FIONBIO
 static  fd_set  inprogress;
@@ -140,7 +140,7 @@ done:
 }
 
 char *tcpsave (
-	int fd,
+	const int fd,
 	char *cp1,
 	char *cp2,
 	struct TSAPdisconnect *td
@@ -152,7 +152,7 @@ char *tcpsave (
 
 int	tcprestore (
 	struct psapblk *pb,
-	char *buffer,
+	const char *buffer,
 	struct PSAPindication *pi
 ) {
 	int	    fd;
@@ -262,7 +262,7 @@ static int tcpready (
 
 static void PTservice (
 	struct psapblk *pb,
-	int fd
+	const int fd
 ) {
 	pb -> pb_fd = fd;
 	pb -> pb_reliability = HIGH_QUALITY;

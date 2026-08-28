@@ -77,31 +77,31 @@ extern  jmp_buf _timeobuf;
 
 # define        MAXFORK 10      /* no. of times to try a fork() */
 
-void parse_error (char *a, char *b);
+void parse_error (char *a, const char *b);
 void pslog (LLog *lp, int event, char *str, void (*func) (PS ps, caddr_t ptr, int format), caddr_t ptr);
-int test_prim_pe (PE pe, PElementClass class, PElementID id);
-int add_entry_aux (char *a, caddr_t b, int c, char *d);
+int test_prim_pe (PE pe, const PElementClass class, const PElementID id);
+int add_entry_aux (char *a, caddr_t b, const int c, char *d);
 int stop_listeners (void);
-int check_print_string (char *str);
-int telcmp (char *a, char *b);
-int telncmp (char *a, char *b, int n);
-int telstrlen (char *s);
+int check_print_string (const char *str);
+int telcmp (const char *a, const char *b);
+int telncmp (const char *a, const char *b, int n);
+int telstrlen (const char *s);
 void octprint (PS ps, char *str, int format);
 char *SkipSpace (char *ptr);
 void StripSpace (char *b);
-void StripSpace2 (char *b);
-void fatal (int code, char *fmt);
+void StripSpace2 (const char *b);
+void fatal (int code, const char *fmt);
 void utcprint (PS ps, char *xtime, int format);
 int quipu_pe_cmp (PE a, PE b);
-int test_arg (char *x, char *y, int c);
-void pdu_dump (PE pe, char *type, int op);
+int test_arg (const char *x, const char *y, const int c);
+void pdu_dump (PE pe, char *type, const int op);
 void pdu_dump_init (char *dir);
-int dsa_wait (int secs);
+int dsa_wait (const int secs);
 int dsap_init (int *acptr, char ***avptr);
 void quipu_syntaxes (void);
 void standard_syntaxes (void);
 void hide_picture (void);
-void iso8859print(PS ps, char *sstr);
+void iso8859print(PS ps, const char *sstr);
 int reset_arg (void);
 int print_arg_error (PS opt);
 

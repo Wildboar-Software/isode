@@ -19,14 +19,14 @@ extern char     fname[];
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-int editentry (int argc, char **argv) {
+int editentry (const int argc, char **argv) {
 	char            str[LINESIZE];
 	char            prog[LINESIZE];
 	int             res;
 	extern char     inbuf[];
-	extern int      fd;
+	extern const int      fd;
 	extern char	remote_prob;
-	extern char	dad_flag;
+	extern const char	dad_flag;
 
 	if (argc != 1) {
 		Usage (argv[0]);
@@ -157,7 +157,7 @@ void get_password (char *str, char *buffer) {
 	char            prog[LINESIZE];
 	int             res;
 	extern char     inbuf[];
-	extern int      fd;
+	extern const int      fd;
 	extern char	remote_prob;
 	char * 		getpassword(char *prompt);
 
@@ -181,7 +181,7 @@ void get_password (char *str, char *buffer) {
 int yesno (char *str) {
 	char            prog[LINESIZE];
 	extern char     inbuf[];
-	extern int      fd;
+	extern const int      fd;
 	extern char	remote_prob;
 	char * 		getpassword(char *prompt);
 

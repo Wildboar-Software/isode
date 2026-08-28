@@ -7,7 +7,7 @@
 #include "sector1.h"
 #include "pvpdu.h"
 #include "vt.h"
-static void acs_advise (struct AcSAPabort *aa, char *event);
+static void acs_advise (struct AcSAPabort *aa, const char *event);
 
 
 int	cmode;
@@ -35,12 +35,12 @@ struct PSAPindication pi;
 struct PSAPdata	px;
 struct PSAPfinish *pf;
 
-static void  ps_adios (struct PSAPabort *pab, char *event),  ps_advise (struct PSAPabort *pab, char *event);
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+static void  ps_adios (struct PSAPabort *pab, const char *event),  ps_advise (struct PSAPabort *pab, const char *event);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 
-int do_event (int event, PE pe);
-int pn_ind (int dd, struct PSAPsync *psync);
+int do_event (const int event, PE pe);
+int pn_ind (const int dd, struct PSAPsync *psync);
 extern int build_ASRPDU_ASRpdu (PE *pe, int explicit, int len, char *buffer, PEPYPARM parm);
 
 /****************************************************************************/
@@ -64,7 +64,7 @@ extern int build_ASRPDU_ASRpdu (PE *pe, int explicit, int len, char *buffer, PEP
 /*		this PE from the network				    */
 /****************************************************************************/
 
-int get_event (int dd, PE *pe) {
+int get_event (const int dd, PE *pe) {
 	int	result, event;
 	PE	nullpe;
 
@@ -223,7 +223,7 @@ int	((**sectors[])(int event, PE pe)) = {s0, s1, s2, s3, s4, s5};
 unsigned	state = 0,
 			sector = 1;
 
-int do_event (int event, PE pe) {
+int do_event (const int event, PE pe) {
 	if (debug)
 		advise(LLOG_DEBUG,NULLCP,
 			   "in do_event, sector is %d, state is %d, event is %d (%s)",
@@ -237,7 +237,7 @@ int do_event (int event, PE pe) {
 }
 
 int pn_ind ( /* sync indications */
-	int dd,
+	const int dd,
 	struct PSAPsync *psync
 ) {
 	switch(psync->pn_type) {
@@ -375,8 +375,8 @@ int p_typed_data (PE pdu) {
 /*			outgoing events that are mapped to P_RESYNC.REQUEST) */
 /*****************************************************************************/
 
-int p_resync_req (PE pdu, int type) {
-	long ssn = 0; /* should be made a global at some time */
+int p_resync_req (PE pdu, const int type) {
+	const long ssn = 0; /* should be made a global at some time */
 	int settings = ST_INIT_VALUE;
 
 #define VTKP_REQ   0x00 /* setting values, see ssap.h */
@@ -404,7 +404,7 @@ int p_resync_req (PE pdu, int type) {
 /****************************************************************************/
 
 int p_resync_resp (PE pdu) {
-	long ssn = 0; /* should be made a global at some time */
+	const long ssn = 0; /* should be made a global at some time */
 	int settings = ST_INIT_VALUE;
 	OLDPLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 	if (PReSyncResponse(sd, ssn, settings, &pdu, 1, &pi) != OK)
@@ -549,15 +549,15 @@ int send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
 	advise(LLOG_DEBUG,NULLCP,  "send_all dummy routine");
 }
 
-static void  acs_advise (struct AcSAPabort *aa, char *event);
+static void  acs_advise (struct AcSAPabort *aa, const char *event);
 
-void acs_adios (struct AcSAPabort *aa, char *event) {
+void acs_adios (struct AcSAPabort *aa, const char *event) {
 	acs_advise (aa, event);
 	finalbye ();
 	_exit (1);
 }
 
-static void acs_advise (struct AcSAPabort *aa, char *event) {
+static void acs_advise (struct AcSAPabort *aa, const char *event) {
 	char	buffer[BUFSIZ];
 
 	if (aa -> aca_cc > 0)
@@ -570,13 +570,13 @@ static void acs_advise (struct AcSAPabort *aa, char *event) {
 			aa -> aca_source);
 }
 
-static void ps_adios (struct PSAPabort *pab, char *event) {
+static void ps_adios (struct PSAPabort *pab, const char *event) {
 	ps_advise (pab, event);
 	finalbye ();
 	_exit (1);
 }
 
-static void ps_advise (struct PSAPabort *pab, char *event) {
+static void ps_advise (struct PSAPabort *pab, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (pab -> pa_cc > 0)

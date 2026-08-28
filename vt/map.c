@@ -19,7 +19,7 @@
 #include <unistd.h>
 #endif
 #include <fcntl.h>
-static void realptyecho (int on);
+static void realptyecho (const int on);
 
 
 extern char erase_char;
@@ -47,17 +47,17 @@ extern int showoptions;
 extern int debug;
 extern int telnet_profile;
 
-static void display_ud (DO_UPDATE *doptr);
-void control_ud (CO_UPDATE *coptr);
-static void attrib_hdlr (DO_UPDATE *doptr);
-static void def_echo (CO_UPDATE *coptr);
+static void display_ud (const DO_UPDATE *doptr);
+void control_ud (const CO_UPDATE *coptr);
+static void attrib_hdlr (const DO_UPDATE *doptr);
+static void def_echo (const CO_UPDATE *coptr);
 
 #ifdef TERMIOS
-static void realptyecho (int on);
+static void realptyecho (const int on);
 #endif
 
-void adios (char *, char *, ...);
-void advise (int, char *, char *, ...);
+void adios (char *, const char *, ...);
+void advise (int, char *, const char *, ...);
 
 TEXT_UPDATE *ndq_queue;			/* Incoming (From Net) NDQ's */
 TEXT_UPDATE *deq (TEXT_UPDATE **qhp);
@@ -86,7 +86,7 @@ void map (PE ndq) {
 }
 
 /* Handle Display Updates */
-static void display_ud (DO_UPDATE *doptr) {
+static void display_ud (const DO_UPDATE *doptr) {
 	int i;
 	char *pt;
 #ifdef TERMIOS
@@ -211,10 +211,10 @@ static void display_ud (DO_UPDATE *doptr) {
 }
 
 /*Handle Control Object Updates*/
-void control_ud (CO_UPDATE *coptr) {
+void control_ud (const CO_UPDATE *coptr) {
 	char active = 0;
 #ifdef TERMIOS
-	struct termios term;
+	const struct termios term;
 #else
 	struct sgttyb sb;
 #endif
@@ -841,7 +841,7 @@ void control_ud (CO_UPDATE *coptr) {
 }
 
 /* Handle Write Attribute Display Object Update */
-static void attrib_hdlr (DO_UPDATE *doptr) {
+static void attrib_hdlr (const DO_UPDATE *doptr) {
 	if(doptr->do_cmd.wrt_attrib.attr_id == 0)
 		/*If switching repertoires*/
 	{
@@ -868,7 +868,7 @@ static void attrib_hdlr (DO_UPDATE *doptr) {
 #ifdef TERMIOS
 extern struct	termios oterm;
 
-int tmode (int f) {
+int tmode (const int f) {
 	static int prevmode = 0;
 	struct termios term;
 	int onoff, old;
@@ -1021,7 +1021,7 @@ void kill_proc (void) {	/*Terminate current UNIX process using UNIX interrupt ch
 }
 
 /* Handle Default Profile Echo Ctrl Object */
-static void def_echo (CO_UPDATE *coptr) {
+static void def_echo (const CO_UPDATE *coptr) {
 	char active = 0;
 	if(coptr->co_cmd.bool_update.mask_count == 0) {
 		if (octet2char (0xff, &active) != 0)
@@ -1038,7 +1038,7 @@ static void def_echo (CO_UPDATE *coptr) {
 }
 
 #ifdef TERMIOS
-static void realptyecho (int on) {
+static void realptyecho (const int on) {
 	struct termios term;
 	if (tcgetattr(pty, &term) == -1) {
 		perror("tcgetattr");

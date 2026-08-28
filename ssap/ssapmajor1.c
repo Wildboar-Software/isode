@@ -6,7 +6,7 @@
 
 /* S-MAJOR-SYNC.REQUEST */
 
-int SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si) {
+int SMajSyncRequest (int sd, long *ssn, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -29,9 +29,9 @@ int SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindicatio
 int SMajSyncRequestAux (
 	struct ssapblk *sb,
 	long *ssn,
-	char *data,
+	const char *data,
 	int cc,
-	int opts,
+	const int opts,
 	struct SSAPindication *si
 ) {
 	int     result;

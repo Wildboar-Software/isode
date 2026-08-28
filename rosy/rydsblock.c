@@ -33,7 +33,7 @@ void freedsblk (struct dspblk *dsb) {
 	free ((char *) dsb);
 }
 
-struct dspblk *finddsblk (int sd, int op) {
+struct dspblk *finddsblk (int sd, const int op) {
 	struct dspblk *dsb;
 	if (once_only == 0)
 		return NULL;

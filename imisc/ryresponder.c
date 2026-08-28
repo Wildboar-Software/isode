@@ -33,12 +33,12 @@ static void ros_indication (int sd, struct RoSAPindication *roi);
 static void ros_lose (struct TSAPdisconnect *td);
 
 void ryresponder (
-	int argc,
+	const int argc,
 	char **argv,
 	char *host,
 	char *myservice,
 	char *mycontext,
-	struct dispatch *dispatches,
+	const struct dispatch *dispatches,
 	struct RyOperation *ops,
 	int (*start)(int sd, struct AcSAPstart *acs),
 	int (*stop)(int sd, struct AcSAPfinish *acf)
@@ -289,7 +289,7 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
@@ -298,13 +298,13 @@ void	adios (char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS2 */
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...) {
+void	advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (pgm_log, code, what, fmt, ap);
@@ -312,7 +312,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS3 */
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

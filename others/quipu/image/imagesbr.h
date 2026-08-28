@@ -32,8 +32,8 @@ struct type_IMAGE_Image *fetch_image (char *local, char *domain);
 
 /* ERRORS */
 
-void	adios (char *what, char *fmt, ...);
-void	advise (char *what, char *fmt, ...);
+void	adios (char *what, const char *fmt, ...);
+void	advise (char *what, const char *fmt, ...);
 
 /* MISC */
 

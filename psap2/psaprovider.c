@@ -57,15 +57,15 @@ int PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
 }
 
 int PDataRequestAux (
-	int sd,
+	const int sd,
 	PE *data,
 	int ndata,
 	struct PSAPindication *pi,
-	char *dtype,
-	int (*sfunc)(int sd, char *data, int cc, struct SSAPindication *si),
-	char *stype,
-	char *text,
-	int ppdu
+	const char *dtype,
+	int (*sfunc)(int sd, const char *data, int cc, struct SSAPindication *si),
+	const char *stype,
+	const char *text,
+	const int ppdu
 ) {
 	SBV	    smask;
 	int     i,
@@ -129,7 +129,7 @@ out1:
 
 /*    P-READ.REQUEST (pseudo) */
 
-int PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
+int PReadRequest (int sd, struct PSAPdata *px, const int secs, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -189,7 +189,7 @@ static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, s
 static int doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi) {
 	int     ppdu,
 			result;
-	char   *text;
+	const char   *text;
 
 	switch (px -> px_type = sx -> sx_type) {
 	case SX_NORMAL:
@@ -425,7 +425,7 @@ out:
 #define	e(i)	(data ? (i) : 0)
 
 int PSetIndications (
-	int sd,
+	const int sd,
 	void (*data)(int sd, struct PSAPdata *sx),
 	void (*tokens)(int sd, struct PSAPtoken *st),
 	void (*sync)(int sd, struct PSAPsync *sn),
@@ -485,7 +485,7 @@ int PSetIndications (
 
 /*    SSAP interface */
 
-int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa) {
+int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, const char *event, struct SSAPabort *sa) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -728,7 +728,7 @@ struct psapblk *findpblk (int sd) {
 	return NULL;
 }
 
-struct type_PS_User__data *info2ppdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, int ppdu) {
+struct type_PS_User__data *info2ppdu (const struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, const int ppdu) {
 	int    i,
 		   j;
 	PE	   *d,
@@ -886,7 +886,7 @@ out:
 	return NULL;
 }
 
-int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_User__data *info, PE *data, int *ndata, int ppdu) {
+int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, const struct type_PS_User__data *info, PE *data, int *ndata, const int ppdu) {
 	int    i,
 		   j;
 	int	    ctx,
@@ -988,7 +988,7 @@ int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_Use
 #ifndef	DEBUG
 #endif
 
-int info2ssdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, char **realbase, char **base, int *len, char *text, int ppdu) {
+int info2ssdu (const struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, char **realbase, char **base, int *len, const char *text, const int ppdu) {
 	int	    result;
 	PE	    pe;
 	struct type_PS_User__data *info;
@@ -1065,7 +1065,7 @@ serialize:
 #ifndef	DEBUG
 #endif
 
-int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int len, PE *data, int *ndata, char *text, int ppdu) {
+int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int len, PE *data, int *ndata, const char *text, const int ppdu) {
 	int    result;
 	PE	    pe;
 	struct type_PS_User__data *info;
@@ -1189,7 +1189,7 @@ punch_it:
 #ifndef	DEBUG
 #endif
 
-int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int len, PE *data, int *ndata, char *text, int ppdu) {
+int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int len, PE *data, int *ndata, const char *text, const int ppdu) {
 	int	    result;
 	PE	    pe;
 	struct qbuf *qp;
@@ -1368,7 +1368,7 @@ int qb2info (struct qbuf *qb, PE *pe) {
 	return result;
 }
 
-struct type_PS_Identifier__list *silly_list (struct psapblk *pb, struct PSAPindication *pi) {
+struct type_PS_Identifier__list *silly_list (const struct psapblk *pb, struct PSAPindication *pi) {
 	int    j;
 	struct PSAPcontext *qp;
 	struct type_PS_Identifier__list *list;

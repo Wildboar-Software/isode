@@ -624,7 +624,7 @@ END
 
 %{
 
-void adios (char *, char *, ...);
+void adios (char *, const char *, ...);
 
 
 void parse_p2 (char *octstr, int len)

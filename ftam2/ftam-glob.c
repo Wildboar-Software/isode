@@ -35,17 +35,17 @@ static void sort (void);
 static void acollect (char *as);
 static void collect (char *as);
 static void expand (char *as);
-static int execbrc (char *p, char *s);
-static int match (char *s, char *p);
-static int amatch (char *s, char *p);
-static void Gcat (char *s1, char *s2);
-static void addpath (char c);
-static int letter (char c);
-static int digit (char c);
-static int any (int c, char *s);
+static int execbrc (const char *p, const char *s);
+static int match (const char *s, char *p);
+static int amatch (const char *s, char *p);
+static void Gcat (const char *s1, const char *s2);
+static void addpath (const char c);
+static int letter (const char c);
+static int digit (const char c);
+static int any (const int c, const char *s);
 static int chkrdir (char *path, struct stat *st);
 static int getrdir (char *hdir);
-static void fatal (char *s);
+static void fatal (const char *s);
 
 static char ** glob (char *v);
 static void ginit (char **agargv);
@@ -56,7 +56,7 @@ static	int    gflag;
 static	int tglob(char c);
 char	*globerr;
 static char *home;
-static	char *strspl (char *cp, char *dp), **copyblk (char **v), *strend (char *cp);
+static	char *strspl (const char *cp, const char *dp), **copyblk (char **v), *strend (char *cp);
 
 static	int globcnt;
 
@@ -125,7 +125,7 @@ static void collect (char *as) {
 }
 
 static void acollect (char *as) {
-	int ogargc = gargc;
+	const int ogargc = gargc;
 
 	gpathp = gpath;
 	*gpathp = 0;
@@ -244,7 +244,7 @@ patherr2:
 	globerr = "Bad directory components";
 }
 
-static int execbrc (char *p, char *s) {
+static int execbrc (const char *p, const char *s) {
 	char restbuf[BUFSIZ + 2];
 	char *pe, *pm, *pl;
 	int brclev = 0;
@@ -321,7 +321,7 @@ doit:
 	return (0);
 }
 
-static int match (char *s, char *p) {
+static int match (const char *s, char *p) {
 	int c;
 	char *sentp;
 	char sglobbed;
@@ -339,7 +339,7 @@ static int match (char *s, char *p) {
 	return (c);
 }
 
-static int amatch (char *s, char *p) {
+static int amatch (const char *s, char *p) {
 	int scc;
 	int ok, lc;
 	char *sgpathp;
@@ -429,7 +429,7 @@ static int chkldir ( char   *path, struct stat *st) {
 	return (stat (path, st) == 0 && (st -> st_mode & S_IFMT) == S_IFDIR);
 }
 
-static int Gmatch (char *s, char *p) {
+static int Gmatch (const char *s, const char *p) {
 	int scc;
 	int ok, lc;
 	int c, cc;
@@ -485,7 +485,7 @@ static int Gmatch (char *s, char *p) {
 	}
 }
 
-static void Gcat (char *s1, char *s2) {
+static void Gcat (const char *s1, const char *s2) {
 	int len = 0;
 
 	if (add_sizet_to_int (&len, strlen (s1)) != 0
@@ -505,7 +505,7 @@ static void Gcat (char *s1, char *s2) {
 	}
 }
 
-static void addpath (char c) {
+static void addpath (const char c) {
 	if (gpathp >= lastgpathp)
 		globerr = "Pathname too long";
 	else {
@@ -551,15 +551,15 @@ static trim (char c) {
 }
 #endif
 
-static int letter (char c) {
+static int letter (const char c) {
 	return (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_');
 }
 
-static int digit (char c) {
+static int digit (const char c) {
 	return (c >= '0' && c <= '9');
 }
 
-static int any (int c, char *s) {
+static int any (const int c, const char *s) {
 	while (*s)
 		if (*s++ == c)
 			return(1);
@@ -587,7 +587,7 @@ int blkfree (char **av0) {
 	free((char *)av0);
 }
 
-static char *strspl (char *cp, char *dp) {
+static char *strspl (const char *cp, const char *dp) {
 	int extra = 1;
 	char *ep;
 
@@ -635,7 +635,7 @@ int	xglobbed;
 
 static OID   matchoid;
 
-char *xglob1val (char *v, int remote) {
+char *xglob1val (char *v, const int remote) {
 	char **gp;
 	char   *cp, *gb[2];
 
@@ -657,7 +657,7 @@ char *xglob1val (char *v, int remote) {
 	return cp;
 }
 
-char **xglob (char **v, int remote) {
+char **xglob (char **v, const int remote) {
 	int    i;
 	char  *cp,
 		  **gp,
@@ -826,7 +826,7 @@ static int getrdir (char *hdir) {
 	return (isdir (buffer, hdir, 1) != DONE);
 }
 
-static void fatal (char *s) {
+static void fatal (const char *s) {
 	adios (NULLCP, "%s", s);
 }
 

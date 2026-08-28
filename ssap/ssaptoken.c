@@ -3,13 +3,13 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
-static int SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si);
+static int SGTokenRequestAux (struct ssapblk *sb, const int tokens, struct SSAPindication *si);
 
 
 /* S-TOKEN-GIVE.REQUEST */
 
-static int  SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si);
-static int  SPTokenRequestAux (struct ssapblk *sb, int tokens, char *data, int cc, struct SSAPindication *si);
+static int  SGTokenRequestAux (struct ssapblk *sb, const int tokens, struct SSAPindication *si);
+static int  SPTokenRequestAux (struct ssapblk *sb, const int tokens, const char *data, int cc, struct SSAPindication *si);
 
 #define	dotoken(requires,shift,bit,type) \
 { \
@@ -24,7 +24,7 @@ static int  SPTokenRequestAux (struct ssapblk *sb, int tokens, char *data, int c
     } \
 }
 
-int SGTokenRequest (int sd, int tokens, struct SSAPindication *si) {
+int SGTokenRequest (int sd, const int tokens, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -37,7 +37,7 @@ int SGTokenRequest (int sd, int tokens, struct SSAPindication *si) {
 	return result;
 }
 
-static int SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si) {
+static int SGTokenRequestAux (struct ssapblk *sb, const int tokens, struct SSAPindication *si) {
 	int     result,
 			settings;
 	struct ssapkt *s;
@@ -85,7 +85,7 @@ static int SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindicat
     } \
 }
 
-int SPTokenRequest (int sd, int tokens, char *data, int cc, struct SSAPindication *si) {
+int SPTokenRequest (int sd, const int tokens, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -99,7 +99,7 @@ int SPTokenRequest (int sd, int tokens, char *data, int cc, struct SSAPindicatio
 	return result;
 }
 
-static int SPTokenRequestAux (struct ssapblk *sb, int tokens, char *data, int cc, struct SSAPindication *si) {
+static int SPTokenRequestAux (struct ssapblk *sb, const int tokens, const char *data, int cc, struct SSAPindication *si) {
 	int     result,
 			settings;
 	struct ssapkt *s;

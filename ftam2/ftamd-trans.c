@@ -19,8 +19,8 @@ static int  nbytes;
 
 static int uxfget (struct FTAMdiagnostic **diags);
 static int fdfget (struct FTAMdiagnostic **diags);
-static void tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0);
-static int de2fadu (PE pe, int concat);
+static void tvsub (struct timeval* tdiff,const struct timeval* t1,const struct timeval* t0);
+static int de2fadu (PE pe, const int concat);
 
 /* TRANSFER */
 
@@ -824,7 +824,7 @@ error_return:
 	}
 }
 
-static int de2fadu (PE pe, int concat) {
+static int de2fadu (PE pe, const int concat) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 	struct FTAMabort  *fta = &fti -> fti_abort;
@@ -1086,7 +1086,7 @@ void ftam_bulkendindication (struct FTAMgroup *ftg) {
 #endif
 
 #ifndef	TMS
-void timer (int cc, char *action) {
+void timer (int cc, const char *action) {
 	long    ms;
 	float   bs;
 	struct timeval  stop,
@@ -1108,7 +1108,7 @@ void timer (int cc, char *action) {
 			cc, action, td.tv_sec, td.tv_usec / 10000, bs / 1024);
 }
 
-static void tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0) {
+static void tvsub (struct timeval* tdiff,const struct timeval* t1,const struct timeval* t0) {
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)

@@ -82,13 +82,13 @@ struct QOStype myqos;
 static int f_set (char **vec);
 static char ** getval (char *name, char **choices);
 static int f_help (char **vec);
-static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
+static void tvsub (struct timeval *tdiff, const struct timeval *t1, const struct timeval *t0);
 
 struct var {
-	char   *v_name;
+	const char   *v_name;
 	int	   *v_value;
 
-	char   *v_dname;
+	const char   *v_dname;
 	char  **v_dvalue;
 	char   *v_mask;
 
@@ -96,7 +96,7 @@ struct var {
 };
 
 static struct var * getvar (char *name);
-static void printvar (struct var *v);
+static void printvar (const struct var *v);
 
 #ifndef	BRIDGE
 static struct dispatch  dispatches[] = {
@@ -531,7 +531,7 @@ out_of_range:
 	return OK;
 }
 
-static void printvar (struct var *v) {
+static void printvar (const struct var *v) {
 	int	    i;
 	char    buffer[BUFSIZ];
 
@@ -939,7 +939,7 @@ static char *entity[] = {
 	"responder"
 };
 
-void ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action) {
+void ftam_diag (struct FTAMdiagnostic diag[], int ndiag, const int peer, const int action) {
 	int    i;
 	int     didit;
 	struct FTAMdiagnostic *dp;
@@ -1216,7 +1216,7 @@ int	ncols (FILE *fp) {
 #endif
 
 #ifndef	TMS
-void timer (int cc, char *action) {
+void timer (int cc, const char *action) {
 	long    ms;
 	float   bs;
 	struct timeval stop, td;
@@ -1233,7 +1233,7 @@ void timer (int cc, char *action) {
 			cc, action, td.tv_sec, td.tv_usec / 10000, bs / 1024);
 }
 
-static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
+static void tvsub (struct timeval *tdiff, const struct timeval *t1, const struct timeval *t0) {
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)

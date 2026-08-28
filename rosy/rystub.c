@@ -31,15 +31,15 @@ static SFD	intrser (int sig);
 /* stub */
 
 int	RyStub (
-	int sd,
+	const int sd,
 	struct RyOperation *ryo,
-	int op,
-	int id,
+	const int op,
+	const int id,
 	int *linked,
 	caddr_t in,
 	int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
 	void (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
-	int class,
+	const int class,
 	struct RoSAPindication *roi
 ) {
 	int     firstime,

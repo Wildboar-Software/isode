@@ -11,7 +11,7 @@ static int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *
 
 /* RO-BIND.INDICATION */
 
-int RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni) {
+int RoBindInit (const int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);
@@ -65,15 +65,15 @@ static int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *
 /* RO-BIND.RESULT */
 
 int	RoBindResult (
-	int sd,
+	const int sd,
 	OID context,
 	AEI respondtitle,
-	struct PSAPaddr *respondaddr,
+	const struct PSAPaddr *respondaddr,
 	struct PSAPctxlist *ctxlist,
-	int	defctxresult,
-	int	prequirements,
-	int	srequirements,
-	long isn,
+	const int	defctxresult,
+	const int	prequirements,
+	const int	srequirements,
+	const long isn,
 	int settings,
 	struct SSAPref *ref,
 	PE bindrespe,
@@ -120,15 +120,15 @@ int	RoBindResult (
 /* RO-BIND.ERROR */
 
 int RoBindError (
-	int sd,
+	const int sd,
 	OID context,
 	AEI respondtitle,
-	struct PSAPaddr *respondaddr,
+	const struct PSAPaddr *respondaddr,
 	struct PSAPctxlist *ctxlist,
-	int	defctxresult,
-	int	prequirements,
-	int	srequirements,
-	long isn,
+	const int	defctxresult,
+	const int	prequirements,
+	const int	srequirements,
+	const long isn,
 	int settings,
 	struct SSAPref *ref,
 	PE binderrpe,

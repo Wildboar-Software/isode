@@ -6,7 +6,7 @@
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 #include "pepsycodec.h"
-int DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr, struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings, struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DAPconnect * dc, struct DAPindication * di, int async);
+int DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr, const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, int settings, struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DAPconnect * dc, struct DAPindication * di, const int async);
 
 
 extern  LLog    * log_dsap;
@@ -54,7 +54,7 @@ int secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct
 	return(dap_bind(&(dsap_ad), arg, error, result, addr));
 }
 
-int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result, struct PSAPaddr *addr) {
+int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result, const struct PSAPaddr *addr) {
 	int				  ret;
 	struct DAPconnect         dc_s;
 	struct DAPconnect         *dc = &dc_s;
@@ -87,9 +87,9 @@ int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, str
 
 /* DAP-BIND.REQUEST */
 
-int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
-						 struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings,
-						 struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DAPconnect * dc, struct DAPindication * di, int async) {
+int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr,
+						 const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DAPconnect * dc, struct DAPindication * di, const int async) {
 	int			  result;
 	OID			  app_ctx;
 	struct PSAPctxlist	  pc_s;
@@ -169,7 +169,7 @@ int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * ca
 	return (result);
 }
 
-int DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, struct DAPconnect *dc, struct DAPindication *di, int async) {
+int DapAsynBindRequest (const struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, struct DAPconnect *dc, struct DAPindication *di, const int async) {
 	struct SSAPref		  sf_s;
 	struct SSAPref		* sf = &(sf_s);
 	struct QOStype		  qos;
@@ -188,7 +188,7 @@ int DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg
 							   bindarg, &qos, dc, di, async));
 }
 
-int DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct DAPindication *di) {
+int DapAsynBindRetry (int sd, const int do_next_nsap, struct DAPconnect *dc, struct DAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -206,7 +206,7 @@ int DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct DA
 	return (result);
 }
 
-int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindication *rni) {
+int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, const struct RoNOTindication *rni) {
 	struct ds_bind_arg  * bind_res;
 	struct ds_bind_error        * bind_err;
 

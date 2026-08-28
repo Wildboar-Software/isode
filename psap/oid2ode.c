@@ -4,7 +4,7 @@
 #include "psap.h"
 #include "tailor.h"
 
-char   *oid2ode_aux (OID identifier, int quoted) {
+char   *oid2ode_aux (OID identifier, const int quoted) {
 	int	    events;
 	struct isobject *io;
 	static char buffer[BUFSIZ];

@@ -64,7 +64,7 @@ findpair (
 static void set_permissions (void);
 static void make_usstates (void);
 char *timestamp (void);
-static void _advise (char *what, char *fmt, va_list ap);
+static void _advise (char *what, const char *fmt, va_list ap);
 
 
 /* ^L */
@@ -80,8 +80,8 @@ char line[BUFSIZ];			/* configuration line */
 char file[BUFSIZ];			/* a file name */
 char oldfile[BUFSIZ];			/* file name (as above) with suffix */
 
-void adios (char *what, char *fmt, ...);
-void advise (char *what, char *fmt, ...);
+void adios (char *what, const char *fmt, ...);
+void advise (char *what, const char *fmt, ...);
 
 extern char *isodetcpath;
 extern char *isodebinpath;
@@ -1143,9 +1143,9 @@ char *timestamp (void) {
 
 /* adios () -- exit with error */
 #ifndef lint
-static void _advise (char *what, char *fmt, va_list ap);
+static void _advise (char *what, const char *fmt, va_list ap);
 
-void adios (char *what, char *fmt, ...) {
+void adios (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -1165,7 +1165,7 @@ void adios (char *what, char fmt) {
 /* advise () -- print out an error message */
 #ifndef lint
 
-void advise (char *what, char *fmt, ...)
+void advise (char *what, const char *fmt, ...)
 {
 	va_list ap;
 
@@ -1174,7 +1174,7 @@ void advise (char *what, char *fmt, ...)
 	va_end (ap);
 }
 
-static void _advise (char *what, char *fmt, va_list ap) {
+static void _advise (char *what, const char *fmt, va_list ap) {
 	char buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);
@@ -1189,7 +1189,7 @@ static void _advise (char *what, char *fmt, va_list ap) {
 
 /* VARARGS */
 
-void advise (char *what, char *fmt) {
+void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 

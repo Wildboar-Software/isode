@@ -34,16 +34,16 @@ static jmp_buf	intrenv;
 #endif
 int	interrupted;
 
-static int ftamloop (char **vec, int error);
+static int ftamloop (char **vec, const int error);
 #if defined(SVR4) || defined(LINUX)
 static void intrser (int sig);
 #else
 static SFD intrser (int sig);
 #endif
 
-void	adios (char *what, char *fmt, ...);
-void	advise (char *what, char *fmt, ...);
-static void _advise (char* what, char *fmt, va_list ap);
+void	adios (char *what, const char *fmt, ...);
+void	advise (char *what, const char *fmt, ...);
+static void _advise (char* what, const char *fmt, va_list ap);
 
 #ifdef	BRIDGE
 extern void reply(int n, ...);
@@ -222,7 +222,7 @@ int main (int argc, char **argv, char **envp) {
 #endif
 
 #ifndef	BRIDGE
-static int ftamloop (char **vec, int error) {
+static int ftamloop (char **vec, const int error) {
 	struct dispatch   *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
@@ -379,7 +379,7 @@ static void arginit (char **vec) {
 /* INTERACTIVE */
 
 #ifndef	BRIDGE
-int getftamline (char *prompt, char *buffer) {
+int getftamline (const char *prompt, const char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;
@@ -467,7 +467,7 @@ intrser (int sig) {
 
 #ifndef	BRIDGE
 #ifndef	lint
-int	ask (char* fmt, ...) {
+int	ask (const char* fmt, ...) {
 	int     x,
 			y,
 			result;
@@ -535,14 +535,14 @@ again:
 #else
 /* VARARGS */
 
-int ask (char *fmt, ...) {
+int ask (const char *fmt, ...) {
 	return ask (fmt);
 }
 #endif
 #endif
 
 #ifndef	lint
-void	adios (char *what, char *fmt, ...)
+void	adios (char *what, const char *fmt, ...)
 {
 	struct FTAMindication   ftis;
 	va_list ap;
@@ -567,13 +567,13 @@ void	adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void adios (char *what, char *fmt, ...) {
+void adios (char *what, const char *fmt, ...) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (char *what, char *fmt, ...)
+void	advise (char *what, const char *fmt, ...)
 {
 	va_list ap;
 
@@ -584,7 +584,7 @@ void	advise (char *what, char *fmt, ...)
 	va_end (ap);
 }
 
-static void  _advise (char *what, char *fmt, va_list ap)
+static void  _advise (char *what, const char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -611,7 +611,7 @@ static void  _advise (char *what, char *fmt, va_list ap)
 #else
 /* VARARGS */
 
-void advise (char *what, char *fmt) {
+void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif

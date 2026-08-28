@@ -7,7 +7,7 @@ UDQPDU DEFINITIONS ::=
 #undef PEPYPARM
 #define PEPYPARM int *
 
-void	adios (char *, char *, ...);
+void	adios (char *, const char *, ...);
 
 #define	bitstr2int(arg,val,cnt) \
 { \

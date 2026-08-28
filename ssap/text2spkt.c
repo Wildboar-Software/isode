@@ -4,22 +4,22 @@
 #include <stdint.h>
 #include "spkt.h"
 #include "logger.h"
-static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
+static void type_id (LLog *lp, const char *type, const char *rw, const char *selector, int len);
 
 
-static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
-static void type_ssn (LLog *lp, char *rw, char *what, uint32_t ssn);
-static void type_bits (LLog *lp, char *rw, char *s, uint16_t bits, int mask, char *t);
-static void type_settings (LLog *lp, char *rw, uint8_t settings);
-static void type_tsdu (LLog *lp, char *rw, uint16_t init, uint16_t resp);
-static void type_ref (LLog *lp, char *rw, struct SSAPref *ref);
-static void type_vrsn (LLog *lp, char *rw, uint8_t version);
-static void type_reason (LLog *lp, char *rw, int reason);
-static void type_prepare (LLog *lp, char *rw, uint8_t type);
-static void type_error (LLog *lp, char *rw, uint8_t reason);
-static void type_resync (LLog *lp, char *rw, uint8_t type);
-static void type_data (LLog *lp, char *type, char *rw, int len, char *data);
-static void type_info (LLog *lp, char *fmt, int len, char *data);
+static void type_id (LLog *lp, const char *type, const char *rw, const char *selector, int len);
+static void type_ssn (LLog *lp, const char *rw, const char *what, const uint32_t ssn);
+static void type_bits (LLog *lp, const char *rw, const char *s, const uint16_t bits, const int mask, const char *t);
+static void type_settings (LLog *lp, const char *rw, const uint8_t settings);
+static void type_tsdu (LLog *lp, const char *rw, const uint16_t init, const uint16_t resp);
+static void type_ref (LLog *lp, const char *rw, struct SSAPref *ref);
+static void type_vrsn (LLog *lp, const char *rw, const uint8_t version);
+static void type_reason (LLog *lp, const char *rw, int reason);
+static void type_prepare (LLog *lp, const char *rw, const uint8_t type);
+static void type_error (LLog *lp, const char *rw, const uint8_t reason);
+static void type_resync (LLog *lp, const char *rw, const uint8_t type);
+static void type_data (LLog *lp, const char *type, const char *rw, int len, const char *data);
+static void type_info (LLog *lp, const char *fmt, int len, const char *data);
 
 #define	sprintc(v,b)	sprintb ((int) (v), (b))
 
@@ -34,7 +34,7 @@ static void type_info (LLog *lp, char *fmt, int len, char *data);
 #define	TMASK	"\020\01DATA\03SYNC\05ACTIVITY\07RELEASE"
 #define	YMASK	"\020\01NOEXPLICIT"
 
-void spkt2text (LLog *lp, struct ssapkt *s, int read) {
+void spkt2text (LLog *lp, const struct ssapkt *s, const int read) {
 	char   *rw = read ? "<--- " : "---> ";
 
 	LLOG (lp, LLOG_ALL,  ("dump of SPDU 0x%x, errno=0x%x mask=0x%x%s",   s, s -> s_errno, s -> s_mask, s -> s_mask & SMASK_SPDU_EXPD ? " (expedited)" : ""));
@@ -309,7 +309,7 @@ void spkt2text (LLog *lp, struct ssapkt *s, int read) {
 	ll_sync (lp);
 }
 
-static void type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
+static void type_id (LLog *lp, const char *type, const char *rw, const char *selector, int len) {
 	char    buffer[BUFSIZ];
 
 	buffer[explode (buffer, (uint8_t *) selector, len)] = 0;
@@ -317,11 +317,11 @@ static void type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
 	ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
 
-static void type_ssn (LLog *lp, char *rw, char *what, uint32_t ssn) {
+static void type_ssn (LLog *lp, const char *rw, const char *what, const uint32_t ssn) {
 	ll_printf (lp, "%s%s/ %d\n", rw, what, ssn);
 }
 
-static void type_bits (LLog *lp, char *rw, char *s, uint16_t bits, int mask, char *t) {
+static void type_bits (LLog *lp, const char *rw, const char *s, const uint16_t bits, const int mask, const char *t) {
 	ll_printf (lp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
 	if (bits & ~mask)
 		ll_printf (lp, ": illegal use of %s", sprintc (bits & ~mask, t));
@@ -337,7 +337,7 @@ static void type_bits (LLog *lp, char *rw, char *s, uint16_t bits, int mask, cha
 	: "reserved"); \
 }
 
-static void type_settings (LLog *lp, char *rw, uint8_t settings) {
+static void type_settings (LLog *lp, const char *rw, const uint8_t settings) {
 	int     token;
 	ll_printf (lp, "%sSETTINGS/", rw);
 	dotokens ();
@@ -346,12 +346,12 @@ static void type_settings (LLog *lp, char *rw, uint8_t settings) {
 
 #undef	dotoken
 
-static void type_tsdu (LLog *lp, char *rw, uint16_t init, uint16_t resp) {
+static void type_tsdu (LLog *lp, const char *rw, const uint16_t init, const uint16_t resp) {
 	ll_printf (lp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",
 			   rw, init, resp);
 }
 
-static void type_ref (LLog *lp, char *rw, struct SSAPref *ref) {
+static void type_ref (LLog *lp, const char *rw, struct SSAPref *ref) {
 	ll_printf (lp, "%sREFERENCE/", rw);
 	if (ref -> sr_vlen)
 		type_info (lp, "<CALLING %d", (int) ref -> sr_calling_len,
@@ -366,16 +366,16 @@ static void type_ref (LLog *lp, char *rw, struct SSAPref *ref) {
 	ll_printf (lp, ">\n");
 }
 
-static void type_vrsn (LLog *lp, char *rw, uint8_t version) {
+static void type_vrsn (LLog *lp, const char *rw, const uint8_t version) {
 	ll_printf (lp, "%sVERSION/ 0x%x\n", rw, version);
 }
 
-static void type_reason (LLog *lp, char *rw, int reason) {
+static void type_reason (LLog *lp, const char *rw, int reason) {
 	ll_printf (lp, "%sREASON/ 0x%x: %s\n", rw, reason,
 			   SErrString ((int) reason));
 }
 
-static void type_prepare (LLog *lp, char *rw, uint8_t type) {
+static void type_prepare (LLog *lp, const char *rw, const uint8_t type) {
 	ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case PR_MAA:
@@ -397,7 +397,7 @@ static void type_prepare (LLog *lp, char *rw, uint8_t type) {
 	ll_printf (lp, "\n");
 }
 
-static void type_error (LLog *lp, char *rw, uint8_t reason) {
+static void type_error (LLog *lp, const char *rw, const uint8_t reason) {
 	ll_printf (lp, "%sREASON/ ", rw);
 	switch (reason) {
 	case SP_NOREASON:
@@ -425,7 +425,7 @@ static void type_error (LLog *lp, char *rw, uint8_t reason) {
 	ll_printf (lp, "\n");
 }
 
-static void type_resync (LLog *lp, char *rw, uint8_t type) {
+static void type_resync (LLog *lp, const char *rw, const uint8_t type) {
 	ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case SYNC_RESTART:
@@ -444,13 +444,13 @@ static void type_resync (LLog *lp, char *rw, uint8_t type) {
 	ll_printf (lp, "\n");
 }
 
-static void type_data (LLog *lp, char *type, char *rw, int len, char *data) {
+static void type_data (LLog *lp, const char *type, const char *rw, int len, const char *data) {
 	ll_printf (lp, "%s%s DATA/ ", rw, type);
 	type_info (lp, "%d", len, data);
 	ll_printf (lp, "\n");
 }
 
-static void type_info (LLog *lp, char *fmt, int len, char *data) {
+static void type_info (LLog *lp, const char *fmt, int len, const char *data) {
 	char    buffer[BUFSIZ];
 
 	ll_printf (lp, fmt, len);
@@ -460,6 +460,6 @@ static void type_info (LLog *lp, char *fmt, int len, char *data) {
 	}
 }
 
-void text2spkt (struct ssapkt *s) {
+void text2spkt (const struct ssapkt *s) {
 	// TODO: NOT YET IMPLEMENTED
 }

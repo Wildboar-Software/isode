@@ -211,21 +211,21 @@ struct AcSAPindication {
 extern char *acsapversion;
 
 /* A-ASSOCIATE.INDICATION */
-int AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *aci);
+int AcInit (const int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *aci);
 
 /* A-ASSOCIATE.RESPONSE */
 int AcAssocResponse (
-	int sd,
+	const int sd,
 	int status,
 	int reason,
 	OID context,
 	AEI respondtitle,
-	struct PSAPaddr *respondaddr,
+	const struct PSAPaddr *respondaddr,
 	struct PSAPctxlist *ctxlist,
-	int defctxresult,
-	int prequirements,
-	int srequirements,
-	long isn,
+	const int defctxresult,
+	const int prequirements,
+	const int srequirements,
+	const long isn,
 	int settings,
 	struct SSAPref *ref,
 	PE *data,
@@ -236,10 +236,10 @@ int AcAssocResponse (
    (backwards-compatible) */
 #define	AcAssocRequest(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17) \
 	AcAsynAssocRequest (a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,0)
-int	AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async);	/* A-(ASYN-)ASSOCIATE.REQUEST */
+int	AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, const struct PSAPaddr *callingaddr, const struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, const int prequirements, const int srequirements, const long isn, int settings, struct SSAPref *ref, PE *data, int ndata, const struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, const int async);	/* A-(ASYN-)ASSOCIATE.REQUEST */
 int	AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci);	/* A-ASYN-RETRY.REQUEST (pseudo) */
-int	AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci);	/* A-RELEASE.REQUEST */
-int	AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci);	/* A-RELEASE-RETRY.REQUEST (pseudo) */
+int	AcRelRequest (int sd, int reason, PE *data, int ndata, const int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci);	/* A-RELEASE.REQUEST */
+int	AcRelRetryRequest (int sd, const int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci);	/* A-RELEASE-RETRY.REQUEST (pseudo) */
 int	AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAPindication *aci);	/* A-RELEASE.RESPONSE */
 int	AcUAbortRequest (int sd, PE *data, int ndata, struct AcSAPindication *aci);	/* A-ABORT.REQUEST */
 
@@ -255,8 +255,8 @@ char   *AcErrString (int code);		/* return AcSAP error code in string form */
 
 int str2aet_seq (char *designator, char *qualifier, struct isoentity *iep);
 
-int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm);
-int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm);
-int set_lookup_dase (char flag);
+int parse_DSE_PSAPaddr (PE pe, int explicit, const int *len, char **buffer, const char *parm);
+int build_DSE_PSAPaddr (PE *pe, int explicit, int len, const char *buffer, const char *parm);
+int set_lookup_dase (const char flag);
 
 #endif

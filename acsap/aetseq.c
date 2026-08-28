@@ -8,7 +8,7 @@
 #include "acsap.h"
 
 extern int _startisoentity (char *descriptor);
-extern int _stopisoentity (char *descriptor, struct isoentity *iep);
+extern int _stopisoentity (const char *descriptor, struct isoentity *iep);
 
 static char objent[BUFSIZ];
 static struct isoentity ies;

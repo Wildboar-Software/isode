@@ -37,7 +37,7 @@ char           *TidyString(char *a);
 char		allow_move = TRUE;
 
 static int	csr_compar(EntryInfo **a, EntryInfo **b);
-static void handle_problems (PS aps, ContinuationRef cr, int limit, char proceed);
+static void handle_problems (PS aps, ContinuationRef cr, const int limit, const char proceed);
 
 void call_search (int argc, char **argv) {
 	PS	aps;
@@ -45,7 +45,7 @@ void call_search (int argc, char **argv) {
 	struct DSError  error;
 	struct ds_search_result result;
 	DN              save_dn;
-	extern int      sizelimit;
+	extern const int      sizelimit;
 	int             x;
 	Entry		save_entry;
 	char 		rel_flag = TRUE;
@@ -378,7 +378,7 @@ check_rdn:
 	return (i == (-1) || i == 1 ? i : 0);
 }
 
-static void handle_problems (PS aps, ContinuationRef cr, int limit, char proceed) {
+static void handle_problems (PS aps, ContinuationRef cr, const int limit, const char proceed) {
 	if (! proceed)
 		return;
 	if (limit != LSR_NOLIMITPROBLEM) {

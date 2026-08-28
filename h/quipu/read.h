@@ -20,7 +20,7 @@ struct ds_read_result {
 	EntryInfo rdr_entry;
 };
 
-int dap_read (int ad, int *id, struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result);
+int dap_read (const int ad, int *id, struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result);
 void read_arg_free (struct ds_read_arg *arg);
 int read_arg_dup (struct ds_read_arg *src, struct ds_read_arg *tgt);
 

@@ -14,8 +14,8 @@ extern	SFP	qstat;
 
 extern LLog _fred_log, *fred_log;
 
-void	adios (char *, char *, ...);
-void	advise (char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (char *, const char *, ...);
 int	ask (char *, ...), _getline (char *prompt, char *buffer);
 char   *strdup ();
 

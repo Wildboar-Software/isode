@@ -28,7 +28,7 @@ static void * ia5sdec (PE pe);
 static void * numsdec (PE pe);
 static char * t61dec (PE pe);
 static void * dirstrdec (PE pe);
-static char *quotechar (char a, char *b);
+static char *quotechar (const char a, char *b);
 static char *
 unquotechar (char *a, char *b);
 struct qbuf *r_octparse (char *str);
@@ -41,18 +41,18 @@ static void *t61parse (char *str);
 char *cryptstring (char *str);
 char *cryptparse (char *str);
 void sfree (char *x);
-int pstrcmp (char *a, char *b);
+int pstrcmp (const char *a, const char *b);
 static int pstrcmp_void (void *value1, void *value2);
 static int tpstrcmp (void *value1, void *value2);
 static int tlexequ (void *value1, void *value2);
 static int passwdcmp (char *a, char *b);
 static int telcmp_void (void *value1, void *value2);
-void strprint (PS ps, char *str, int format);
+void strprint (PS ps, char *str, const int format);
 static void cryptprint (PS ps, char *str, int format);
 void r_octprint (PS ps, struct qbuf *qb, int format);
 int qb_cmp (struct qbuf *qb1, struct qbuf *qb2);
 struct qbuf *qb_cpy (struct qbuf *qb);
-static void part_print (PS ps, char *p, int len) /* string to be output (may contain nulls) */ /* number of characters in string */;
+static void part_print (PS ps, const char *p, int len) /* string to be output (may contain nulls) */ /* number of characters in string */;
 static char *part_parse ( char **pstr, /* address of pointer to string */ int *plen /* address of integer we set the length to */ );
 static void strprint_void (PS ps, void *value, int format);
 void string_syntaxes (void);
@@ -63,7 +63,7 @@ void string_syntaxes (void);
 #define NICER_ESCAPES
 
 extern LLog * log_dsap;
-extern char * srealloc (char *p, int nsize);
+extern char * srealloc (const char *p, const int nsize);
 
 static short exct = 0;
 static short tel_sntx = 0;
@@ -162,7 +162,7 @@ static unsigned char trans[32] = {
 	'l', 0xf8, '?', 0xdf, 0xfe, 't', 'N', '?'
 };
 
-void iso8859print(PS ps, char *sstr)
+void iso8859print(PS ps, const char *sstr)
 {
 	unsigned char *str;
 	int n;
@@ -252,7 +252,7 @@ void iso8859print(PS ps, char *sstr)
  * actually compares them and returns 1, 0, -1 depending on wether the
  * len characters of string1 are greater, equal or less than string2
  */
- static int nbcmp (char *string1, char *string2, int len) {
+ static int nbcmp (const char *string1, const char *string2, int len) {
 	while (len-- > 0) {
 		if (*string1++ == *string2++)
 			continue;
@@ -541,7 +541,7 @@ static void * dirstrdec (PE pe)
 	}
 }
 
-static char *quotechar (char a, char *b) {
+static char *quotechar (const char a, char *b) {
 #ifdef NICER_ESCAPES
 #define CONT_CHAR	'\\'
 	switch (a & 0xff) {
@@ -635,7 +635,7 @@ unquotechar (char *a, char *b) {
 	return (a);
 }
 
-int check_print_string (char *str) {
+int check_print_string (const char *str) {
 	for (; *str != 0; str++) {
 		if ((isascii((*str)& 0xff)) && (isalnum ((*str) & 0xff)))
 			continue;
@@ -818,7 +818,7 @@ void sfree (char *x) {
 	free (x);
 }
 
-int pstrcmp (char *a, char *b) {
+int pstrcmp (const char *a, const char *b) {
 	while (*a == *b) {
 		if (*a++ == NULL)
 			return (0);
@@ -880,7 +880,7 @@ int passwdcmp (char *a, char *b) {
 		return (2);
 }
 
-int telcmp (char *a, char *b) {
+int telcmp (const char *a, const char *b) {
 	char c1, c2;
 
 	for (;;) {
@@ -905,7 +905,7 @@ int telcmp_void (void *value1, void *value2) {
 	return telcmp ((char *) value1, (char *) value2);
 }
 
-int telstrlen (char *s) {
+int telstrlen (const char *s) {
 	int	len;
 
 	for ( len = 0; *s; s++ )
@@ -914,7 +914,7 @@ int telstrlen (char *s) {
 	return( len );
 }
 
-int telncmp (char *a, char *b, int len) {
+int telncmp (const char *a, const char *b, int len) {
 	char c1, c2;
 
 	for (;;) {
@@ -937,7 +937,7 @@ int telncmp (char *a, char *b, int len) {
 	}
 }
 
-void strprint (PS ps, char *str, int format)
+void strprint (PS ps, char *str, const int format)
 {
 	if (*str == T61_MARK) {
 		if (format != READOUT) {
@@ -961,7 +961,7 @@ void strprint (PS ps, char *str, int format)
 void cryptprint (PS ps, char *str, int format)
 {
 	char ptr [LINESIZE];
-	extern char dsa_mode;
+	extern const char dsa_mode;
 
 	if (format == READOUT)
 		ps_print (ps,"Read but not displayed");
@@ -1184,7 +1184,7 @@ struct qbuf *qb_cpy (struct qbuf *qb) {
 /*
  * output the string to the PS - including a delimiter on the end
  */
-static void part_print (PS ps, char *p, int len)
+static void part_print (PS ps, const char *p, int len)
       
     	   	/* string to be output (may contain nulls) */
    	    	/* number of characters in string */
@@ -1290,28 +1290,28 @@ static char *part_parse (
 	return (buf);
 }
 
-int case_exact_match (short sntx) {
+int case_exact_match (const short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 3)))
 		return (FALSE);
 	else
 		return (TRUE);
 }
 
-int approx_string (short sntx) {
+int approx_string (const short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 7)))
 		return (FALSE);
 	else
 		return (TRUE);
 }
 
-int sub_string (short sntx) {
+int sub_string (const short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 8)))
 		return (FALSE);
 	else
 		return (TRUE);
 }
 
-int telephone_match (short sntx) {
+int telephone_match (const short sntx) {
 	return( sntx == tel_sntx );
 }
 

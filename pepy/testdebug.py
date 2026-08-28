@@ -11,7 +11,7 @@ BEGIN
 END
 
 %{
-int	testdebug (PE pe, char *s) {
+int	testdebug (PE pe, const char *s) {
     char  *cp;
     PS ps;
     static int debug = OK;
@@ -25,9 +25,6 @@ int	testdebug (PE pe, char *s) {
 							    : NOTOK) == NOTOK)
 		return -1;
 	    (void) fflush (stdout);
-#ifndef lint
-	    (void) fprintf (stderr, "testdebug made with %s\n", pepyid);
-#endif
 	    /* and fall... */
 
 	default:

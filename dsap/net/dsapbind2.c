@@ -12,7 +12,7 @@ extern int select_context (OID app_ctx);
 
 /* D-BIND.INDICATION */
 
-int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di) {
+int DBindInit (const int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -108,8 +108,8 @@ int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication
 /* D-BIND.RESULT */
 
 int	  DBindResult (int sd, OID context, AEI respondtitle,
-				   struct PSAPaddr * respondaddr, struct PSAPctxlist * ctxlist, int defctxresult, int prequirements,
-				   int srequirements, long isn, int settings, struct SSAPref * ref, struct ds_bind_arg * bind_res, int pctx_id, struct DSAPindication * di) {
+				   const struct PSAPaddr * respondaddr, struct PSAPctxlist * ctxlist, const int defctxresult, const int prequirements,
+				   const int srequirements, const long isn, int settings, struct SSAPref * ref, struct ds_bind_arg * bind_res, const int pctx_id, struct DSAPindication * di) {
 	int			  result;
 	PE			  bindrespe;
 	struct RoNOTindication	  rni_s;
@@ -138,9 +138,9 @@ int	  DBindResult (int sd, OID context, AEI respondtitle,
 
 /* D-BIND.ERROR */
 
-int	  DBindError (int sd, OID context, AEI respondtitle, struct PSAPaddr * respondaddr, struct PSAPctxlist * ctxlist,
-				  int defctxresult, int prequirements, int srequirements, long isn, int settings,
-				  struct SSAPref * ref, struct ds_bind_error * bind_err, int pctx_id, struct DSAPindication * di) {
+int	  DBindError (int sd, OID context, AEI respondtitle, const struct PSAPaddr * respondaddr, struct PSAPctxlist * ctxlist,
+				  const int defctxresult, const int prequirements, const int srequirements, const long isn, int settings,
+				  struct SSAPref * ref, struct ds_bind_error * bind_err, const int pctx_id, struct DSAPindication * di) {
 	int			  result;
 	PE			  binderrpe;
 	struct RoNOTindication	  rni_s;

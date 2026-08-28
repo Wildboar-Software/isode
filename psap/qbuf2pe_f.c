@@ -4,7 +4,7 @@
 #include "psap.h"
 #include "tailor.h"
 
-static int qb_read_cons (PE *pe, PElementLen len, int *cresult);
+static int qb_read_cons (PE *pe, const PElementLen len, int *cresult);
 static int qbuf2data(PElementData data, PElementLen len);
 
 /*
@@ -188,7 +188,7 @@ you_lose:
 	return NULLPE;
 }
 
-static int qb_read_cons (PE *pe, PElementLen len, int *cresult) {
+static int qb_read_cons (PE *pe, const PElementLen len, int *cresult) {
 	int    cc;
 	PE    p, q;
 	int result;

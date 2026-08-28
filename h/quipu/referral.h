@@ -4,21 +4,21 @@
 #include "quipu/find.h"
 
 
-int dsa_info_parent (DN name, struct DSError *err, struct di_block **di_p, char master);
+int dsa_info_parent (DN name, struct DSError *err, struct di_block **di_p, const char master);
 
 struct di_block *ap2di (
-	struct access_point *ap,
+	const struct access_point *ap,
 	DN name,
-	char master,
-	char di_type,
-	struct oper_act *oper,
-	int cr_type
+	const char master,
+	const char di_type,
+	const struct oper_act *oper,
+	const int cr_type
 );
 
 int dsa_info_new (
 	DN name,
-	struct dn_seq *dn_stack,
-	int master,
+	const struct dn_seq *dn_stack,
+	const int master,
 	Entry entry_ptr,
 	struct DSError *err,
 	struct di_block **di_p

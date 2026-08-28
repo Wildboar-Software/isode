@@ -19,7 +19,7 @@ mbox2ak (char *local, char *domain);
 static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist);
 static  PE  image_search (struct aka *ak);
 static int do_bind (void);
-static void  _advise (char *what, char *fmt, va_list ap);
+static void  _advise (char *what, const char *fmt, va_list ap);
 
 
 /* GENERAL */
@@ -485,9 +485,9 @@ int photo_line_end (caddr_t line) {
 }
 
 #ifndef	lint
-static void	_advise (char *what, char *fmt, va_list ap);
+static void	_advise (char *what, const char *fmt, va_list ap);
 
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -498,13 +498,13 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (char *what, char *fmt, ...) {
+void	advise (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -512,7 +512,7 @@ void	advise (char *what, char *fmt, ...) {
 	va_end (ap);
 }
 
-static void  _advise (char *what, char *fmt, va_list ap)
+static void  _advise (char *what, const char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -528,7 +528,7 @@ static void  _advise (char *what, char *fmt, va_list ap)
 #else
 /* VARARGS */
 
-void advise (char *what, char *fmt) {
+void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif

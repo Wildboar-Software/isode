@@ -4,11 +4,11 @@
 #include <signal.h>
 #include "ppkt.h"
 
-static int  PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi);
+static int  PRelRetryRequestAux (struct psapblk *pb, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi);
 
 /* P-RELEASE.REQUEST */
 
-int PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
+int PRelRequest (int sd, PE *data, int ndata, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
@@ -47,7 +47,7 @@ out:
 
 /*    P-RELEASE-RETRY.REQUEST (pseudo) */
 
-int PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
+int PRelRetryRequest (int sd, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
@@ -66,7 +66,7 @@ int PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindic
 	return result;
 }
 
-static int PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
+static int PRelRetryRequestAux (struct psapblk *pb, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	int	    result;
 	char   *id = pb -> pb_flags & PB_RELEASE ? "SRelRetryRequest"
 				 : "SRelRequest";

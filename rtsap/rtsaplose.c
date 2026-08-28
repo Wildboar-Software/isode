@@ -51,7 +51,7 @@ int	rtpktlose (struct assocblk*acb, ...) {
 	return result;
 }
 #else
-int rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *what, char *fmt) {
+int rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *what, const char *fmt) {
 	return rtpktlose (acb, rti, reason, what, fmt);
 }
 #endif
@@ -68,7 +68,7 @@ int	rtsaplose (struct RtSAPindication*rti, ...) {
 	return result;
 }
 #else
-int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
+int rtsaplose (struct RtSAPindication *rti, int reason, char *what, const char *fmt) {
 	return rtsaplose (rti, reason, what, fmt);
 }
 #endif

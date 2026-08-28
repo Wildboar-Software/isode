@@ -13,13 +13,13 @@
 #include "tailor.h"
 static int dec_x25_demsa_invalid_dte (char *s, int *p_n_colon);
 static struct macro *name2macro (char *name);
-static struct macro *value2macro (char *value);
+static struct macro *value2macro (const char *value);
 static void read_macros(void);
-static void read_file (char *file);
-static int add_macro (char *name, char *value);
+static void read_file (const char *file);
+static int add_macro (const char *name, char *value);
 char *macro2str (char *name);
-static char *SEL2STR (char *sel, int len);
-static int pack_dec_octets (char *src, char *dst, char **endp);
+static char *SEL2STR (const char *sel, int len);
+static int pack_dec_octets (const char *src, const char *dst, char **endp);
 
 
 static char *isomacros = "isomacros";
@@ -118,7 +118,7 @@ name2macro (char *name) {
 }
 
 static struct macro *
-value2macro (char *value) {
+value2macro (const char *value) {
 	size_t   i,
 		  j,
 		  k;
@@ -170,7 +170,7 @@ static void read_macros(void)  {
 	read_file (buffer);
 }
 
-static void read_file (char *file) {
+static void read_file (const char *file) {
 	char *cp;
 	char    buffer[BUFSIZ + 1],
 			*vec[NVEC + NSLACK + 1];
@@ -193,7 +193,7 @@ static void read_file (char *file) {
 	fclose (fp);
 }
 
-static int add_macro (char *name, char *value) {
+static int add_macro (const char *name, char *value) {
 	int	    i;
 	char  *cp;
 	char    buffer[BUFSIZ];
@@ -274,7 +274,7 @@ static char *sels[3] = {
 };
 
 static int
-idi_pad (char **pp, int idi_len, char *dp, int padchar)
+idi_pad (char **pp, const int idi_len, const char *dp, const int padchar)
 {
 	size_t dlen,
 		ilen;
@@ -319,7 +319,7 @@ loslab: ; \
 // REVIEW: This is used where src == dst. Is that okay?
 // Added by Cursor Grok 4.6.
 static int
-pack_dec_octets (char *src, char *dst, char **endp)
+pack_dec_octets (const char *src, const char *dst, char **endp)
 {
 	char *np,
 		 *dp;
@@ -343,7 +343,7 @@ pack_dec_octets (char *src, char *dst, char **endp)
 	return OK;
 }
 
-struct PSAPaddr *str2paddr (char *str) {
+struct PSAPaddr *str2paddr (const char *str) {
 	int    state,
 		   *lp;
 	int	    j,
@@ -530,7 +530,7 @@ too_many:
 				if (int2char (nlen, &na -> na_addrlen) != 0)
 					return NULLPA;
 			} else {
-				int	    len;
+				const int	    len;
 				char    padchar;
 
 				for (pp = afi_entries; pp -> p_name; pp++)
@@ -1044,7 +1044,7 @@ out:
 
 /* PADDR2STR */
 
-static char *SEL2STR (char *sel, int len) {
+static char *SEL2STR (const char *sel, int len) {
 	char  *cp,
 		  *dp,
 		  *ep;
@@ -1081,7 +1081,7 @@ static char *SEL2STR (char *sel, int len) {
 	return buffer;
 }
 
-char *_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact) {
+char *_paddr2str (const struct PSAPaddr *pa, const struct NSAPaddr *na, const int compact) {
 	int   n;
 	int	    first;
 	char *bp,

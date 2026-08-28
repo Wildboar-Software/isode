@@ -8,11 +8,11 @@
 void prefer_dsa (char *str);
 static int di_prefer_dsa (DN a, DN b);
 static void di_ap2comp (struct di_block **di);
-static int di_cmp_reliability (struct di_block *a, struct di_block *b);
-static int di_cmp_address (struct di_block *a, struct di_block *b);
-static int di_cmp (struct di_block *a, struct di_block *b);
-static int common_address (struct di_block *a, struct TSAPaddr *tb);
-struct di_block *select_refer_dsa (struct di_block *di, struct task_act *tk);
+static int di_cmp_reliability (const struct di_block *a, const struct di_block *b);
+static int di_cmp_address (const struct di_block *a, const struct di_block *b);
+static int di_cmp (const struct di_block *a, const struct di_block *b);
+static int common_address (const struct di_block *a, const struct TSAPaddr *tb);
+struct di_block *select_refer_dsa (const struct di_block *di, const struct task_act *tk);
 
 
 extern LLog * log_dsap;
@@ -20,7 +20,7 @@ extern LLog * log_dsap;
 extern time_t timenow;
 
 struct di_block *di_alloc (void);
-extern struct TSAPaddr *ta2norm(struct TSAPaddr *ta);
+extern struct TSAPaddr *ta2norm(const struct TSAPaddr *ta);
 
 struct di_block *
 di_alloc (void) {
@@ -90,7 +90,7 @@ void di_extract (struct di_block *old_di) {
 	di_free(old_di);
 }
 
-void di_desist (struct di_block *di) {
+void di_desist (const struct di_block *di) {
 	struct di_block	* di_tmp1;
 	struct di_block	* di_tmp1_next;
 	struct di_block	* di_tmp2;
@@ -120,12 +120,12 @@ void di_desist (struct di_block *di) {
 	}
 }
 
-void di_log (struct di_block *di) {
+void di_log (const struct di_block *di) {
 	DLOG (log_dsap,LLOG_DEBUG, ("di_block [%x] , state = %d, type = %d",
 								di, di->di_state, di->di_type));
 }
 
-void di_list_log (struct di_block *di) {
+void di_list_log (const struct di_block *di) {
 	struct di_block	* di_tmp;
 	DLOG(log_dsap, LLOG_DEBUG, ("di_list:"));
 #ifdef DEBUG
@@ -206,7 +206,7 @@ static void di_ap2comp (struct di_block **di) {
 	}
 }
 
-void dsa_reliable (struct connection * cn, char good, time_t when) {
+void dsa_reliable (const struct connection * cn, const char good, const time_t when) {
 	Entry ptr;
 	if ( (ptr=local_find_entry(cn->cn_dn,FALSE)) == NULLENTRY)
 		return;
@@ -220,8 +220,8 @@ void dsa_reliable (struct connection * cn, char good, time_t when) {
 		ptr->e_dsainfo->dsa_failures++;
 }
 
-static int di_cmp_reliability (struct di_block *a, struct di_block *b) {
-	extern time_t retry_timeout;
+static int di_cmp_reliability (const struct di_block *a, const struct di_block *b) {
+	extern const time_t retry_timeout;
 	struct dsa_info *da, *db;
 	/* If we have used a DSA recently, with no failures - use it again */
 	if ((da = a->di_entry->e_dsainfo) == NULLDSA)
@@ -264,7 +264,7 @@ static int di_cmp_reliability (struct di_block *a, struct di_block *b) {
 	return 0;
 }
 
-static int di_cmp_address (struct di_block *a, struct di_block *b) {
+static int di_cmp_address (const struct di_block *a, const struct di_block *b) {
 	struct NSAPaddr *na;
 	struct NSAPaddr *nb;
 	struct NSAPaddr nas;
@@ -336,7 +336,7 @@ static int di_cmp_address (struct di_block *a, struct di_block *b) {
 *    preference 3: reliable DSAs
 *    preference 4: local DSAs
 */
-static int di_cmp (struct di_block *a, struct di_block *b)
+static int di_cmp (const struct di_block *a, const struct di_block *b)
 {
 	int x,y;
 
@@ -425,7 +425,7 @@ void sort_dsa_list (struct di_block **dsas) {
 		DLOG (log_dsap,LLOG_TRACE,("DSA order not changed"));
 }
 
-static int common_address (struct di_block *a, struct TSAPaddr *tb) {
+static int common_address (const struct di_block *a, const struct TSAPaddr *tb) {
 	struct TSAPaddr *ta;
 	struct NSAPaddr *na;
 	struct NSAPaddr *nb;
@@ -453,7 +453,7 @@ static int common_address (struct di_block *a, struct TSAPaddr *tb) {
 	return FALSE;
 }
 
-struct di_block *select_refer_dsa (struct di_block *di, struct task_act *tk) {
+struct di_block *select_refer_dsa (const struct di_block *di, const struct task_act *tk) {
 	struct di_block *best;
 	struct di_block *loop;
 	Entry eptr;
@@ -485,7 +485,7 @@ struct di_block *select_refer_dsa (struct di_block *di, struct task_act *tk) {
 	return NULL_DI_BLOCK;
 }
 
-void di_rdns (struct di_block *di, int rdns, int aliases, DN object) {
+void di_rdns (struct di_block *di, const int rdns, const int aliases, DN object) {
 	struct di_block *loop;
 
 	for (loop=di; loop!=NULL_DI_BLOCK; loop=loop->di_next) {

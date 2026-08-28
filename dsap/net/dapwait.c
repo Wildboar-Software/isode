@@ -6,7 +6,7 @@
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 #include "pepsycodec.h"
-int DapInitWaitRequest (int sd, int secs, struct DAPindication *di);
+int DapInitWaitRequest (int sd, const int secs, struct DAPindication *di);
 
 
 extern LLog	* log_dsap;
@@ -21,7 +21,7 @@ extern LLog	* log_dsap;
 * Wait routine for a DAP initiator.
 */
 
-int DapInitWaitRequest (int sd, int secs, struct DAPindication *di) {
+int DapInitWaitRequest (int sd, const int secs, struct DAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);

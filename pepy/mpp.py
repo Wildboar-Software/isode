@@ -13,8 +13,8 @@ static enum { ps2mpp, pl2mpp } mode = ps2mpp;
 
 static enum format { p1, p2, sfd, ean, eanp2 } topfmt = ean;
 
-static void	adios (char *, char *, ...);
-void	advise (char *, char *, ...);
+static void	adios (char *, const char *, ...);
+void	advise (char *, const char *, ...);
 
 main (int argc, char **argv, char **envp)
 {
@@ -161,7 +161,7 @@ END
 #ifndef	lint
 static void	_advise ();
 
-static void	adios (char *what, char *fmt, ...)
+static void	adios (char *what, const char *fmt, ...)
 {
     va_list ap;
 
@@ -176,14 +176,14 @@ static void	adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void	adios (char *what, char *fmt)
+void	adios (char *what, const char *fmt)
 {
     adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-static void  _advise (char *what, char *fmt, va_list ap)
+static void  _advise (char *what, const char *fmt, va_list ap)
 {
     char    buffer[BUFSIZ];
 

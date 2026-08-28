@@ -8,7 +8,7 @@
 #include "isoaddrs.h"
 #include "tailor.h"
 
-int _printent (struct isoentity *ie);
+int _printent (const struct isoentity *ie);
 
 static char *isoentities = "isoentities";
 
@@ -23,9 +23,9 @@ static char *vec[NVEC + NSLACK + 1];
 static struct isoentity ies;
 
 int _startisoentity (char *descriptor);
-int _stopisoentity (char *descriptor, struct isoentity *iep);
+int _stopisoentity (const char *descriptor, struct isoentity *iep);
 
-int setisoentity (int f) {
+int setisoentity (const int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isoentities, 0), "r");
 	else
@@ -101,7 +101,7 @@ int _startisoentity (char *descriptor) {
 	return DONE;
 }
 
-int _stopisoentity (char *descriptor, struct isoentity *iep) {
+int _stopisoentity (const char *descriptor, struct isoentity *iep) {
 	int    i;
 	struct isoentity  *ie = &ies;
 	OID		oid = &ie -> ie_identifier;
@@ -130,7 +130,7 @@ int _stopisoentity (char *descriptor, struct isoentity *iep) {
 	return OK;
 }
 
-int _printent (struct isoentity *ie) {
+int _printent (const struct isoentity *ie) {
 	LLOG (addr_log, LLOG_DEBUG,
 		  ("Entity:  %s (%s)", ie -> ie_descriptor,
 		   oid2ode (&ie -> ie_identifier)));

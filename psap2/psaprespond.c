@@ -234,14 +234,14 @@ out2:
 /* P-CONNECT.RESPONSE */
 
 int PConnResponse (
-	int sd,
+	const int sd,
 	int status,
-	struct PSAPaddr *responding,
+	const struct PSAPaddr *responding,
 	struct PSAPctxlist *ctxlist,
-	int defctxresult,
-	int prequirements,
-	int srequirements,
-	long isn,
+	const int defctxresult,
+	const int prequirements,
+	const int srequirements,
+	const long isn,
 	int settings,
 	struct SSAPref *ref,
 	PE *data,

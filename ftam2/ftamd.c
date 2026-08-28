@@ -235,7 +235,7 @@ void ftam_diag (struct FTAMdiagnostic diag[], int ndiag) {
 }
 
 #ifndef	lint
-void	adios (char* what, char* fmt, ...) {
+void	adios (char* what, const char* fmt, ...) {
 	struct FTAMindication   ftis;
 	va_list ap;
 
@@ -255,13 +255,13 @@ void	adios (char* what, char* fmt, ...) {
 #else
 /* VARARGS */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char* what, char* fmt, ...) {
+void	advise (int code, char* what, const char* fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -273,7 +273,7 @@ void	advise (int code, char* what, char* fmt, ...) {
 #else
 /* VARARGS */
 
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

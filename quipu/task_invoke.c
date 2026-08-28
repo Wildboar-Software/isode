@@ -9,21 +9,21 @@
 extern	LLog	* log_dsap;
 extern time_t	  timenow;
 extern time_t 	  admin_time;
-extern UTC	  str2utct(char *cp, size_t len);
+extern UTC	  str2utct(const char *cp, size_t len);
 struct task_act *       task_alloc(void);
 struct common_args	* get_ca_ref(struct ds_op_arg *dsarg);
 extern char	  quipu_shutdown;
 
 extern void log_x500_event (
-	struct DSArgument *arg,
-	int context,
+	const struct DSArgument *arg,
+	const int context,
 	DN orig,
 	DN dsptarget,
-	int ad,
-	struct task_act *tk
+	const int ad,
+	const struct task_act *tk
 );
 
-int task_invoke (register struct connection *conn, register struct DSAPinvoke *dx) {
+int task_invoke (register struct connection *conn, register const struct DSAPinvoke *dx) {
 	time_t		  timer;
 	struct task_act	* task;
 	struct extension	* ext;

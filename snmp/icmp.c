@@ -69,7 +69,7 @@ static struct icmpstat icmpstat;
 #define	icmpOutAddrMaskReps 25
 
 #ifdef LINUX
-int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
+int _read_snmp_stats (const char *proto, char **labels, long **values, size_t *len);
 
 static int _read_icmp_stats (void)
 {

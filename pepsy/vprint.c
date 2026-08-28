@@ -14,7 +14,7 @@
 
 static void vprint1(void);
 static char *oct2str (char *s, int len);
-static void vsetfp (FILE *fp, char *s);
+static void vsetfp (const FILE *fp, char *s);
 static int ll_vprintf(LLog *lp, const char *fmt, va_list ap);
 static int ll_printf_evil(FILE *fp, const char *format, ...);
 static char *newbuf (int i);
@@ -26,7 +26,7 @@ int	fprintf (FILE *stream, const char *format, ...);
 
 static void vprint1 (void);
 static void vprint2 (void);
-static void vwrite (char *s);
+static void vwrite (const char *s);
 
 #define	VPRINT(s)	vprint1 (), vwrite ((s)), vprint2 ()
 
@@ -37,7 +37,7 @@ static int didvpop = 0;
 static int didvpush = 0;
 static int docomma = 0;
 
-static char  *py_classlist[] = {
+static const char  *py_classlist[] = {
 	"UNIVERSAL", "APPLICATION", "", "PRIVATE"
 };
 
@@ -86,7 +86,7 @@ void vpop(void)  {
 	didname = didvpush = 0, didvpop = docomma = vlevel ? 1 : 0;
 }
 
-void vname (char *name) {
+void vname (const char *name) {
 	if (didvpush)
 		vwrite ("\n"), didvpush = 0;
 	else if (docomma)
@@ -98,7 +98,7 @@ void vname (char *name) {
 	didname = 1;
 }
 
-void vtag (int class, int id) {
+void vtag (const int class, const int id) {
 	char *bp;
 	static char buffer[BUFSIZ];
 
@@ -125,7 +125,7 @@ void vtag (int class, int id) {
 }
 
 #ifndef	lint
-void vprint (char *fmt, ...) {
+void vprint (const char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 	vprint1 ();
@@ -138,7 +138,7 @@ void vprint (char *fmt, ...) {
 #else
 /* VARARGS */
 
-int vprint (char *fmt) {
+int vprint (const char *fmt) {
 	vprint (fmt);
 }
 #endif
@@ -165,12 +165,12 @@ static void vprint2(void)  {
 	didname = didvpop = 0, docomma = vlevel ? 1 : 0;
 }
 
-static void vwrite (char *s) {
+static void vwrite (const char *s) {
 	if (vfp)
 		(*vfnx) (vfp, "%s", s);
 	else {
-		char   c,
-			   *cp;
+		char c;
+		const char *cp;
 
 		if (vps)
 			for (cp = s; *cp; cp++) {
@@ -294,7 +294,7 @@ static char *oct2str (char *s, int len) {
 	return zp;
 }
 
-char *bit2str (PE pe, char *s) {
+char *bit2str (PE pe, const char *s) {
 	int ia5ok;
 	int hit, i, j, k;
 	char *bp, *cp, *zp;
@@ -469,11 +469,11 @@ bad_pe:
 	}
 }
 
-void vpushfp (FILE *fp, PE pe, char *s, int rw) {
+void vpushfp (FILE *fp, PE pe, const char *s, const int rw) {
 	vpushpp (fp, pe, s, rw);
 }
 
-void vsetfp (FILE *fp, char *s) {
+void vsetfp (const FILE *fp, char *s) {
 	vfp = fp;
 	vfnx = fprintf;
 
@@ -489,7 +489,7 @@ void vpopfp(void)  {
 	vpopp ();
 }
 
-void vpushstr (char *cp) {
+void vpushstr (const char *cp) {
 	vfp = NULL;
 	vbp = vsp = cp;
 	vlevel = didname = didvpush = didvpop = docomma = 0;
@@ -506,8 +506,8 @@ void vpopstr(void)  {
 void vpushpp (
 	FILE *f,
 	PE pe,
-	char *text,
-	int rw
+	const char *text,
+	const int rw
 ) {
 	fprintf(f, "%s %s", rw ? "read" : "wrote", text ? text : "pdu");
 	if (pe -> pe_context != PE_DFLT_CTX)
@@ -553,7 +553,7 @@ static int ll_printf_evil(FILE *fp, const char *format, ...) {
  * ind: index into tables
  * mod: pointer to tables
  */
-void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw) {
+void pvpdu (LLog *lp, const int ind, modtyp *mod, PE pe, const char *text, const int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
 	vfp = (FILE *) lp, vfnx = ll_printf_evil;
@@ -598,7 +598,7 @@ static char *newbuf (int i) {
 
 /*  VPDU - support for backwards compatibility */
 
-void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, char *text, int rw) {
+void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, const char *text, const int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
 	vfp = (FILE *) lp, vfnx = ll_printf_evil;

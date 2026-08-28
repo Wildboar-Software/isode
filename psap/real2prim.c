@@ -6,7 +6,7 @@
 #include "psap.h"
 
 PE
-real2prim (double d, PElementClass class, PElementID id) {
+real2prim (const double d, const PElementClass class, const PElementID id) {
 	PE pe;
 	double	mant, nm;
 	int	exponent;

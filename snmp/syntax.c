@@ -50,7 +50,7 @@ static void ipaddr_print (struct sockaddr_in *x, OS os);
 static void add_ipaddr (void);
 static void add_netaddr (void);
 uint32_t prim2ulong (PE pe);
-PE ulong2prim (uint32_t i, PElementClass class, PElementID id);
+PE ulong2prim (uint32_t i, const PElementClass class, const PElementID id);
 static int  counter_encode (uint32_t *x, PE *pe);
 static int counter_decode (uint32_t **x, PE pe);
 static void counter_free (uint32_t *x);
@@ -83,7 +83,7 @@ static int integer_encode (integer *x, PE *pe) {
 }
 
 static int integer_decode (integer **x, PE pe) {
-	integer	i = prim2num (pe);
+	const integer	i = prim2num (pe);
 	if (i == NOTOK && pe -> pe_errno != PE_ERR_NONE)
 		return NOTOK;
 	if ((*x = (integer *) malloc (sizeof **x)) == NULL)
@@ -367,7 +367,7 @@ uint32_t prim2ulong (PE pe) {
 }
 
 /* also used in SNMP-capable gawk... */
-PE  ulong2prim (uint32_t i, PElementClass class, PElementID id) {
+PE  ulong2prim (uint32_t i, const PElementClass class, const PElementID id) {
 	int	    extend;
 	int    n;
 	uint32_t mask;
@@ -398,7 +398,7 @@ static int  counter_encode (uint32_t *x, PE *pe) {
 }
 
 static int counter_decode (uint32_t **x, PE pe) {
-	uint32_t	i = prim2ulong (pe);
+	const uint32_t	i = prim2ulong (pe);
 
 	if (i == 0 && pe -> pe_errno != PE_ERR_NONE)
 		return NOTOK;
@@ -579,7 +579,7 @@ void readsyntax (void) {
 }
 
 int	add_syntax (
-	char *name,
+	const char *name,
 	EncoderFunction f_encode,
 	DecoderFunction f_decode,
 	FreeFunction f_free,
@@ -601,7 +601,7 @@ int	add_syntax (
 	return i;
 }
 
-OS	text2syn (char *name) {
+OS	text2syn (const char *name) {
 	OS	    os;
 
 	for (os = syntaxes; os < synlast; os++)

@@ -9,7 +9,7 @@
 
 static PE qb2pe_aux (char *s, int len, int depth, int *result);
 
-PE qb2pe (struct qbuf *qb, int len, int depth, int *result) {
+PE qb2pe (struct qbuf *qb, int len, const int depth, int *result) {
 	char   *sp;
 	struct qbuf *qp;
 	PE	    pe;

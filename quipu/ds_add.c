@@ -13,7 +13,7 @@
 #include "quipu/find.h"
 #include "quipu/cache.h"
 #include "quipu/schema.h"
-int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
+int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype);
 
 
 extern Entry database_root;
@@ -29,7 +29,7 @@ extern AttributeType at_objectclass;
 extern AttributeType *turbo_index_types;
 #endif
 
-int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
+int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype) {
 	Entry  entryptr,ptr;
 	DN  dntop, dn = NULLDN;
 	DN  trail = NULLDN;
@@ -38,7 +38,7 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 	char * new_version(void);
 	int retval;
 	int authp;
-	extern int read_only;
+	extern const int read_only;
 	extern int	entry_cmp(Entry e1, Entry e2);
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_add"));

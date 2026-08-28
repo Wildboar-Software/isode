@@ -10,17 +10,17 @@ int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 
 static int SConnRequestAux (
 	struct SSAPref *ref,
-	struct SSAPaddr *calling,
-	struct SSAPaddr *called,
-	int requirements,
+	const struct SSAPaddr *calling,
+	const struct SSAPaddr *called,
+	const int requirements,
 	int settings,
-	long isn,
-	char *data,
+	const long isn,
+	const char *data,
 	int cc,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	struct SSAPconnect *sc,
 	struct SSAPindication *si,
-	int async
+	const int async
 );
 
 
@@ -28,20 +28,20 @@ static int SConnRequestAux (
 
 static int  SConnRequestAux (
 	struct SSAPref *ref,
-	struct SSAPaddr *calling,
-	struct SSAPaddr *called,
-	int requirements,
+	const struct SSAPaddr *calling,
+	const struct SSAPaddr *called,
+	const int requirements,
 	int settings,
-	long isn,
-	char *data,
+	const long isn,
+	const char *data,
 	int cc,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	struct SSAPconnect *sc,
 	struct SSAPindication *si,
-	int async
+	const int async
 );
-static int  SAsynRetryAux1 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si);
-static int  SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si);
+static int  SAsynRetryAux1 (struct ssapblk *sb, const struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si);
+static int  SAsynRetryAux2 (struct ssapblk *sb, const struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si);
 
 #define	dotoken(requires,shift,bit,type) \
 { \
@@ -59,17 +59,17 @@ static int  SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct S
 
 int SAsynConnRequest (
 	struct SSAPref *ref,
-	struct SSAPaddr *calling,
-	struct SSAPaddr *called,
-	int requirements,
+	const struct SSAPaddr *calling,
+	const struct SSAPaddr *called,
+	const int requirements,
 	int settings,
-	long int isn,
-	char *data,
+	const long int isn,
+	const char *data,
 	int cc,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	struct SSAPconnect *sc,
 	struct SSAPindication *si,
-	int async
+	const int async
 ) {
 	SBV     smask;
 	int     result;
@@ -130,17 +130,17 @@ int SAsynConnRequest (
 
 static int SConnRequestAux (
 	struct SSAPref *ref,
-	struct SSAPaddr *calling,
-	struct SSAPaddr *called,
-	int requirements,
+	const struct SSAPaddr *calling,
+	const struct SSAPaddr *called,
+	const int requirements,
 	int settings,
-	long isn,
-	char *data,
+	const long isn,
+	const char *data,
 	int cc,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	struct SSAPconnect *sc,
 	struct SSAPindication *si,
-	int async
+	const int async
 ) {
 	int     result;
 	struct ssapkt *s;
@@ -412,7 +412,7 @@ int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si)
 
 static int SAsynRetryAux1 (
 	struct ssapblk *sb,
-	struct TSAPconnect *tc,
+	const struct TSAPconnect *tc,
 	struct SSAPconnect *sc,
 	struct SSAPindication *si
 ) {
@@ -476,7 +476,7 @@ static int SAsynRetryAux1 (
 	return SAsynRetryAux2 (sb, tc, sc, si);
 }
 
-static int SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si) {
+static int SAsynRetryAux2 (struct ssapblk *sb, const struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si) {
 	int	    len,
 			result;
 	struct ssapkt *s;

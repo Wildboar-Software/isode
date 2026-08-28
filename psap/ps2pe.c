@@ -6,7 +6,7 @@
 #include "tailor.h"
 
 PE
-ps2pe_aux (PS ps, int top, int all) {
+ps2pe_aux (PS ps, const int top, const int all) {
 	PElementLen len;
 	PElementClass   class;
 	PElementForm    form;
@@ -86,7 +86,7 @@ you_lose:
 
 static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 
-int ps_read_id (PS ps, int top, PElementClass *class, PElementForm *form, PElementID *id) {
+int ps_read_id (PS ps, const int top, PElementClass *class, PElementForm *form, PElementID *id) {
 	byte    c,
 			d;
 	PElementID j;
@@ -169,7 +169,7 @@ int ps_read_len (PS ps, PElementLen *len) {
 	return OK;
 }
 
-int ps_read_cons (PS ps, PE *pe, PElementLen len) {
+int ps_read_cons (PS ps, PE *pe, const PElementLen len) {
 	int    cc;
 	PE	    p,
 	 q;

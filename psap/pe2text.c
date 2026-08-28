@@ -48,7 +48,7 @@ static int ll_psopen (PS ps) {
 
 #define	ll_psetup(ps, lp)	((ps) -> ps_addr = (caddr_t) (lp), OK)
 
-void pe2text (LLog *lp, PE pe, int rw, int cc) {
+void pe2text (LLog *lp, PE pe, const int rw, int cc) {
 	char   *bp;
 	char   buffer[BUFSIZ];
 	PS ps;

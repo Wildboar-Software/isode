@@ -16,7 +16,7 @@
 #include "quipu/cache.h"
 #include "quipu/database.h"
 #include "quipu/schema.h"
-int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
+int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype);
 static int mod_add_value (
 	Entry eptr,
 	Attr_Sequence newas,
@@ -56,7 +56,7 @@ extern AttributeType at_acl;
 extern AttributeType at_objectclass;
 
 extern int dsa_control (Attr_Sequence as, struct DSError *error, DN dn);
-extern int acl_cmp (struct acl *acl1, struct acl *acl2);
+extern int acl_cmp (const struct acl *acl1, const struct acl *acl2);
 
 static int inherit_set(Entry e, struct DSError *error);
 
@@ -78,14 +78,14 @@ int remove_attribute (
 	Entry real_entry
 );
 
-int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
+int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype) {
 	Entry  entryptr;
 	Entry  real_entry;
 	struct entrymod *eptr;
 	Entry  entry_cpy(Entry entryptr);
 	int    remove = NOTOK;
 	int    retval;
-	extern int read_only;
+	extern const int read_only;
 	Attr_Sequence as;
 	int    authp;
 	DN     effdn;

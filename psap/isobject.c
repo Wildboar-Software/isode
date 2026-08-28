@@ -6,14 +6,14 @@
 #include "psap.h"
 #include "tailor.h"
 
-static char *isobjects = "isobjects";
+static const char *isobjects = "isobjects";
 
 static FILE *servf = NULL;
 static int  stayopen = 0;
 
 static struct isobject    ios;
 
-int setisobject (int f) {
+int setisobject (const int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isobjects, 0), "r");
 	else

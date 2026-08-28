@@ -47,10 +47,10 @@ static void audio_print (
 	char	execvector [LINESIZE];
 	struct qbuf   *p;
 
-	int	pid;
-	int	childpid;
+	const int	pid;
+	const int	childpid;
 #ifndef UNIONWAIT
-	int	status;
+	const int	status;
 #else
 	union wait status;
 #endif

@@ -16,7 +16,7 @@ extern int acsap_conntype;
 
 /*    RT-BEGIN.INDICATION (X.410 OPEN.INDICATION) */
 
-int RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti) {
+int RtBInit (const int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti) {
 	int     len,
 			result;
 	char   *base;

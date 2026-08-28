@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-int ps_prime (PS ps, int waiting) {
+int ps_prime (PS ps, const int waiting) {
 	if (ps -> ps_primeP)
 		return (*ps -> ps_primeP) (ps, waiting);
 

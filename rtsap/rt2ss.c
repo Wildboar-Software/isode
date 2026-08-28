@@ -14,8 +14,8 @@
 
 extern int RtWaitRequestAux (
 	struct assocblk *acb,
-	int secs,
-	int trans,
+	const int secs,
+	const int trans,
 	struct RtSAPindication *rti
 );
 
@@ -29,7 +29,7 @@ static int  doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RtSA
 static int  doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication *rti);
 static int  doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindication *rti);
 static int  doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti);
-static int  doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPindication *rti);
+static int  doSStoken (struct assocblk *acb, struct SSAPtoken *st, const int trans, struct RtSAPindication *rti);
 
 int rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	int     result,
@@ -538,7 +538,7 @@ out:
 	return NOTOK;
 }
 
-static int doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPindication *rti) {
+static int doSStoken (struct assocblk *acb, struct SSAPtoken *st, const int trans, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct SSAPindication   sis;
@@ -1059,7 +1059,7 @@ static void ssABORTser (int sd, struct SSAPabort *sa) {
 int ss2rtslose (
 	struct assocblk *acb,
 	struct RtSAPindication *rti,
-	char *event,
+	const char *event,
 	struct SSAPabort *sa
 ) {
 	int     reason;

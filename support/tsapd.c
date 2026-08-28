@@ -55,7 +55,7 @@
 #endif
 #ifndef	IAE
 #include "isoservent.h"
-static void tsapd (int vecp, char **vec);
+static void tsapd (const int vecp, char **vec);
 
 #else
 extern void quipu_syntaxes (void);
@@ -141,10 +141,10 @@ extern void fi_print (PS ps, Filter fi, int format);
 extern void de_print (PS ps, struct DSError *err, int format);
 #endif
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char*, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char*, ...);
 
-static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event);
+static void  ts_advise ( struct TSAPdisconnect *td, const int	code, const char   *event);
 
 #ifdef SYS5
 static  SFD cldser (int sig);
@@ -158,9 +158,9 @@ static  SFD cldser (int sig);
 #endif
 #else
 #ifndef	IAE
-	static int (*ssapd)(struct isoservent *, struct TSAPdisconnect *);
+	static int ssapd (struct isoservent *, struct TSAPdisconnect *);
 #else
-	static int (*ssapd)(struct IAEntry *, struct TSAPdisconnect *);
+	static int ssapd (struct IAEntry *, struct TSAPdisconnect *);
 #endif
 static int  psapd ( struct isoservent *is, struct SSAPindication *si);
 #endif
@@ -170,7 +170,7 @@ static int setperms (struct isoservent *is);
 #else
 static int setperms (struct IAEntry *is);
 #endif
-static void tsapd (int vecp, char **vec);
+static void tsapd (const int vecp, char **vec);
 static void envinit (void);
 static void arginit (char **vec);
 static void search_directory (int firstime);
@@ -271,7 +271,7 @@ int main (int argc, char **argv, char **envp) {
 static char buffer1[4096];
 static char buffer2[32768];
 
-static void tsapd (int vecp, char **vec) {
+static void tsapd (const int vecp, char **vec) {
 	char    buffer[BUFSIZ];
 #ifndef	IAE
 	struct isoservent *is;
@@ -393,7 +393,7 @@ static int setperms (struct IAEntry *is)
 	}
 }
 
-static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
+static void  ts_advise ( struct TSAPdisconnect *td, const int	code, const char   *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -1588,7 +1588,7 @@ static void envinit (void) {
 }
 
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
@@ -1597,20 +1597,20 @@ void	adios (char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS */
-void	adios (char *what, char *fmt) {
+void	adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...) {
+void	advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (pgm_log, code, what, fmt, ap);
 	va_end (ap);
 }
 #else
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

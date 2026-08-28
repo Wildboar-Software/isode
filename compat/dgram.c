@@ -19,7 +19,7 @@
 #include "dgram.h"
 #include "compat.h"
 
-int hack_dgram_socket (int fd, struct sockaddr *sock);
+int hack_dgram_socket (const int fd, struct sockaddr *sock);
 #ifdef	TCP
 #include "internet.h"
 #endif
@@ -40,11 +40,11 @@ static int dgram_dummy (void);
 #ifndef	DEBUG
 #define	action(s,f,i)
 #else
-static void action (char *s, int fd, struct sockaddr *sock);
+static void action (const char *s, const int fd, struct sockaddr *sock);
 #endif
 
 static int check_dgram_socket_with_data(int fd, void *data);
-extern int (*set_check_fd (int fd, int (*fnx)(int, void *), void *data))(int, void *);
+extern int (*set_check_fd (const int fd, int (*fnx)(int, void *), const void *data))(int, void *);
 
 union sockaddri_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
 	struct sockaddr	sa;
@@ -73,7 +73,7 @@ static struct dgramblk *peers = NULL;
 
 #ifdef	TCP
 
-int start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
+int start_udp_server (struct sockaddr_in *sock, const int backlog, const int opt1, const int opt2) {
 	int    port;
 	int     sd;
 #ifdef	BSD43
@@ -254,7 +254,7 @@ got_socket:
 }
 #endif
 
-int join_dgram_aux (int fd, struct sockaddr *sock, int newfd) {
+int join_dgram_aux (const int fd, struct sockaddr *sock, const int newfd) {
 	int	    nfds,
 			sd;
 	fd_set  ifds;
@@ -340,7 +340,7 @@ int read_dgram_socket (int fd, struct qbuf **q) {
 	return qb -> qb_len;
 }
 
-int hack_dgram_socket (int fd, struct sockaddr *sock) {
+int hack_dgram_socket (const int fd, struct sockaddr *sock) {
 	struct dgramblk *up;
 
 	if (fd < 0
@@ -690,7 +690,7 @@ static struct printent {
 	0
 };
 
-static void action (char *s, int fd, struct sockaddr *sock) {
+static void action (const char *s, const int fd, struct sockaddr *sock) {
 	char    buffer[BUFSIZ];
 	struct printent *p;
 

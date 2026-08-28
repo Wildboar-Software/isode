@@ -3,13 +3,13 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
-static int oid_seq_free_aux (struct oid_seq *ptr);
+static int oid_seq_free_aux (const struct oid_seq *ptr);
 struct oid_seq *str2oidseq (char *str);
 
 
 extern int oidformat;
 
-void oid_seq_free (struct oid_seq *ptr) {
+void oid_seq_free (const struct oid_seq *ptr) {
 	struct oid_seq * loop;
 	struct oid_seq * next;
 
@@ -20,7 +20,7 @@ void oid_seq_free (struct oid_seq *ptr) {
 	}
 }
 
-int oid_seq_free_aux (struct oid_seq *ptr) {
+int oid_seq_free_aux (const struct oid_seq *ptr) {
 	struct oid_seq * loop;
 	struct oid_seq * next;
 
@@ -87,7 +87,7 @@ struct oid_seq *oid_seq_merge (struct oid_seq *a, struct oid_seq *b) {
 	return (result);
 }
 
-int oid_seq_cmp (struct oid_seq *a, struct oid_seq *b) {
+int oid_seq_cmp (const struct oid_seq *a, const struct oid_seq *b) {
 	struct oid_seq	* aa1;
 	struct oid_seq	* aa2;
 
@@ -117,7 +117,7 @@ int oid_seq_cmp (struct oid_seq *a, struct oid_seq *b) {
 }
 
 struct oid_seq *
-oid_seq_cpy (struct oid_seq *a) {
+oid_seq_cpy (const struct oid_seq *a) {
 	struct oid_seq * b;
 	struct oid_seq * c;
 	struct oid_seq * d;
@@ -137,7 +137,7 @@ oid_seq_cpy (struct oid_seq *a) {
 	return (result);
 }
 
-void oid_seq_print (PS ps, struct oid_seq *ptr, int format)
+void oid_seq_print (PS ps, const struct oid_seq *ptr, const int format)
 {
 	int i = 4;
 

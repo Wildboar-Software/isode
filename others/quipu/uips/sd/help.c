@@ -30,7 +30,7 @@ extern str_seq curr_dnseq;
 extern int text_state;
 extern int current_entry, entry_number, display_entry;
 
-void tprint(char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j), scrollbar(int command);
+void tprint(const char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j), scrollbar(int command);
 
 void get_help(char *filename, char *line);
 

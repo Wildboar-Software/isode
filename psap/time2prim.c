@@ -6,7 +6,7 @@
 #include "psap.h"
 
 PE
-time2prim (UTC u, int generalized, PElementClass class, PElementID id) {
+time2prim (UTC u, const int generalized, const PElementClass class, const PElementID id) {
 	int    len;
 	char  *bp;
 	PE	    pe;

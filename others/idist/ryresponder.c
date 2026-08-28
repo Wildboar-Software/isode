@@ -10,8 +10,8 @@
 #include <unistd.h>
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
-note (char *fmt, ...);
-nadvise (char *what, char *fmt, ...);
+note (const char *fmt, ...);
+nadvise (char *what, const char *fmt, ...);
 
 
 int	debug = 0;
@@ -262,7 +262,7 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 
 #ifndef	lint
 
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -274,13 +274,13 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS2 */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...) {
+void	advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -291,13 +291,13 @@ void	advise (int code, char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	ryr_advise (char *what, char *fmt, ...) {
+void	ryr_advise (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -306,19 +306,19 @@ void	ryr_advise (char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS2 */
-void ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, const char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif
 
 #ifdef lint
 /* VARARGS1 */
-int note (char *fmt) {
+int note (const char *fmt) {
 	note (fmt);
 }
 
 #else
-note (char *fmt, ...) {
+note (const char *fmt, ...) {
 	char	buffer[BUFSIZ];
 	struct type_Idist_IA5List **ia5p;
 	va_list	ap;
@@ -332,11 +332,11 @@ note (char *fmt, ...) {
 
 #ifdef lint
 /* VARARGS2 */
-int nadvise (char *what, char *fmt) {
+int nadvise (char *what, const char *fmt) {
 	nadvise (what, fmt);
 }
 #else
-nadvise (char *what, char *fmt, ...) {
+nadvise (char *what, const char *fmt, ...) {
 	va_list ap;
 	char	buf[BUFSIZ], *cp;
 	extern	char *host;

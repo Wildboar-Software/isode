@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "rosap.h"
 
-static char *reject_err0[] = {
+static const char *reject_err0[] = {
 	"Authentication failure",
 	"Busy",
 	"Unrecognized APDU",

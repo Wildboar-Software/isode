@@ -33,7 +33,7 @@ static SFD  dishser (int sig, long code, struct sigcontext *sc)
 static SFD  dishser (int i)
 #endif;
 static dadser (int fd, struct sockaddr_in *isock);
-static da_response (int fd, char *fmt);
+static da_response (int fd, const char *fmt);
 static int start_dish (int binding);
 static SFD  chldser (int sig, long code, struct sigcontext *sc);
 
@@ -61,13 +61,13 @@ static	struct sockaddr_in lo_socket;
 
 static void	arginit (char **vec), envinit (void);
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 
 static	dadser ();
 #ifndef	lint
 static int  da_response (char *, ...);
-static int  _da_response (char *fmt, va_list ap);
+static int  _da_response (const char *fmt, va_list ap);
 #endif
 static int  start_dish (int binding);
 static	rcfile (char *file, int op, int isystem);
@@ -313,9 +313,9 @@ were_history:
 }
 
 #ifndef	lint
-static int  _da_response (char *fmt, va_list ap);
+static int  _da_response (const char *fmt, va_list ap);
 
-static int  da_response (char *fmt, ...) {
+static int  da_response (const char *fmt, ...) {
 	int	    val;
 	va_list ap;
 
@@ -325,7 +325,7 @@ static int  da_response (char *fmt, ...) {
 	return val;
 }
 
-static int  _da_response (char *fmt, va_list ap)
+static int  _da_response (const char *fmt, va_list ap)
 {
 	int	    cc, fd, len;
 	char    buffer[BUFSIZ];
@@ -342,7 +342,7 @@ static int  _da_response (char *fmt, va_list ap)
 #else
 /* VARARGS1 */
 
-static da_response (int fd, char *fmt) {
+static da_response (int fd, const char *fmt) {
 	da_response (fd, fmt);
 }
 #endif
@@ -628,7 +628,7 @@ static void envinit (void) {
 }
 
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -639,13 +639,13 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...) {
+void	advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -655,7 +655,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

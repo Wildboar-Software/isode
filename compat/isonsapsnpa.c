@@ -8,10 +8,10 @@
 #include "isoaddrs.h"
 #include "tailor.h"
 #include "cmd_srch.h"
-static int setisonsapsnpa (int f);
+static int setisonsapsnpa (const int f);
 static int endisonsapsnpa(void);
 static struct NSAPinfo *getisonsapsnpa(void);
-struct NSAPaddr *getisosnpa (struct NSAPaddr *nsap);
+struct NSAPaddr *getisosnpa (const struct NSAPaddr *nsap);
 
 
 static char *isonsapsnpa = "isonsapsnpa";
@@ -25,7 +25,7 @@ static CMD_TABLE tbl_communities[] = {
 	NULLCP,	NOTOK
 };
 
-static int setisonsapsnpa (int f) {
+static int setisonsapsnpa (const int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isonsapsnpa, 0), "r");
 	else
@@ -108,7 +108,7 @@ static struct NSAPinfo *getisonsapsnpa(void) {
 	return NULL;
 }
 
-struct NSAPaddr *getisosnpa (struct NSAPaddr *nsap) {
+struct NSAPaddr *getisosnpa (const struct NSAPaddr *nsap) {
 	struct NSAPinfo *is;
 	int best = -1;
 	static struct NSAPinfo nss;
@@ -132,7 +132,7 @@ struct NSAPaddr *getisosnpa (struct NSAPaddr *nsap) {
 	return NULLNA;
 }
 
-struct NSAPinfo *getnsapinfo (struct NSAPaddr *nsap) {
+struct NSAPinfo *getnsapinfo (const struct NSAPaddr *nsap) {
 	struct NSAPinfo *is;
 	int best = -1;
 	static struct NSAPinfo nss;

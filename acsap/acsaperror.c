@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "acsap.h"
 
-static char *reject_err0[] = {
+static const char *reject_err0[] = {
 	"Accepted",
 	"Permanent",
 	"Transient",

@@ -11,7 +11,7 @@ AEI	str2aei_stub (char *designator, char *qualifier);
 struct PSAPaddr *aei2addr_stub (AEI aei);
 #endif
 
-AEI	str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd);
+AEI	str2aei_dse (char *string, char *context, const int ontty, char *userdn, char *passwd);
 struct PSAPaddr *aei2addr_dse (AEI aei);
 
 #ifndef	NOSTUB
@@ -24,8 +24,8 @@ static struct PSAPaddr *(*lookup) (AEI aei) = NULL;
 /* backwards compatibility... */
 
 static struct mapping {
-	char   *m_key;
-	char   *m_value;
+	const char   *m_key;
+	const char   *m_value;
 }	sac2cn[] = {
 	"iso ftam", 	"filestore",
 	"iso vt",		"terminal",
@@ -39,7 +39,7 @@ static struct mapping {
 	NULL
 };
 
-AEI _str2aei (char *designator, char *qualifier, char *context, int interactive, char *userdn, char *passwd) {
+AEI _str2aei (char *designator, char *qualifier, char *context, const int interactive, char *userdn, char *passwd) {
 	AEI	    aei;
 	struct mapping *m;
 

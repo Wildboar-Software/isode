@@ -5,15 +5,15 @@
 #include "spkt.h"
 
 int SWriteRequestAux (
-	struct ssapblk *sb,
+	const struct ssapblk *sb,
 	int code,
-	char *data,
+	const char *data,
 	int cc,
-	int type,
-	long ssn,
+	const int type,
+	const long ssn,
 	int settings,
-	struct SSAPactid *id,
-	struct SSAPactid *oid,
+	const struct SSAPactid *id,
+	const struct SSAPactid *oid,
 	struct SSAPref *ref,
 	struct SSAPindication *si
 ) {

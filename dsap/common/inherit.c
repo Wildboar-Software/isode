@@ -14,9 +14,9 @@ static void inherit_free (void *value);
 static void * inherit_cpy (void *value);
 static int inherit_cmp (void *value1, void *value2);
 static void inherit_print (PS ps, void *value, int format);
-static int setAttributeLine (char *str);
-static char *nextAttributeLine (char *str);
-static char * getInheritAttrs (Attr_Sequence * asptr, char needsoc, char * str);
+static int setAttributeLine (const char *str);
+static char *nextAttributeLine (const char *str);
+static char * getInheritAttrs (Attr_Sequence * asptr, const char needsoc, const char * str);
 static void * str2inherit (char * str);
 static PE inherit_enc (void *value);
 static void * inherit_dec (PE pe);
@@ -114,13 +114,13 @@ static void inherit_print (PS ps, void *value, int format) {
 
 static char * nextline = NULLCP;
 
-int setAttributeLine (char *str) {
+int setAttributeLine (const char *str) {
 	/* Recusion ? */
 	if ((nextline = index (str,'\n')) != NULLCP)
 		*nextline++ = 0;
 }
 
-char *nextAttributeLine (char *str) {
+char *nextAttributeLine (const char *str) {
 	char * ptr;
 
 #ifdef TURBO_DISK
@@ -150,9 +150,9 @@ char *nextAttributeLine (char *str) {
 	return ptr;
 }
 
-static char * getInheritAttrs (Attr_Sequence * asptr, char needsoc, char * str) {
+static char * getInheritAttrs (Attr_Sequence * asptr, const char needsoc, const char * str) {
 	Attr_Sequence as = NULLATTR;
-	Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull);
+	Attr_Sequence as_combine (Attr_Sequence as, char * str, const char allownull);
 	Attr_Sequence as_find_type(Attr_Sequence a, AttributeType b);
 	static AttributeType octype = NULLAttrT;
 	char * ptr;

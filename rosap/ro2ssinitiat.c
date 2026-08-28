@@ -16,11 +16,11 @@
 #include "pepsycodec.h"
 #include "internet.h"
 
-static int  RoBeginRequestAux (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi);
+static int  RoBeginRequestAux (const struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi);
 
 /* RO-BEGIN.REQUEST */
 
-int RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {
+int RoBeginRequest (const struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {
 	SBV     smask;
 	int     result;
 
@@ -40,7 +40,7 @@ int RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc,
 	return result;
 }
 
-static int RoBeginRequestAux (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {
+static int RoBeginRequestAux (const struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {
 	int	    len,
 			result,
 			settings;

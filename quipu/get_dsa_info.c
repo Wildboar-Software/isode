@@ -21,7 +21,7 @@ extern DN mydsadn;
 
 struct oper_act	* oper_alloc(void);
 struct di_block	* di_alloc(void);
-struct oper_act	* make_get_dsa_info_op(DN dn, struct di_block *di);
+struct oper_act	* make_get_dsa_info_op(DN dn, const struct di_block *di);
 extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 
 /**
@@ -29,7 +29,7 @@ extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
  * for a dsa given its distinguished name.
  * This is called during the DSA initialisation, to find the name THIS dsa.
 */
-int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di_block **di_p) {
+int get_dsa_info (DN dn, const struct dn_seq *dn_stack, struct DSError *err, struct di_block **di_p) {
 	struct di_block	* di_tmp;
 	struct di_block	* di_lookup;
 	struct oper_act	* on = NULLOPER;
@@ -174,7 +174,7 @@ void dsa_info_result_wakeup (struct oper_act *on) {
 	struct di_block	* di;
 	struct di_block	* next_di;
 	struct di_block	**di_p;
-	Entry		  cache_dsp_entry(EntryInfo *ptr);
+	Entry		  cache_dsp_entry(const EntryInfo *ptr);
 
 	DLOG(log_dsap, LLOG_DEBUG, ("dsa_info_result_wakeup()"));
 	/*
@@ -400,7 +400,7 @@ void make_dsa_bind_arg (struct ds_bind_arg *arg) {
 #endif
 }
 
-struct oper_act *make_get_dsa_info_op (DN dn, struct di_block *di) {
+struct oper_act *make_get_dsa_info_op (DN dn, const struct di_block *di) {
 	struct di_block	* di_tmp;
 	struct oper_act	* on_tmp;
 	struct ds_read_arg	* arg;

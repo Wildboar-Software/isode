@@ -8,7 +8,7 @@ extern  LLog    * log_dsap;
 #ifndef NO_STATS
 extern  LLog    * log_stat;
 #endif
-void ros_log(struct RoSAPpreject *rop, char *event);
+void ros_log(struct RoSAPpreject *rop, const char *event);
 extern char quipu_shutdown;
 
 int oper_send_invoke (struct oper_act *oper) {

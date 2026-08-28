@@ -13,16 +13,16 @@ extern time_t timenow;
 extern LLog * log_dsap;
 extern int local_cache_size;
 extern Attr_Sequence as_merge_aux(Attr_Sequence a, Attr_Sequence b);
-extern Entry local_find_entry_aux(DN object, char deref);
+extern Entry local_find_entry_aux(DN object, const char deref);
 extern void as_write_files(Attr_Sequence as, char *where);
 extern char * edbtmp_path;
 extern AttributeType at_acl;
 extern AttributeType at_objectclass;
 
-Entry cache_dsp_entry (EntryInfo *ptr);
+Entry cache_dsp_entry (const EntryInfo *ptr);
 
 Entry
-cache_dsp_entry (EntryInfo *ptr) {
+cache_dsp_entry (const EntryInfo *ptr) {
 	/* assumes entry passed is complete */
 	Entry           make_path(DN dn);
 	Entry		eptr;
@@ -113,14 +113,14 @@ cache_dsp_entry (EntryInfo *ptr) {
 }
 
 void dsp_cache (
-	struct DSArgument *arg,
+	const struct DSArgument *arg,
 	struct DSResult *res,
-	char ctx,
+	const char ctx,
 	DN binddn
 ) {
 	EntryInfo *ptr;
 	Entry entryptr;
-	Attr_Sequence as, eis_select(EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node), attr_eis_select(EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node);
+	Attr_Sequence as, eis_select(const EntryInfoSelection eis, Entry entryptr, DN dn, const char qctx, DN node), attr_eis_select(const EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node);
 
 	switch(arg->arg_type) {
 	case OP_READ:

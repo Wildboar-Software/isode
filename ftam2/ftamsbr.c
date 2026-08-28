@@ -16,7 +16,7 @@ extern int vfs_fdf;
 
 extern struct vfsmap vfs[];
 
-struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ftam_fd) {
+struct vfsmap *st2vfs (const int fd, char *file, struct stat *st, OID proposed, const int ftam_fd) {
 #ifndef	BRIDGE
 	int    fmt;
 	struct vfsmap *lf;
@@ -315,7 +315,7 @@ int	fdfpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftam_fd
    generate escape sequences...
  */
 
-int de2fd (int fd, PE pe, int text, int effector) {
+int de2fd (const int fd, PE pe, const int text, const int effector) {
 	int    i,
 		   n;
 	char  *bp,
@@ -424,7 +424,7 @@ outside:
 #define	PWD	"../"
 #define	NPWD	(sizeof PWD - 1)
 
-void compath (char *f) {
+void compath (const char *f) {
 	char  *cp,
 		  *dp;
 

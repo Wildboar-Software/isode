@@ -99,7 +99,7 @@ static struct tcpstat tcpstat;
 
 static int tcpConnections;
 
-static int  get_connections (int offset);
+static int  get_connections (const int offset);
 
 #define	tcpRtoAlgorithm	0
 #define	tcpRtoMin	1
@@ -125,7 +125,7 @@ static int  get_connections (int offset);
 #endif
 
 #ifdef LINUX
-int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
+int _read_snmp_stats (const char *proto, char **labels, long **values, size_t *len);
 
 static int _read_tcp_stats (void)
 {
@@ -340,7 +340,7 @@ static struct tcptab *tts = NULL;
 
 static	int	flush_tcp_cache = 0;
 
-static struct tcptab *get_tcpent (unsigned int *ip, int isnext);
+static struct tcptab *get_tcpent (const unsigned int *ip, const int isnext);
 
 #define	tcpConnState	0
 #define	tcpConnLocalAddress 1
@@ -504,7 +504,7 @@ static int  tt_compar (const void *p, const void *q) {
 					 (*b) -> tt_instance, TT_SIZE);
 }
 
-static int  get_connections (int offset) {
+static int  get_connections (const int offset) {
 	int    i;
 	unsigned int  *cp;
 	struct tcptab *ts,
@@ -517,7 +517,7 @@ static int  get_connections (int offset) {
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
 #endif
-	static   int first_time = 1;
+	static   const int first_time = 1;
 	static   int lastq = -1;
 
 	if (quantum == lastq)
@@ -606,7 +606,7 @@ static int  get_connections (int offset) {
 	return OK;
 }
 
-static struct tcptab *get_tcpent (unsigned int *ip, int isnext) {
+static struct tcptab *get_tcpent (const unsigned int *ip, const int isnext) {
 	struct tcptab *tt;
 
 	for (tt = tts; tt; tt = tt -> tt_next)

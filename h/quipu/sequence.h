@@ -9,7 +9,7 @@ struct dua_sequence {
 
 #define ds_alloc() (struct dua_sequence *) smalloc(sizeof (struct dua_sequence))
 #define NULL_DS ((struct dua_sequence *)0)
-DN sequence_dn (int y);
+DN sequence_dn (const int y);
 
 struct dua_seq_entry {
 	DN	de_name;

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "fpkt.h"
 
-struct type_FTAM_Shared__ASE__Information *shared2fpm (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti) {
+struct type_FTAM_Shared__ASE__Information *shared2fpm (const struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti) {
 	struct type_FTAM_Shared__ASE__Information *fpm;
 
 	if ((fpm = (struct type_FTAM_Shared__ASE__Information *)
@@ -20,7 +20,7 @@ struct type_FTAM_Shared__ASE__Information *shared2fpm (struct ftamblk *fsb, PE s
 	return fpm;
 }
 
-int	fpm2shared (struct ftamblk *fsb, struct type_FTAM_Shared__ASE__Information *fpm, PE *sharedASE, struct FTAMindication *fti) {
+int	fpm2shared (const struct ftamblk *fsb, const struct type_FTAM_Shared__ASE__Information *fpm, PE *sharedASE, struct FTAMindication *fti) {
 	PE	    pe;
 
 	if (fpm -> encoding -> offset != choice_UNIV_0_single__ASN1__type)

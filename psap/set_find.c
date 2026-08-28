@@ -4,7 +4,7 @@
 #include "psap.h"
 
 PE
-set_find (PE pe, PElementClass class, PElementID id) {
+set_find (PE pe, const PElementClass class, const PElementID id) {
 	int    pe_id;
 	PE	    p;
 	PE pfound = NULLPE;

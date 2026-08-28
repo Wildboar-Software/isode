@@ -24,9 +24,9 @@ invoke (int op, caddr_t arg, caddr_t *res, int *err);
 static void ros_errmsg (struct RoSAPpreject *rop, char *event);
 static void acs_errexit (struct AcSAPabort *aca, char *event);
 static void acs_errmsg (struct AcSAPabort *aca, char *event);
-static void errexit (char *what, char *fmt);
-static void  _errmsg (char *what, char *fmt, va_list ap);
-static void ryr_errmsg (char *what, char *fmt);
+static void errexit (char *what, const char *fmt);
+static void  _errmsg (char *what, const char *fmt, va_list ap);
+static void ryr_errmsg (char *what, const char *fmt);
 
 
 void	errexit (char *, char *, ...);
@@ -213,9 +213,9 @@ void acs_errmsg (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_errmsg (char *what, char *fmt, va_list ap);
+static void	_errmsg (char *what, const char *fmt, va_list ap);
 
-static void	errexit (char *what, char *fmt, ...) {
+static void	errexit (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -227,13 +227,13 @@ static void	errexit (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void errexit (char *what, char *fmt) {
+void errexit (char *what, const char *fmt) {
 	errexit (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	errmsg (char *what, char *fmt, ...) {
+void	errmsg (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -241,7 +241,7 @@ void	errmsg (char *what, char *fmt, ...) {
 	va_end (ap);
 }
 
-static void  _errmsg (char *what, char *fmt, va_list ap) {
+static void  _errmsg (char *what, const char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);
@@ -254,13 +254,13 @@ static void  _errmsg (char *what, char *fmt, va_list ap) {
 #else
 /* VARARGS */
 
-void errmsg (char *what, char *fmt) {
+void errmsg (char *what, const char *fmt) {
 	errmsg (what, fmt);
 }
 #endif
 
 #ifndef	lint
-static void	ryr_errmsg (char *what, char *fmt, ...) {
+static void	ryr_errmsg (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -270,7 +270,7 @@ static void	ryr_errmsg (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void ryr_errmsg (char *what, char *fmt) {
+void ryr_errmsg (char *what, const char *fmt) {
 	ryr_errmsg (what, fmt);
 }
 #endif

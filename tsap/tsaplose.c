@@ -98,7 +98,7 @@ static int _tsaplose (
 ) {
 	char  *bp;
 	char  *what;
-	char  *fmt;
+	const char  *fmt;
 	char    buffer[BUFSIZ];
 
 	what = va_arg(ap, char*);

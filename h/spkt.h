@@ -437,13 +437,13 @@ void freesblk (struct ssapblk *sb);
 struct ssapblk *newsblk (void);
 struct ssapblk *findsblk (int sd);
 
-int ts2sslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td);
+int ts2sslose (struct SSAPindication *si, const char *event, struct TSAPdisconnect *td);
 
-int	spkt2sd (struct ssapkt *s, int sd, int expedited, struct SSAPindication *si);
+int	spkt2sd (struct ssapkt *s, const int sd, int expedited, struct SSAPindication *si);
 struct ssapkt *sb2spkt (
 	struct ssapblk *sb,
 	struct SSAPindication *si,
-	int secs,
+	const int secs,
 	struct TSAPdata *ty
 );
 
@@ -892,8 +892,8 @@ struct ssapkt {
 void freespkt (struct ssapkt *s);
 struct ssapkt *newspkt (int code);
 
-void text2spkt (struct ssapkt *s);
-void spkt2text (LLog *lp, struct ssapkt *s, int read);
+void text2spkt (const struct ssapkt *s);
+void spkt2text (LLog *lp, const struct ssapkt *s, const int read);
 
 int	spkt2tsdu (struct ssapkt *s, char **base, int *len);
 struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc);
@@ -902,29 +902,29 @@ char   *spkt2str (struct ssapkt *s);
 struct ssapkt *str2spkt (char *buffer);
 
 int SDataRequestAux (
-	struct ssapblk *sb,
+	const struct ssapblk *sb,
 	int code,
-	struct udvec *uv,
+	const struct udvec *uv,
 	int begin,
-	int end,
+	const int end,
 	struct SSAPindication *si
 );
 
 int TSaveState (int sd, char **vec, struct TSAPdisconnect *td);
 int TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td);
 int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td);
-int SDoActivityAux (struct ssapblk *sb, struct SSAPindication *si, int act, int rls);
+int SDoActivityAux (const struct ssapblk *sb, struct SSAPindication *si, const int act, const int rls);
 
 int SWriteRequestAux (
-	struct ssapblk *sb,
+	const struct ssapblk *sb,
 	int code,
-	char *data,
+	const char *data,
 	int cc,
-	int type,
-	long ssn,
+	const int type,
+	const long ssn,
 	int settings,
-	struct SSAPactid *id,
-	struct SSAPactid *oid,
+	const struct SSAPactid *id,
+	const struct SSAPactid *oid,
 	struct SSAPref *ref,
 	struct SSAPindication *si
 );
@@ -932,10 +932,10 @@ int SWriteRequestAux (
 int SMajSyncRequestAux (
 	struct ssapblk *sb,
 	long *ssn,
-	char *data,
+	const char *data,
 	int cc,
-	int opts,
+	const int opts,
 	struct SSAPindication *si
 );
 
-int SMajSyncResponseAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si);
+int SMajSyncResponseAux (struct ssapblk *sb, const char *data, int cc, struct SSAPindication *si);

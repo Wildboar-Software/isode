@@ -297,7 +297,7 @@ void send_pipe_aux (char *buf) {
 	send_pipe_aux2 (buf, n);
 }
 
-void send_pipe_aux2 (char *buf, int i) {
+void send_pipe_aux2 (const char *buf, int i) {
 	int res;
 
 #ifndef	SOCKETS

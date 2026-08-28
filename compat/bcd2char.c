@@ -7,7 +7,7 @@
 // FIXME: This has no idea how big the output buffer d is. Make this more secure.
 // len is the length of digits; there is no break. The loop always iterates len times.
 // That kind of makes sense, because there is no way to tell how long s is. You can't use a null terminator.
-int bcd2char (uint8_t *s, char *d, int len) {
+int bcd2char (const uint8_t *s, char *d, int len) {
 	int i, g;
 
 	for (i = 0; i < len; i++) {

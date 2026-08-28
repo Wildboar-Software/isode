@@ -22,7 +22,7 @@ qbuf2pe_local (struct qbuf *qb, int len, int *result);
 static void	ssDATAser (int sd, struct SSAPdata *sx), ssTOKENser (int sd, struct SSAPtoken *st), ssSYNCser (int sd, struct SSAPsync *sn), ssACTIVITYser (int sd, struct SSAPactivity *sv),
 		ssREPORTser (int sd, struct SSAPreport *sp), ssFINISHser (int sd, struct SSAPfinish *sf), ssABORTser (int sd, struct SSAPabort *sa);
 
-static int  doSSdata (struct assocblk *acb, int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi);
+static int  doSSdata (struct assocblk *acb, const int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi);
 static int  doSStokens (struct assocblk *acb, struct SSAPtoken *st, struct RoSAPindication *roi);
 static int  doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi);
 static int  doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindication *roi);
@@ -354,7 +354,7 @@ int ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPin
 	return result;
 }
 
-static int doSSdata (struct assocblk *acb, int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi) {
+static int doSSdata (struct assocblk *acb, const int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi) {
 	int     result;
 	PE	    pe;
 
@@ -635,7 +635,7 @@ static void ssABORTser (int sd, struct SSAPabort *sa) {
 int ss2roslose (
 	struct assocblk *acb,
 	struct RoSAPindication *roi,
-	char *event,
+	const char *event,
 	struct SSAPabort *sa
 ) {
 	int     reason;

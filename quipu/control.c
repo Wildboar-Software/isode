@@ -22,7 +22,7 @@ extern LLog * log_dsap;
 #ifndef NO_STATS
 extern LLog * log_stat;
 #endif
-extern void dsa_abort(int xrestart);
+extern void dsa_abort(const int xrestart);
 
 int refresh_from_disk (DN dn);
 extern Entry database_root;

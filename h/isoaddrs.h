@@ -40,7 +40,7 @@ typedef struct AEInfo {		/* "real" directory services! */
 #define	str2aeinfo(string,context,interactive,userdn,passwd) \
 	_str2aei ((string), NULLCP, (context), (interactive), (userdn), \
 		  (passwd))
-AEI	_str2aei (char *string, char *qualifier, char *context, int interactive, char *userdn, char *passwd);
+AEI	_str2aei (char *string, char *qualifier, char *context, const int interactive, char *userdn, char *passwd);
 
 char   *sprintaei (AEI aei);
 #endif
@@ -160,7 +160,7 @@ struct TSAPaddr {
 };
 #define	NULLTA			((struct TSAPaddr *) 0)
 
-int tsap_addr_cmp (struct TSAPaddr *ta, struct TSAPaddr *tb);
+int tsap_addr_cmp (const struct TSAPaddr *ta, const struct TSAPaddr *tb);
 
 struct SSAPaddr {
 	struct TSAPaddr sa_addr;		/* transport address */
@@ -196,9 +196,9 @@ struct PSAPaddr {
 
 struct PSAPaddr *aei2addr (AEI aei);	/* application entity title to PSAPaddr */
 void psap_free (struct PSAPaddr *psap);
-void psap_dup (struct PSAPaddr *r, struct PSAPaddr *a);
+void psap_dup (struct PSAPaddr *r, const struct PSAPaddr *a);
 
-int add_alias (char *name, char *value);
+int add_alias (const char *name, const char *value);
 
 #ifdef	NULLPE
 char   *alias2name (char *name);
@@ -214,7 +214,7 @@ struct isoentity {		/* for stub directory service */
 	struct PSAPaddr ie_addr;
 };
 
-int	setisoentity (int f);
+int	setisoentity (const int f);
 int endisoentity (void);
 
 struct isoentity *getisoentity (void);
@@ -224,31 +224,31 @@ AEI	oid2aei (OID oid);
 
 struct isoservent;
 
-struct PSAPaddr *is2paddr (char *host, char *service, struct isoservent *is);	/* service entry to PSAPaddr */
-struct SSAPaddr *is2saddr (char *host, char *service, struct isoservent *is);	/* service entry to SSAPaddr */
-struct TSAPaddr *is2taddr (char *host, char *service, struct isoservent *is);	/* service entry to TSAPaddr */
+struct PSAPaddr *is2paddr (char *host, char *service, const struct isoservent *is);	/* service entry to PSAPaddr */
+struct SSAPaddr *is2saddr (char *host, char *service, const struct isoservent *is);	/* service entry to SSAPaddr */
+struct TSAPaddr *is2taddr (char *host, char *service, const struct isoservent *is);	/* service entry to TSAPaddr */
 
-struct PSAPaddr *str2paddr (char *str);  /* string encoding to PSAPaddr */
-struct SSAPaddr *str2saddr (char *str);  /* string encoding to SSAPaddr */
-struct TSAPaddr *str2taddr (char *str);  /* string encoding to TSAPaddr */
+struct PSAPaddr *str2paddr (const char *str);  /* string encoding to PSAPaddr */
+struct SSAPaddr *str2saddr (const char *str);  /* string encoding to SSAPaddr */
+struct TSAPaddr *str2taddr (const char *str);  /* string encoding to TSAPaddr */
 
 #define	paddr2str(pa,na)	_paddr2str ((pa), (na), 0)
 
-char   *_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact);		/* PSAPaddr to string encoding */
-char   *saddr2str (struct SSAPaddr *sa);		/* SSAPaddr to string encoding */
-char   *taddr2str (struct TSAPaddr *ta);		/* TSAPaddr to string encoding */
+char   *_paddr2str (const struct PSAPaddr *pa, const struct NSAPaddr *na, const int compact);		/* PSAPaddr to string encoding */
+char   *saddr2str (const struct SSAPaddr *sa);		/* SSAPaddr to string encoding */
+char   *taddr2str (const struct TSAPaddr *ta);		/* TSAPaddr to string encoding */
 
-struct NSAPaddr *na2norm (struct NSAPaddr *na);	/* normalize NSAPaddr */
+struct NSAPaddr *na2norm (const struct NSAPaddr *na);	/* normalize NSAPaddr */
 
-struct NSAPinfo *getnsapinfo (struct NSAPaddr *nsap);/* info about an NSAP */
+struct NSAPinfo *getnsapinfo (const struct NSAPaddr *nsap);/* info about an NSAP */
 
 char   *na2str (struct NSAPaddr *na);		/* pretty-print NSAPaddr */
-char   *pa2str (struct PSAPaddr *px);		/* pretty-print PSAPaddr */
+char   *pa2str (const struct PSAPaddr *px);		/* pretty-print PSAPaddr */
 
 struct TSAPdisconnect;
-int	isodeserver (int argc, char **argv, AEI aei, int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), struct TSAPdisconnect *td);		/* generic server dispatch */
+int	isodeserver (const int argc, char **argv, AEI aei, int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), struct TSAPdisconnect *td);		/* generic server dispatch */
 
-int	iserver_wait (int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td);	/* phase 2 */
+int	iserver_wait (int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, const int secs, struct TSAPdisconnect *td);	/* phase 2 */
 fd_set	iserver_mask (void);		/* linkage */
 
 /* all of this really should be in "isoqos.h" ... */
@@ -269,7 +269,7 @@ struct QOStype {
 int macro2comm (char *name, struct ts_interim *ts);
 void free_macros(void);
 int norm2na (char *p, int len, struct NSAPaddr *na);
-int add_alias (char *name, char *value);
+int add_alias (const char *name, const char *value);
 
 #ifdef DEBUG
 int free_isode_alias(void);

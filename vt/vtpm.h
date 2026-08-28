@@ -210,7 +210,7 @@
 #define PEPYPARM int *
 
 extern PE	pre, pwe;
-extern PE	mkdeliver(int ack);
+extern PE	mkdeliver(const int ack);
 extern int	fd,
 	readfds,
 	writefds,
@@ -322,6 +322,6 @@ extern struct PSAPdata	px;
 extern struct PSAPfinish *pf;
 
 void	finalbye (void);
-void	acs_adios (struct AcSAPabort *aa, char *event);
+void	acs_adios (struct AcSAPabort *aa, const char *event);
 
 extern int connected;	/*TEMP -- for sector 1 testing only -- will be supplied by VTP*/

@@ -38,7 +38,7 @@ static	int	dont_bother_anymore = 0;
 void init_users (void), sync_users (int cor);	/* users group */
 void init_print (void), sync_print (int cor);	/* print group */
 static void arginit (char **vec), envinit (void), mibinit (void), start_smux (void),
-        doit_smux (void), do_smux (struct type_SNMP_GetRequest__PDU *pdu, int offset);
+        doit_smux (void), do_smux (struct type_SNMP_GetRequest__PDU *pdu, const int offset);
 
 static struct triple {
 	char   *t_tree;
@@ -60,8 +60,8 @@ static	struct smuxEntry *se = NULL;
 static	fd_set	ifds;
 static	fd_set	ofds;
 
-void adios (char *, char *, ...);
-void advise (int, char *, char *, ...);
+void adios (char *, const char *, ...);
+void advise (int, char *, const char *, ...);
 
 int main (int argc, char **argv, char **envp) {
 	int	    nfds;
@@ -355,7 +355,7 @@ unexpected:
 	}
 }
 
-static void do_smux (struct type_SNMP_GetRequest__PDU *pdu, int offset) {
+static void do_smux (struct type_SNMP_GetRequest__PDU *pdu, const int offset) {
 	int	    idx,
 			status;
 	object_instance ois;
@@ -443,7 +443,7 @@ out:
 }
 
 #ifndef	lint
-void adios (char *what, char *fmt, ...) {
+void adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
@@ -453,13 +453,13 @@ void adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void	adios (char *what, char *fmt) {
+void	adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void advise (int code, char *what, char *fmt, ...)
+void advise (int code, char *what, const char *fmt, ...)
 {
 	va_list ap;
 	va_start (ap, fmt);
@@ -469,7 +469,7 @@ void advise (int code, char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void	advise (int code, char *what, char *fmt) {
+void	advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

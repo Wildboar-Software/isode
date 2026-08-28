@@ -10,13 +10,13 @@
 #include "tailor.h"
 #include "pvpdu.h"
 
-static int	acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct AcSAPabort *aca);
+static int	acslose (struct assocblk *acb, struct RoSAPindication *roi, const char *event, struct AcSAPabort *aca);
 
-static int	pslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct PSAPabort *pa);
+static int	pslose (struct assocblk *acb, struct RoSAPindication *roi, const char *event, struct PSAPabort *pa);
 static void	psDATAser (int sd, struct PSAPdata *px), psTOKENser (int sd, struct PSAPtoken *pt), psSYNCser (int sd, struct PSAPsync *pn), psACTIVITYser (int sd, struct PSAPactivity *pv),
 		psREPORTser (int sd, struct PSAPreport *pp), psFINISHser (int sd, struct PSAPfinish *pf), psABORTser (int sd, struct PSAPabort *pa);
 
-static int  doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi);
+static int  doPSdata (struct assocblk *acb, const int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi);
 static int  doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi);
 static int  doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi);
 static int  doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi);
@@ -100,7 +100,7 @@ int ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindica
 
 /*    AcSAP interface */
 
-static int acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct AcSAPabort *aca) {
+static int acslose (struct assocblk *acb, struct RoSAPindication *roi, const char *event, struct AcSAPabort *aca) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -229,7 +229,7 @@ int ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPin
 	return result;
 }
 
-static int doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi) {
+static int doPSdata (struct assocblk *acb, const int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi) {
 	PE	    pe;
 
 	if (px -> px_type != SX_NORMAL) {
@@ -437,7 +437,7 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 static int pslose (
 	struct assocblk *acb,
 	struct RoSAPindication *roi,
-	char *event,
+	const char *event,
 	struct PSAPabort *pa
 ) {
 	int     reason;

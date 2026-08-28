@@ -13,7 +13,7 @@ static int   stayopen = 0;
 
 static struct isodocument ids;
 
-int setisodocument (int f) {
+int setisodocument (const int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isodocuments, 0), "r");
 	else
@@ -98,7 +98,7 @@ free1:
 }
 
 struct isodocument *
-getisodocumentbyentry (char *entry) {
+getisodocumentbyentry (const char *entry) {
 	struct isodocument *id;
 
 	setisodocument (0);

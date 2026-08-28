@@ -24,7 +24,7 @@
 static int once_only = 0;
 static struct tsapblk tsapque;
 static struct tsapblk *THead = &tsapque;
-static int  TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td);
+static int  TWakeUp (const struct tsapblk *tb, struct TSAPdisconnect *td);
 
 #ifndef	SIGPOLL
 static int TPid = NOTOK;
@@ -34,7 +34,7 @@ extern	int	xselect_blocking_on_intr;
 
 /* T-DATA.REQUEST */
 
-int TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
+int TDataRequest (int sd, const char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask,
 			imask;
 #ifdef LINUX
@@ -77,7 +77,7 @@ int TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 
 /* T-EXPEDITED-DATA.REQUEST */
 
-int TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
+int TExpdRequest (int sd, const char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask,
 			imask;
 #ifdef LINUX
@@ -167,7 +167,7 @@ int TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 
 /*    T-READ.REQUEST (pseudo; synchronous read) */
 
-int TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td) {
+int TReadRequest (int sd, struct TSAPdata *tx, const int secs, struct TSAPdisconnect *td) {
 	SBV	    smask,
 			imask;
 #ifdef LINUX
@@ -275,7 +275,7 @@ static SFD DATAser (int sig, long int code, struct sigcontext *sc);
 #endif
 
 int TSetIndications (
-	int sd,
+	const int sd,
 	void (*data)(int sd, struct TSAPdata *tx),
 	void (*disc)(int sd, struct TSAPdisconnect *td),
 	struct TSAPdisconnect *td
@@ -518,10 +518,10 @@ static int TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 #include <sys/stropts.h>
 #endif
 
-static int TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int TWakeUp (const struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    result;
 #ifndef	SUNOS4
-	int	    pgrp;
+	const int	    pgrp;
 #endif
 	static int  inited = 0;
 
@@ -677,7 +677,7 @@ findtblk (int sd) {
 	return NULL;
 }
 
-int copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out) {
+int copyTSAPaddrX (const struct tsapADDR *in, struct TSAPaddr *out) {
 	bzero ((char *) out, sizeof *out);
 
 	if (bcopy_int (in -> ta_selector, out -> ta_selector,
@@ -691,7 +691,7 @@ int copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out) {
 	return OK;
 }
 
-int copyTSAPaddrY (struct TSAPaddr *in, struct tsapADDR *out) {
+int copyTSAPaddrY (const struct TSAPaddr *in, struct tsapADDR *out) {
 	bzero ((char *) out, sizeof *out);
 
 	if (bcopy_int (in -> ta_selector, out -> ta_selector,

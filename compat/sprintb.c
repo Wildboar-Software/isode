@@ -4,7 +4,7 @@
 #include <string.h>
 #include "general.h"
 
-char *sprintb (int v, char *bits) {
+char *sprintb (const int v, const char *bits) {
 	int    i,
 		   j;
 	char   c,

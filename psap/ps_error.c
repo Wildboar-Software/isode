@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-static char *ps_errorlist[] = {
+static const char *ps_errorlist[] = {
 	"Error 0",
 	"Overflow in ID",
 	"Overflow in length",
@@ -21,7 +21,7 @@ static char *ps_errorlist[] = {
 
 static int ps_maxerror = sizeof ps_errorlist / sizeof ps_errorlist[0];
 
-char *ps_error (int c) {
+char *ps_error (const int c) {
 	char  *bp;
 	static char buffer[30];
 

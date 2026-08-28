@@ -5,10 +5,10 @@
 #include <strings.h>
 #include "mib.h"
 #include "snmp-g.h"
-static void set_hint (OT ot, int hi);
+static void set_hint (OT ot, const int hi);
 
 
-static void set_hint (OT ot, int hi);
+static void set_hint (OT ot, const int hi);
 
 /*    SNMP GROUP */
 
@@ -95,7 +95,7 @@ void init_snmp (void) {
 		adios (NULLCP, "unable to resolve agentAction");
 }
 
-static void set_hint (OT ot, int hi) {
+static void set_hint (OT ot, const int hi) {
 	char   *name;
 	OS	    os;
 

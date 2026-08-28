@@ -6,7 +6,7 @@
 #include "general.h"
 #include "manifest.h"
 
-int str2elem (char *s, unsigned int elements[]) {
+int str2elem (const char *s, unsigned int elements[]) {
 	int    i;
 	unsigned int  *ip;
 	char  *cp,

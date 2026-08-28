@@ -31,7 +31,7 @@ extern	PS	opt, rps;
 extern	char	dad_flag;
 extern char     fname[];
 
-int mod_template (char *, char);
+int mod_template (const char *, const char);
 
 static void ems_part_free (struct entrymod *emp);
 static void dsa_control_info (void);
@@ -42,7 +42,7 @@ struct	list_element {
 	struct  list_element*	next ;
 } ;
 
-static int build_modify (struct list_element *start,
+static int build_modify (const struct list_element *start,
 			  struct ds_modifyentry_arg *mod_arg);
 
 extern Entry    current_entry;
@@ -63,7 +63,7 @@ void call_modify (int argc, char **argv) {
 					trail = NULLATTR;
 	AV_Sequence     avst = NULLAV;
 	extern AttributeType at_objectclass;
-	extern int	parse_status;
+	extern const int	parse_status;
 	Entry           entry_ptr;
 	FILE           *fd;
 	char            draft_flag = FALSE;
@@ -320,7 +320,7 @@ struct entrymod * modify_avs (AV_Sequence a, AV_Sequence b, AttributeType at) {
 	AV_Sequence y;
 	struct entrymod *em = NULLMOD, *emnew;
 	int removed_all = TRUE;
-	extern short oc_sntx;
+	extern const short oc_sntx;
 	static OID top = NULLOID;
 
 	for (x=b; x != NULLAV; x=x->avseq_next) {
@@ -388,7 +388,7 @@ static char *foobar (char *string) {
 	DN	    fb;
 	PS	    ps;
 	static char    buffer[BUFSIZ];
-	DN	    sequence_dn(int y);
+	DN	    sequence_dn(const int y);
 	if (!isdigit (*string))
 		return string;
 	if ((fb = sequence_dn (atoi (string))) == NULLDN) {
@@ -509,7 +509,7 @@ static void dsa_control_info (void) {
 	struct ds_read_arg read_arg;
 	struct DSError  error;
 	struct ds_read_result result;
-	static CommonArgs      ca = default_common_args;
+	static const CommonArgs      ca = default_common_args;
 
 	read_arg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	read_arg.rda_eis.eis_allattributes = FALSE;
@@ -528,7 +528,7 @@ static void dsa_control_info (void) {
 		ps_printf (OPT, "No information !!!\n");
 }
 
-int mod_template (char *name, char noedit) {
+int mod_template (const char *name, const char noedit) {
 	FILE           *fptr;
 	PS              ps;
 	extern AttributeType at_objectclass;
@@ -575,7 +575,7 @@ int mod_template (char *name, char noedit) {
 }
 
 static int build_modify (
-	struct list_element *start,
+	const struct list_element *start,
 	struct ds_modifyentry_arg *mod_arg
 ) {
 	struct	list_element	*temp_elem ;

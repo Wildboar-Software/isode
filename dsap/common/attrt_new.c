@@ -4,7 +4,7 @@
 #include "quipu/name.h"
 
 char *get_oid (char *str);
-int add_entry_aux (char *a, caddr_t b, int c, char *d);
+int add_entry_aux (char *a, caddr_t b, const int c, char *d);
 extern int attrNumEntries;
 extern oid_table_attr attrOIDTable [];
 

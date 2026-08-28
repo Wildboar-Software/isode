@@ -9,11 +9,11 @@
 #include "ROS-types.h"
 #include "ropkt.h"
 
-static int  RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi);
+static int  RoInvokeRequestAux (struct assocblk *acb, const int op, const int class, PE args, const int invokeID, const int *linkedID, const int priority, struct RoSAPindication *roi);
 
 /* RO-INVOKE.REQUEST */
 
-int RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {
+int RoInvokeRequest (int sd, const int op, const int class, PE args, const int invokeID, const int *linkedID, const int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -41,7 +41,7 @@ int RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *link
 	return result;
 }
 
-static int RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {
+static int RoInvokeRequestAux (struct assocblk *acb, const int op, const int class, PE args, const int invokeID, const int *linkedID, const int priority, struct RoSAPindication *roi) {
 	PE	pe;
 
 	struct type_ROS_ROSEapdus	papdu;

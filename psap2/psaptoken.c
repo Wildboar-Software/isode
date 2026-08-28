@@ -7,7 +7,7 @@
 
 /* P-TOKEN-GIVE.REQUEST */
 
-int PGTokenRequest (int sd, int tokens, struct PSAPindication *pi) {
+int PGTokenRequest (int sd, const int tokens, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -36,7 +36,7 @@ out1:
 
 /* P-TOKEN-PLEASE.REQUEST */
 
-int PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindication *pi) {
+int PPTokenRequest (int sd, const int tokens, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;

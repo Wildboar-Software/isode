@@ -22,7 +22,7 @@ int do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error) {
 int perform_abandon (struct task_act *tk) {
 	struct task_act	* tk_tmp;
 	struct task_act	**tk_p;
-	int			  ab_id = tk->tk_dx.dx_arg.dca_dsarg.arg_ab.aba_invokeid;
+	const int			  ab_id = tk->tk_dx.dx_arg.dca_dsarg.arg_ab.aba_invokeid;
 	struct DSError	* err = &(tk->tk_resp.di_error.de_err);
 
 	DLOG(log_dsap, LLOG_TRACE, ("perform_abandon"));

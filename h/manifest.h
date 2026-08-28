@@ -140,7 +140,7 @@ sigioblock (void) {
 }
 
 static inline int
-sigiomask (SBV s) {
+sigiomask (const SBV s) {
 	if (_iosignals_set)
 		return sigprocmask (SIG_SETMASK, &s, NULL);
 	return 0;
@@ -157,12 +157,12 @@ siginblock (void) {
 }
 
 static inline int
-siginmask (SBV s) {
+siginmask (const SBV s) {
 	return sigprocmask (SIG_SETMASK, &s, NULL);
 }
 
 static inline SBV
-sigdelmask (int sig) {
+sigdelmask (const int sig) {
 	sigset_t nset, oset;
 
 	(void) sigemptyset (&nset);

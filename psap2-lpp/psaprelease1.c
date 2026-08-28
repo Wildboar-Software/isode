@@ -15,7 +15,7 @@ static int  PRelRequestAux (struct psapblk *pb, PE data, struct PSAPrelease *pr,
 
 /* P-RELEASE.REQUEST */
 
-int	PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
+int	PRelRequest (int sd, PE *data, int ndata, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
@@ -191,6 +191,6 @@ out:
 	return result;
 }
 
-int	PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
+int	PRelRetryRequest (int sd, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	return psaplose (pi, PC_OPERATION, "release not in progress");
 }

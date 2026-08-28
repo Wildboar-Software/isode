@@ -734,23 +734,23 @@ int lowesty (void) {
 }
 
 /* This satisfies the generalised printing structure */
-void wprint(WINDOW *here, char *fmt, char *a,char *b,char *c,char *d,char *e,char *f,char *g,char *h,char *i,char *j) {
+void wprint(WINDOW *here, const char *fmt, char *a,char *b,char *c,char *d,char *e,char *f,char *g,char *h,char *i,char *j) {
 	wprintw(Text,fmt,a,b,c,d,e,f,g,h,i,j);
 	wrefresh(Text);
 }
 
 /* This can be called as a way for an application to print text */
 /* VARARGS1 */
-void tprint (char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j) {
+void tprint (const char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j) {
 	wprintw(Text,fmt,a,b,c,d,e,f,g,h,i,j);
 	wrefresh(Text);
 }
 
-void xprint (char *fmt) {
+void xprint (const char *fmt) {
 	wprintw(Text, "%s", fmt);
 }
 
-void xprintint (char *fmt, int a) {
+void xprintint (const char *fmt, int a) {
 	wprintw(Text,fmt, a);
 }
 

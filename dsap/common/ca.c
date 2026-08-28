@@ -44,7 +44,7 @@ struct common_args *get_ca_ref (struct ds_op_arg *dsarg) {
 	return(ca);
 }
 
-int cha_loopdetected (struct chain_arg *cha) {
+int cha_loopdetected (const struct chain_arg *cha) {
 	struct trace_info	  ti_elem_s;
 	struct trace_info	* ti_elem = &(ti_elem_s);
 
@@ -55,7 +55,7 @@ int cha_loopdetected (struct chain_arg *cha) {
 	return(ti_is_elem(ti_elem, cha->cha_trace));
 }
 
-int ti_is_elem (struct trace_info *ti, struct trace_info *ti_list) {
+int ti_is_elem (const struct trace_info *ti, const struct trace_info *ti_list) {
 	struct trace_info	* tip;
 
 	for(tip = ti_list; tip!=NULLTRACEINFO; tip=tip->ti_next) {
@@ -72,7 +72,7 @@ int ti_is_elem (struct trace_info *ti, struct trace_info *ti_list) {
 }
 
 struct trace_info *
-ti_cpy (struct trace_info *ti) {
+ti_cpy (const struct trace_info *ti) {
 	struct trace_info	* ret_ti;
 
 	if(ti == NULLTRACEINFO)

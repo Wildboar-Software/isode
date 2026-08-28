@@ -40,7 +40,7 @@ typedef struct ava {            /* represents AttributeValueAssertion */
 	AttributeValue ava_value;
 } ava, AVA;
 
-int ava_dup (struct ava *src, struct ava *tgt);
+int ava_dup (const struct ava *src, struct ava *tgt);
 int get_ava (AVA *avasert, char *type, char *value);
 
 #define AV_WRITE_FILE		256
@@ -62,7 +62,7 @@ void AttrV_print (PS ps, AttributeValue x, int format);
 int AttrV_cmp (AttributeValue x, AttributeValue y);
 void AttrV_free (AttributeValue x);
 AttributeValue str_at2AttrV(char * str, AttributeType at);
-AttributeValue str2AttrV(char * str, short syntax);
+AttributeValue str2AttrV(char * str, const short syntax);
 short str2syntax(char * str);
 int str_at2AttrV_aux (char * str, AttributeType at, AttributeValue rav);
 
@@ -72,8 +72,8 @@ typedef struct avseqcomp {      /* attribute may have multiple values   */
 	struct avseqcomp    *avseq_next;
 } avseqcomp, *AV_Sequence;
 
-void avs_print (PS ps, AV_Sequence avs, int format);
-void avs_print_aux (PS ps, AV_Sequence avs, int format, char *sep);
+void avs_print (PS ps, AV_Sequence avs, const int format);
+void avs_print_aux (PS ps, AV_Sequence avs, const int format, char *sep);
 int avs_cmp (AV_Sequence a, AV_Sequence b);
 void avs_delnext (AV_Sequence avs);
 
@@ -87,7 +87,7 @@ typedef struct {
 	char       *fi_sub_match; /* for DSA use */
 } Filter_Substrings;
 
-int fi_sub_dup (Filter_Substrings *src, Filter_Substrings *tgt);
+int fi_sub_dup (const Filter_Substrings *src, Filter_Substrings *tgt);
 
 struct filter_item {
 	int         fi_type;
@@ -109,7 +109,7 @@ struct filter_item {
 	} fi_ifp;
 };
 
-int filter_item_dup (struct filter_item *src, struct filter_item *tgt);
+int filter_item_dup (const struct filter_item *src, struct filter_item *tgt);
 
 typedef PE (*AttributeValueEncoder)(void *value);
 typedef void* (*AttributeValueDecoder)(PE pe);
@@ -120,7 +120,7 @@ typedef int (*AttributeValueComparator)(void *value1, void *value2);
 typedef void (*AttributeValueFree)(void *value);
 typedef int (*AttributeValueApproximator)(struct filter_item *fitem, AV_Sequence avs);
 
-short add_attribute_syntax (char *sntx,
+short add_attribute_syntax (const char *sntx,
 	AttributeValueEncoder enc,
 	AttributeValueDecoder dec,
 	AttributeValueParser parse,
@@ -128,11 +128,11 @@ short add_attribute_syntax (char *sntx,
 	AttributeValueCopier cpy,
 	AttributeValueComparator cmp,
 	AttributeValueFree sfree,
-	char *print_pe,
+	const char *print_pe,
 	AttributeValueApproximator approx,
-	char multiline);
+	const char multiline);
 
-void set_attribute_syntax (short sntx,
+void set_attribute_syntax (const short sntx,
 	AttributeValueEncoder enc,
 	AttributeValueDecoder dec,
 	AttributeValueParser parse,
@@ -141,12 +141,12 @@ void set_attribute_syntax (short sntx,
 	AttributeValueComparator cmp,
 	AttributeValueFree sfree,
 	AttributeValueApproximator approx,
-	char *  print_pe,
-	char multiline);
+	const char *  print_pe,
+	const char multiline);
 
-void set_av_pe_print (short sntx, char *print_pe);
-void set_av_printer (short sntx, void (*print)(PS ps, void *value, int format));
-short modify_av_printer (AttributeType at, char *sntx, void (*print)(PS ps, void *value, int format));
+void set_av_pe_print (const short sntx, const char *print_pe);
+void set_av_printer (const short sntx, void (*print)(PS ps, void *value, int format));
+short modify_av_printer (AttributeType at, const char *sntx, void (*print)(PS ps, void *value, int format));
 
 struct file_syntax {
 	short	fs_real_syntax;
@@ -171,17 +171,17 @@ struct file_syntax {
 void file_free (struct file_syntax *fs);
 void file_decode (AttributeValue x);
 AttributeValue str2file (char *str, AttributeType at);
-void fileattr_print (PS ps, AttributeValue y, int format);
-int dflt_attr_file (AttributeType at, AttributeValue x, char full);
+void fileattr_print (PS ps, AttributeValue y, const int format);
+int dflt_attr_file (AttributeType at, AttributeValue x, const char full);
 int str2file_aux (char *str, AttributeType at, AttributeValue x);
 void exec_print (
 	PS ps,
 	AttributeValue av,
-	char * proc
+	const char * proc
 );
 
 #define ps_print(ps,data) ((void)ps_print_s((ps),(data)))
-void pe_print (PS ps, PE pe, int format);
+void pe_print (PS ps, PE pe, const int format);
 
 typedef struct {
 	char *s_sntx;		/* String defining syntax */
@@ -203,7 +203,7 @@ typedef struct {
 
 extern char quipu_faststart;
 extern char * TidyString(char *a);
-extern char * TidyString2(char *a);
+extern char * TidyString2(const char *a);
 
 #define FAST_TIDY(x) if (quipu_faststart) while (isascii(*x) && isspace (*x)) x++; else x = TidyString(x)
 
@@ -212,7 +212,7 @@ void AttrV_free(AttributeValue x);
 void AttrV_free_aux(AttributeValue x);
 AttributeValue AttrV_cpy(AttributeValue x);
 AttributeValue str_at2AttrV(char * str, AttributeType at);
-AttributeValue str2AttrV(char * str, short syntax);
+AttributeValue str2AttrV(char * str, const short syntax);
 short str2syntax(char * str);
 int check_in_oc (OID oid, AV_Sequence avs);
 

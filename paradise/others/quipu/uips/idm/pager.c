@@ -11,7 +11,7 @@ void pagerOn(int number);
 void linewrapOn(void);
 void linewrapOff(void);
 int isWrapOn(void);
-void pageprint(char *fmt, ...);
+void pageprint(const char *fmt, ...);
 void putPagePrompt(void);
 int getPagerInput (void);
 int getpnum(void);
@@ -48,7 +48,7 @@ int isWrapOn(void) {
 	return wrapLines;
 }
 
-void pageprint(char *fmt, ...)
+void pageprint(const char *fmt, ...)
 {
 	va_list ap;
 	char buf[BUFSIZ];

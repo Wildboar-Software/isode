@@ -18,8 +18,8 @@
 
 extern int sd;		/*Global Session Descriptor (ISODE) */
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 
 #define	invalid_result(str,pe) \
     	adios (NULLCP, "%s: invalid result (%s)", (str), \

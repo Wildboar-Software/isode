@@ -10,16 +10,16 @@
 #define pepyversion rosyversion
 #include "rosy-defs.h"
 #include "../pepsy/pass2.h"
-void yyerror (char *s);
-void warning (char *fmt, ...);
-void yyerror_aux (char *s);
-void myyerror (char* fmt, ...);
+void yyerror (const char *s);
+void warning (const char *fmt, ...);
+void yyerror_aux (const char *s);
+void myyerror (const char* fmt, ...);
 int yywrap(void);
-void yyprint (char *s, int f, int top);
-static void yyprint_aux (char *s, char *mode);
+void yyprint (char *s, const int f, const int top);
+static void yyprint_aux (char *s, const char *mode);
 void pass1(void);
-void pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opcode);
-void pass1_err (char *mod, char *id, YP param, int errcode);
+void pass1_op (const char *mod, char *id, YP arg, YP result, YV errors, YV linked, const int opcode);
+void pass1_err (const char *mod, char *id, YP param, const int errcode);
 void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
 void pass2(void);
 
@@ -48,12 +48,12 @@ static int opvc;
 OID	mymoduleid;
 
 int yysection = 0;
-char *yyencpref = "none";
-char *yydecpref = "none";
-char *yyprfpref = "none";
-char *yyencdflt = "none";
-char *yydecdflt = "none";
-char *yyprfdflt = "none";
+const char *yyencpref = "none";
+const char *yydecpref = "none";
+const char *yyprfpref = "none";
+const char *yyencdflt = "none";
+const char *yydecdflt = "none";
+const char *yyprfdflt = "none";
 
 static char *yymode = "";
 
@@ -106,29 +106,29 @@ static	SY	myerrors = NULLSY;
 
 static	SY	mytypes = NULLSY;
 
-static char   *modsym (char *module, char *id, char *prefix);
-static char   *cmodsym (char *module, char *id, char *prefix, char *realid);
-static char   *csymmod (char *module, char *id, char *prefix);
-static SY	new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id), add_symbol (SY s1, SY s2);
+static char   *modsym (const char *module, const char *id, const char *prefix);
+static char   *cmodsym (const char *module, const char *id, const char *prefix, const char *realid);
+static char   *csymmod (const char *module, const char *id, const char *prefix);
+static SY	new_symbol (const char *encpref, const char *decpref, const char *prfpref, const char *mod, const char *id), add_symbol (SY s1, SY s2);
 
 static YE	lookup_err (YV yv);
-static YP	lookup_type (char *mod, char *id);
+static YP	lookup_type (const char *mod, const char *id);
 
-static void cmodsym_aux (char *name, char *bp);
-static void modsym_aux (char *name, char *bp);
-static void print_value (YV yv, int level);
-static void print_err (YE ye, int level);
-static void print_op (YO yo, int level);
-static int expand (char *dp, char *ep, char **gp);
-static void act2prf (char *cp, int level, char *e1, char *e2);
-static void dump_real (double r);
-static void val2prf (YV yv, int level);
+static void cmodsym_aux (const char *name, char *bp);
+static void modsym_aux (const char *name, char *bp);
+static void print_value (YV yv, const int level);
+static void print_err (YE ye, const int level);
+static void print_op (YO yo, const int level);
+static int expand (const char *dp, const char *ep, char **gp);
+static void act2prf (const char *cp, const int level, const char *e1, const char *e2);
+static void dump_real (const double r);
+static void val2prf (YV yv, const int level);
 static void normalize (YP *yp, char *id);
-static void do_err2 (YE ye, char *id);
-static void do_err1 (YE ye, char *id);
-static void do_op2 (YO yo, char *id);
-static void do_op1 (YO yo, char *id);
-static void do_type (YP yp, int level, char *id);
+static void do_err2 (YE ye, const char *id);
+static void do_err1 (YE ye, const char *id);
+static void do_op2 (YO yo, const char *id);
+static void do_op1 (YO yo, const char *id);
+static void do_type (YP yp, int level, const char *id);
 
 int main (int argc, char **argv, char **envp) {
 	char  *cp,
@@ -277,7 +277,7 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-void yyerror (char *s) {
+void yyerror (const char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -291,7 +291,7 @@ void yyerror (char *s) {
 }
 
 #ifndef lint
-void warning (char*fmt, ...) {
+void warning (const char *fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
@@ -305,11 +305,11 @@ void warning (char*fmt, ...) {
 
 #else
 /* VARARGS1 */
-void warning (char *fmt) {
+void warning (const char *fmt) {
 	warning (fmt);
 }
 #endif
-void yyerror_aux (char *s) {
+void yyerror_aux (const char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 	if (eval)
@@ -322,7 +322,7 @@ void yyerror_aux (char *s) {
 }
 
 #ifndef	lint
-void myyerror (char* fmt, ...) {
+void myyerror (const char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 	va_start (ap, fmt);
@@ -334,7 +334,7 @@ void myyerror (char* fmt, ...) {
 
 #ifdef        notyet
 #ifndef       lint
-static        pyyerror (YP yp, char* fmt, ...) {
+static        pyyerror (YP yp, const char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	register YP       yp;
 	va_start (ap, fmt);
@@ -354,7 +354,7 @@ static        pyyerror (YP yp, char* fmt, ...) {
 }
 #else
 /* VARARGS */
-static void pyyerror (YP yp, char *fmt) {
+static void pyyerror (YP yp, const char *fmt) {
 	pyyerror (yp, fmt);
 }
 #endif
@@ -366,12 +366,12 @@ int yywrap(void) {
 	return 1;
 }
 
-void yyprint (char *s, int f, int top) { }
+void yyprint (const char *s, const int f, const int top) { }
 
-static void yyprint_aux (char *s, char *mode) {
+static void yyprint_aux (char *s, const char *mode) {
 	int	    len;
 	static int nameoutput = 0;
-	static int outputlinelen = 79;
+	static const int outputlinelen = 79;
 
 	if (sflag)
 		return;
@@ -414,7 +414,7 @@ void pass1(void) {
 	printf ("DEFINITIONS ::=\n\n");
 }
 
-void pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opcode) {
+void pass1_op (const char *mod, char *id, YP arg, YP result, YV errors, YV linked, const int opcode) {
 	SY	    sy;
 	YO	    yo;
 
@@ -443,7 +443,7 @@ void pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int
 	myoperations = add_symbol (myoperations, sy);
 }
 
-void pass1_err (char *mod, char *id, YP param, int errcode) {
+void pass1_err (const char *mod, char *id, YP param, const int errcode) {
 	SY	    sy;
 	YE	    ye;
 
@@ -688,7 +688,7 @@ void pass2(void)  {
 	fclose (fstb);
 }
 
-static void do_op1 (YO yo, char *id) {
+static void do_op1 (YO yo, const char *id) {
 	YE	    ye;
 	YP	    yp;
 	YV	    yv;
@@ -807,7 +807,7 @@ static void do_op1 (YO yo, char *id) {
 	fprintf (ftbl, "\n");
 }
 
-static void do_op2 (YO yo, char *id) {
+static void do_op2 (YO yo, const char *id) {
 	YP	    yp;
 
 	fprintf (fdef, "\n#define stub_%s(sd,id,in,rfx,efx,class,roi)\\\n",
@@ -919,7 +919,7 @@ static void do_op2 (YO yo, char *id) {
 	fprintf (ftbl, ",\n\n");
 }
 
-static void do_err1 (YE ye, char *id) {
+static void do_err1 (YE ye, const char *id) {
 	YP	    yp;
 
 	fprintf (fdef, "\t\t\t\t\t/* ERROR %s */\n", ye -> ye_name);
@@ -978,7 +978,7 @@ static void do_err1 (YE ye, char *id) {
 	}
 }
 
-static void do_err2 (YE ye, char *id) {
+static void do_err2 (YE ye, const char *id) {
 	YP	yp;
 
 	fprintf (ftbl, "\t\t\t\t\t/* ERROR %s */\n", ye -> ye_name);
@@ -1006,7 +1006,7 @@ static void do_err2 (YE ye, char *id) {
 	}
 }
 
-static void do_type (YP yp, int level, char *id) {
+static void do_type (YP yp, int level, const char *id) {
 	YP	    y;
 	YV	    yv;
 	YT	    yt;
@@ -1325,7 +1325,7 @@ static YE lookup_err (YV yv) {
 	/* NOTREACHED */
 }
 
-static YP lookup_type (char *mod, char *id) {
+static YP lookup_type (const char *mod, const char *id) {
 	SY	    sy;
 
 	for (sy = mytypes; sy; sy = sy -> sy_next) {
@@ -1395,7 +1395,7 @@ int val2int (YV yv) {
 	return 0;
 }
 
-static void val2prf (YV yv, int level) {
+static void val2prf (YV yv, const int level) {
 	YV    y;
 
 	if (yv -> yv_flags & YV_ID)
@@ -1451,7 +1451,7 @@ static void val2prf (YV yv, int level) {
 	}
 }
 
-static void dump_real (double r) {
+static void dump_real (const double r) {
 #ifndef	BSD44
 	extern char *ecvt (double, int, int *, int *);
 	char	*cp;
@@ -1490,7 +1490,7 @@ static void dump_real (double r) {
 #endif
 }
 
-static void act2prf (char *cp, int level, char *e1, char *e2) {
+static void act2prf (const char *cp, const int level, const char *e1, const char *e2) {
 	int    i,
 		   j,
 		   l4;
@@ -1551,7 +1551,7 @@ out:
 		printf (e2, level * 4, "");
 }
 
-static int expand (char *dp, char *ep, char **gp) {
+static int expand (const char *dp, const char *ep, char **gp) {
 	int    i;
 
 	*gp = NULL;
@@ -1575,7 +1575,7 @@ static int expand (char *dp, char *ep, char **gp) {
 	return i;
 }
 
-static void print_op (YO yo, int level) {
+static void print_op (YO yo, const int level) {
 	if (yo == NULLYO)
 		return;
 
@@ -1596,7 +1596,7 @@ static void print_op (YO yo, int level) {
 	}
 }
 
-static void print_err (YE ye, int level) {
+static void print_err (YE ye, const int level) {
 	if (ye == NULLYE)
 		return;
 
@@ -1609,7 +1609,7 @@ static void print_err (YE ye, int level) {
 	}
 }
 
-void print_type (YP yp, int level) {
+void print_type (YP yp, const int level) {
 	YP	    y;
 	YV	    yv;
 
@@ -1696,7 +1696,7 @@ void print_type (YP yp, int level) {
 	}
 }
 
-static void print_value (YV yv, int level) {
+static void print_value (YV yv, const int level) {
 	YV	    y;
 
 	if (yv == NULLYV)
@@ -1754,7 +1754,7 @@ static void print_value (YV yv, int level) {
 	}
 }
 
-static SY new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id) {
+static SY new_symbol (const char *encpref, const char *decpref, const char *prfpref, const char *mod, const char *id) {
 	SY    sy;
 
 	if ((sy = (SY) calloc (1, sizeof *sy)) == NULLSY)
@@ -1821,7 +1821,7 @@ YV add_value (YV y, YV z) {
 	return y;
 }
 
-YT new_tag (PElementClass class) {
+YT new_tag (const PElementClass class) {
 	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
@@ -1842,7 +1842,7 @@ char *new_string (char *s) {
 }
 
 static struct triple {
-	char	   *t_name;
+	const char	   *t_name;
 	PElementClass   t_class;
 	PElementID	    t_id;
 }		triples[] = {
@@ -1866,7 +1866,7 @@ static struct triple {
 	NULL
 };
 
-static char *modsym (char *module, char *id, char *prefix) {
+static char *modsym (const char *module, const char *id, const char *prefix) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
@@ -1897,7 +1897,7 @@ static char *modsym (char *module, char *id, char *prefix) {
  * no underscores between components and dash is translated to only one
  * underscore to be compatiable with pepsy. Hence name Compress MODule SYMbol
  */
-static char *cmodsym (char *module, char *id, char *prefix, char *realid) {
+static char *cmodsym (const char *module, const char *id, const char *prefix, const char *realid) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
@@ -1926,7 +1926,7 @@ static char *cmodsym (char *module, char *id, char *prefix, char *realid) {
 /* like cmodsym except we put identifier (sym) then the module (mod) hence its
  * name symmod
  */
-static char *csymmod (char *module, char *id, char *prefix) {
+static char *csymmod (const char *module, const char *id, const char *prefix) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
@@ -1952,7 +1952,7 @@ static char *csymmod (char *module, char *id, char *prefix) {
 	return buffer;
 }
 
-static void modsym_aux (char *name, char *bp) {
+static void modsym_aux (const char *name, char *bp) {
 	char   c;
 
 	while (c = *name++)
@@ -1970,7 +1970,7 @@ static void modsym_aux (char *name, char *bp) {
 	*bp = 0;
 }
 
-static void cmodsym_aux (char *name, char *bp) {
+static void cmodsym_aux (const char *name, char *bp) {
 	char   c;
 
 	while (c = *name++)

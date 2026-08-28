@@ -7,15 +7,15 @@
 #include "quipu/syntaxes.h"
 #include "quipu/entry.h"
 #include "pepsycodec.h"
-static void acl_info_free (struct acl_info *aclptr);
-static void acl_attr_free (struct acl *aclptr);
+static void acl_info_free (const struct acl_info *aclptr);
+static void acl_attr_free (const struct acl *aclptr);
 static void acl_free (void *value);
-static int acl_default_cmp (struct acl *a);
-static int acl_info_comp_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2);
-static int acl_attr_comp_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2);
-static int acl_attr_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2);
+static int acl_default_cmp (const struct acl *a);
+static int acl_info_comp_cmp (const struct acl_info *acl_info1, const struct acl_info *acl_info2);
+static int acl_attr_comp_cmp (const struct acl_attr *acl_attr1, const struct acl_attr *acl_attr2);
+static int acl_attr_cmp (const struct acl_attr *acl_attr1, const struct acl_attr *acl_attr2);
 static int acl_cmp_void (void *value1, void *value2);
-static struct acl_attr *acl_attr_cpy (struct acl_attr *aclptr, struct acl_info *dflt);
+static struct acl_attr *acl_attr_cpy (const struct acl_attr *aclptr, const struct acl_info *dflt);
 static void *acl_cpy (void *value);
 static void *acl_decode (PE pe);
 static void get_default_acl (void);
@@ -23,13 +23,13 @@ static struct acl_attr *acl_attr_merge (struct acl_attr *a, struct acl_attr *b);
 static struct acl_info *str2acl_info (char **strptr);
 static struct acl *str2acl_aux (char *str, struct acl *the_acl);
 static void acl_merge (AV_Sequence a, char * str);
-static void acl_info_comp_print (PS ps, struct acl_info * aclptr, int format);
+static void acl_info_comp_print (PS ps, const struct acl_info * aclptr, const int format);
 static void acl_info_print (
 	PS ps,
-	struct acl_info * aclptr,
-	int format,
-	char * acl_type,
-	struct oid_seq * oidseq
+	const struct acl_info * aclptr,
+	const int format,
+	const char * acl_type,
+	const struct oid_seq * oidseq
 );
 static void acl_print (PS ps, void *value, int format);
 static PE acl_enc (void *value);
@@ -37,11 +37,11 @@ void acl_syntax (void);
 
 
 extern char dsa_mode;
-int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2);
-int acl_cmp (struct acl *acl1, struct acl *acl2);
+int acl_info_cmp (const struct acl_info *acl_info1, const struct acl_info *acl_info2);
+int acl_cmp (const struct acl *acl1, const struct acl *acl2);
 static struct acl_info * defaultacl = (struct acl_info *) NULL;
 
-static void acl_info_free (struct acl_info *aclptr) {
+static void acl_info_free (const struct acl_info *aclptr) {
 	struct acl_info * ptr;
 	struct acl_info * next;
 	if (test_acl_default(aclptr) == OK)
@@ -53,7 +53,7 @@ static void acl_info_free (struct acl_info *aclptr) {
 	}
 }
 
-static void acl_attr_free (struct acl *aclptr) {
+static void acl_attr_free (const struct acl *aclptr) {
 	struct acl_attr * ptr;
 	struct acl_attr * next;
 
@@ -76,7 +76,7 @@ static void acl_free (void *value) {
 	free ((char *) aclptr);
 }
 
-static int acl_default_cmp (struct acl *a) {
+static int acl_default_cmp (const struct acl *a) {
 	struct acl_attr * ptr;
 	/* Is 'a' the default ACL ? return 0 if it is. */
 	if (test_acl_default ( a -> ac_child ) == NOTOK)
@@ -91,7 +91,7 @@ static int acl_default_cmp (struct acl *a) {
 	return OK;
 }
 
-static int acl_info_comp_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2) {
+static int acl_info_comp_cmp (const struct acl_info *acl_info1, const struct acl_info *acl_info2) {
 	int	  i;
 	if((acl_info1 == NULLACL_INFO) && (acl_info2 == NULLACL_INFO))
 		return(0);
@@ -112,7 +112,7 @@ static int acl_info_comp_cmp (struct acl_info *acl_info1, struct acl_info *acl_i
 	return(0);
 }
 
-int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2) {
+int acl_info_cmp (const struct acl_info *acl_info1, const struct acl_info *acl_info2) {
 	struct acl_info	* ai1;
 	struct acl_info	* ai2;
 
@@ -147,7 +147,7 @@ int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2) {
 	return(0);
 }
 
-static int acl_attr_comp_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2) {
+static int acl_attr_comp_cmp (const struct acl_attr *acl_attr1, const struct acl_attr *acl_attr2) {
 	int	  i;
 	if((acl_attr1 == NULLACL_ATTR) && (acl_attr2 == NULLACL_ATTR))
 		return(0);
@@ -162,7 +162,7 @@ static int acl_attr_comp_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_a
 	return(0);
 }
 
-static int acl_attr_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2) {
+static int acl_attr_cmp (const struct acl_attr *acl_attr1, const struct acl_attr *acl_attr2) {
 	struct acl_attr	* aa1;
 	struct acl_attr	* aa2;
 
@@ -191,7 +191,7 @@ static int acl_attr_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2)
 	return(0);
 }
 
-int acl_cmp (struct acl *acl1, struct acl *acl2) {
+int acl_cmp (const struct acl *acl1, const struct acl *acl2) {
 	int	  i;
 	if((acl1 == NULLACL) && (acl2 == NULLACL))
 		return(0);
@@ -216,7 +216,7 @@ static int acl_cmp_void (void *value1, void *value2) {
 	return acl_cmp (acl1, acl2);
 }
 
-struct acl_info *acl_info_new (int x, int y, struct dn_seq *z) {
+struct acl_info *acl_info_new (const int x, const int y, const struct dn_seq *z) {
 	struct acl_info * ptr;
 	ptr = acl_info_alloc ();
 	acl_info_fill (ptr,x,y,z);
@@ -224,7 +224,7 @@ struct acl_info *acl_info_new (int x, int y, struct dn_seq *z) {
 	return (ptr);
 }
 
-static struct acl_info *acl_info_cpy (struct acl_info *aclptr) {
+static struct acl_info *acl_info_cpy (const struct acl_info *aclptr) {
 	struct acl_info * ptr;
 	struct acl_info * ptr2;
 	struct acl_info * result = NULLACL_INFO;
@@ -243,7 +243,7 @@ static struct acl_info *acl_info_cpy (struct acl_info *aclptr) {
 	return (result);
 }
 
-static struct acl_attr *acl_attr_cpy (struct acl_attr *aclptr, struct acl_info *dflt) {
+static struct acl_attr *acl_attr_cpy (const struct acl_attr *aclptr, const struct acl_info *dflt) {
 	struct acl_attr * ptr;
 	struct acl_attr * ptr2;
 	struct acl_attr * result = NULLACL_ATTR;
@@ -565,7 +565,7 @@ char * acl_sel  []  = {
 	"group"
 };
 
-static void acl_info_comp_print (PS ps, struct acl_info * aclptr, int format) {
+static void acl_info_comp_print (PS ps, const struct acl_info * aclptr, const int format) {
 	if (format == READOUT) {
 		switch (aclptr->acl_selector_type) {
 		case ACL_PREFIX:
@@ -593,10 +593,10 @@ static void acl_info_comp_print (PS ps, struct acl_info * aclptr, int format) {
 
 static void acl_info_print (
 	PS ps,
-	struct acl_info * aclptr,
-	int format,
-	char * acl_type,
-	struct oid_seq * oidseq
+	const struct acl_info * aclptr,
+	const int format,
+	const char * acl_type,
+	const struct oid_seq * oidseq
 ) {
 	struct acl_info * ptr;
 	char printed = FALSE;

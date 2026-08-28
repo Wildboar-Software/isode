@@ -36,8 +36,8 @@ SFD alarm_sig (int sd);
 SFD bind_sig (int sd);
 #endif
 void bind_alarm (void);
-int isnumeric (char *ptr);
-int call_bind (int argc, char **argv);
+int isnumeric (const char *ptr);
+int call_bind (const int argc, char **argv);
 void call_unbind (int argc, char **argv);
 void dish_quit (int sig);
 
@@ -85,7 +85,7 @@ extern int parent_pid;
 static unsigned waiting = 0;
 
 extern char *new_version(void);
-extern unsigned long hash_passwd(unsigned long seed, char *str, int len);
+extern unsigned long hash_passwd(unsigned long seed, const char *str, int len);
 extern char *hash2str(unsigned long hash, int *len);
 extern struct certificate *cert_cpy(struct certificate *parm);
 extern struct SecurityServices *dsap_security;
@@ -160,7 +160,7 @@ void bind_alarm (void) {
 	alarm (connect_time);
 }
 
-int isnumeric (char *ptr) {
+int isnumeric (const char *ptr) {
 	if ((ptr == NULLCP) || (*ptr == 0))
 		return FALSE;
 	while (*ptr)
@@ -169,7 +169,7 @@ int isnumeric (char *ptr) {
 	return TRUE;
 }
 
-int call_bind (int argc, char **argv) {
+int call_bind (const int argc, char **argv) {
 	int 	x;
 	char    noconnect = FALSE;
 	static  char    bdsa  [LINESIZE], save_bdsa[LINESIZE];
@@ -181,7 +181,7 @@ int call_bind (int argc, char **argv) {
 	char    buf[BUFSIZ];
 	DN	newdn, dsadn;
 	extern  char * tailfile;
-	extern DN sequence_dn(int y);
+	extern DN sequence_dn(const int y);
 	char got_name = FALSE;
 	char got_pass = FALSE;
 
@@ -519,7 +519,7 @@ int rebind (void) {
 	return (OK);
 }
 
-int referral_bind (struct PSAPaddr *addr) {
+int referral_bind (const struct PSAPaddr *addr) {
 	if (referral_dsa != 0)
 		dap_unbind (referral_dsa++);
 	else
@@ -626,7 +626,7 @@ int user_tailor (void) {
 	char           *p,
 				   *TidyString(char *a);
 	extern char    *local_dit;
-	extern char	dishinit;
+	extern const char	dishinit;
 	struct	 stat	sbuf;
 	*password = 0;
 	*username = 0;

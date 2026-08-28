@@ -15,7 +15,7 @@ static int ravl_insert(
 	int *taller,
 	int (*fcmp)(caddr_t data1, caddr_t data2),
 	int (*fdup)(caddr_t data1, caddr_t data2),
-	int depth
+	const int depth
 );
 static int right_balance(Avlnode **root);
 static int left_balance(Avlnode **root);
@@ -26,22 +26,22 @@ static caddr_t ravl_delete(
 	int *shorter
 );
 static int avl_inapply(
-	Avlnode *root,
+	const Avlnode *root,
 	int (*fn)(caddr_t data, caddr_t arg),
 	caddr_t arg,
-	int stopflag
+	const int stopflag
 );
 static int avl_postapply(
-	Avlnode *root,
+	const Avlnode *root,
 	int (*fn)(caddr_t data, caddr_t arg),
 	caddr_t arg,
-	int stopflag
+	const int stopflag
 );
 static int avl_preapply(
-	Avlnode *root,
+	const Avlnode *root,
 	int (*fn)(caddr_t data, caddr_t arg),
 	caddr_t arg,
-	int stopflag
+	const int stopflag
 );
 static int avl_buildlist (caddr_t data, caddr_t arg);
 
@@ -84,7 +84,7 @@ static int ravl_insert(
 	int *taller,
 	int (*fcmp)(caddr_t data1, caddr_t data2),
 	int (*fdup)(caddr_t data1, caddr_t data2),
-	int depth
+	const int depth
 ) {
 	int	rc, cmp, tallersub;
 	Avlnode	*l, *r;
@@ -446,10 +446,10 @@ caddr_t avl_delete(
 }
 
 static int avl_inapply(
-	Avlnode *root,
+	const Avlnode *root,
 	int (*fn)(caddr_t data, caddr_t arg),
 	caddr_t arg,
-	int stopflag
+	const int stopflag
 ) {
 	if ( root == 0 )
 		return( AVL_NOMORE );
@@ -466,10 +466,10 @@ static int avl_inapply(
 }
 
 static int avl_postapply(
-	Avlnode *root,
+	const Avlnode *root,
 	int (*fn)(caddr_t data, caddr_t arg),
 	caddr_t arg,
-	int stopflag
+	const int stopflag
 ) {
 	if ( root == 0 )
 		return( AVL_NOMORE );
@@ -485,10 +485,10 @@ static int avl_postapply(
 }
 
 static int avl_preapply(
-	Avlnode *root,
+	const Avlnode *root,
 	int (*fn)(caddr_t data, caddr_t arg),
 	caddr_t arg,
-	int stopflag
+	const int stopflag
 ) {
 	if ( root == 0 )
 		return( AVL_NOMORE );
@@ -518,11 +518,11 @@ static int avl_preapply(
  * @return AVL_NOMORE (-6) if no nodes match, otherwise the stopflag
  */
 int avl_apply(
-	Avlnode *root,
+	const Avlnode *root,
 	int (*fn)(caddr_t data, caddr_t arg),
 	caddr_t arg,
-	int stopflag,
-	int type
+	const int stopflag,
+	const int type
 ) {
 	switch ( type ) {
 	case AVL_INORDER:
@@ -558,13 +558,13 @@ int avl_apply(
  * @return AVL_NOMORE (-6) if no nodes match, otherwise the stopflag
  */
 int avl_prefixapply(
-	Avlnode *root,
+	const Avlnode *root,
 	caddr_t data,
 	int (*fmatch)(caddr_t data1, caddr_t data2),
 	caddr_t marg,
 	int (*fcmp)(caddr_t data1, caddr_t data2, caddr_t carg),
 	caddr_t carg,
-	int stopflag
+	const int stopflag
 ) {
 	int	cmp;
 
@@ -671,7 +671,7 @@ static int avl_buildlist (caddr_t data, caddr_t arg) {
 	return( 0 );
 }
 
-caddr_t avl_getfirst(Avlnode *root)
+caddr_t avl_getfirst(const Avlnode *root)
 {
 	if ( avl_list ) {
 		free( (char *) avl_list);

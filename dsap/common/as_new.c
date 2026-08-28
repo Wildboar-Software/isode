@@ -1,7 +1,7 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 
-Attr_Sequence  as_comp_new (AttributeType at, AV_Sequence as, struct acl_info *acl) {
+Attr_Sequence  as_comp_new (AttributeType at, AV_Sequence as, const struct acl_info *acl) {
 	Attr_Sequence ptr;
 	ptr = as_comp_alloc ();
 	bzero ((char *)ptr,sizeof(*ptr));

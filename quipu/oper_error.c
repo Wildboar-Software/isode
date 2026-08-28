@@ -11,7 +11,7 @@ extern  LLog    * log_stat;
 #endif
 extern time_t	  timenow;
 
-void oper_error (struct connection *conn, struct DSAPindication *di) {
+void oper_error (struct connection *conn, const struct DSAPindication *di) {
 	struct DSAPerror	* de = &(di->di_error);
 	struct oper_act *   oper;
 	DLOG(log_dsap, LLOG_TRACE, ("net_wait_ro_error"));

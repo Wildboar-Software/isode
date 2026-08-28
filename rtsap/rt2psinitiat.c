@@ -10,17 +10,17 @@
 #include "pepsycodec.h"
 
 static int RtOpenRequestAux (
-	int mode,
-	int turn,
+	const int mode,
+	const int turn,
 	OID context,
 	AEI callingtitle,
 	AEI calledtitle,
-	struct PSAPaddr *callingaddr,
-	struct PSAPaddr *calledaddr,
+	const struct PSAPaddr *callingaddr,
+	const struct PSAPaddr *calledaddr,
 	struct PSAPctxlist *ctxlist,
 	OID defctxname,
 	PE data,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	OID tctx,
 	struct RtSAPconnect *rtc,
 	struct RtSAPindication *rti
@@ -29,17 +29,17 @@ static int RtOpenRequestAux (
 /* RT-OPEN.REQUEST */
 
 int	RtOpenRequest2 (
-	int mode,
-	int turn,
+	const int mode,
+	const int turn,
 	OID context,
 	AEI callingtitle,
 	AEI calledtitle,
-	struct PSAPaddr *callingaddr,
-	struct PSAPaddr *calledaddr,
+	const struct PSAPaddr *callingaddr,
+	const struct PSAPaddr *calledaddr,
 	struct PSAPctxlist *ctxlist,
 	OID defctxname,
 	PE data,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	OID tctx,
 	struct RtSAPconnect *rtc,
 	struct RtSAPindication *rti
@@ -89,17 +89,17 @@ int	RtOpenRequest2 (
 }
 
 static int RtOpenRequestAux (
-	int mode,
-	int turn,
+	const int mode,
+	const int turn,
 	OID context,
 	AEI callingtitle,
 	AEI calledtitle,
-	struct PSAPaddr *callingaddr,
-	struct PSAPaddr *calledaddr,
+	const struct PSAPaddr *callingaddr,
+	const struct PSAPaddr *calledaddr,
 	struct PSAPctxlist *ctxlist,
 	OID defctxname,
 	PE data,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	OID tctx,
 	struct RtSAPconnect *rtc,
 	struct RtSAPindication *rti

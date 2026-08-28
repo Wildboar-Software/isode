@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-int set_del (PE pe, PElementClass class, PElementID id) {
+int set_del (PE pe, const PElementClass class, const PElementID id) {
 	int    pe_id;
 	PE	   *p,
 	 q;

@@ -95,7 +95,7 @@ int move (char *arg) {
 
 	DN              user_down (void);
 	DN              str2dn_aux(char *str, char *alias);
-	DN		sequence_dn(int y);
+	DN		sequence_dn(const int y);
 	DN              tmpdn;
 	char *		ptr;
 	char		alias = FALSE;

@@ -31,13 +31,13 @@ extern	struct PSAPctxlist	* x500_ds_pcdl;
 extern	struct PSAPctxlist	* quipu_ds_pcdl;
 extern	struct PSAPctxlist	* internet_ds_pcdl;
 extern  AttributeType at_listen;
-extern  Entry local_find_entry_aux(DN object, char deref);
+extern  Entry local_find_entry_aux(DN object, const char deref);
 
 extern	DN			  mydsadn;
 extern  struct PSAPaddr		* mydsaaddr;
 extern  struct PSAPaddr		* dsaladdr;
 
-extern	struct PSAPaddr		* psap_cpy(struct PSAPaddr *a);
+extern	struct PSAPaddr		* psap_cpy(const struct PSAPaddr *a);
 int	max_conns;
 
 static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {

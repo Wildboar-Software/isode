@@ -41,7 +41,7 @@
 static void raw_main (char *service, char *addr);
 static void ros_invokerequest (int sd, PE pe);
 static	void timer (int cc);
-static void  _advise (char* what, char* fmt, va_list ap);
+static void  _advise (char* what, const char* fmt, va_list ap);
 
 #define	TMS
 #endif
@@ -69,8 +69,8 @@ static int   status = 0;
 
 static char *myname = "isoc";
 
-void	adios (char* what, char* fmt, ...),
-		advise (char* what, char* fmt, ...);
+void	adios (char* what, const char* fmt, ...),
+		advise (char* what, const char* fmt, ...);
 static void	ts_adios (struct TSAPdisconnect *td, char *event), ts_advise (struct TSAPdisconnect *td, char *event);
 static void	ss_adios (struct SSAPabort *sa, char *event), ss_advise (struct SSAPabort *sa, char *event);
 static void	ps_adios (struct PSAPabort *pa, char *event), ps_advise (struct PSAPabort *pa, char *event);
@@ -79,30 +79,30 @@ static void	rts_adios (struct RtSAPabort *rta, char *event), rts_advise (struct 
 static void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 
 #ifdef	TCP
-static void raw_main (char *service, char *addr);
+static void raw_main (const char *service, char *addr);
 #endif
 #ifdef TIMER
 #ifndef	TMS
 static void timer (int cc);
-static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
+static void tvsub (struct timeval *tdiff, const struct timeval *t1, const struct timeval *t0);
 #endif
 #endif
 static void ros_invokerequest (int sd, PE pe);
 static void do_ros (int sd);
-static void ros_main (struct isoservent *is, char *addr);
+static void ros_main (const struct isoservent *is, char *addr);
 static void rts_waitfor (int sd);
-static void rts_main (struct isoservent *is, char *addr);
-static void ps_abort (int sd, char *reason);
+static void rts_main (const struct isoservent *is, char *addr);
+static void ps_abort (int sd, const char *reason);
 static void ps_event (int sd, struct PSAPindication *si);
 static void ps_waitfor (int sd, int want);
-static void ps_datarequest (int sd, PE pe, int dm, int sync);
-static void ps_main (struct isoservent *is, char *addr);
+static void ps_datarequest (int sd, PE pe, const int dm, const int sync);
+static void ps_main (const struct isoservent *is, char *addr);
 static void ss_event (int sd, struct SSAPindication *si);
 static void ss_waitfor (int sd, int want);
-static void ss_datarequest (int sd, char *data, int cc, int dm, int sync);
-static void ss_main (struct isoservent *is, char *addr);
-static void ts_datarequest (int sd, char *data, int cc, int expedited);
-static void ts_main (struct isoservent *is, char *addr);
+static void ss_datarequest (int sd, char *data, int cc, const int dm, const int sync);
+static void ss_main (const struct isoservent *is, char *addr);
+static void ts_datarequest (int sd, char *data, int cc, const int expedited);
+static void ts_main (const struct isoservent *is, char *addr);
 static int  qcmp (char *b, struct qbuf *qb, int l);
 static int  rts_event (int sd, struct RtSAPindication *rti);
 static void rts_transferequest (int sd, PE pe);
@@ -207,7 +207,7 @@ malloc_and_read_stdin (int cc)
 }
 
 #ifdef	TCP
-static void raw_main (char *service, char *addr) {
+static void raw_main (const char *service, char *addr) {
 	int     sd,
 			cc,
 			i,
@@ -218,7 +218,7 @@ static void raw_main (char *service, char *addr) {
 	struct servent *sp;
 	struct sockaddr_in  in_socket;
 	struct sockaddr_in *isock = &in_socket;
-	struct stat st;
+	const struct stat st;
 
 	if (strcmp (service, "sink"))
 		adios (NULLCP, "only sink on raw tcp is supported");
@@ -261,7 +261,7 @@ static void raw_main (char *service, char *addr) {
 }
 #endif
 
-static void ts_main (struct isoservent *is, char *addr) {
+static void ts_main (const struct isoservent *is, char *addr) {
 	int     sd,
 			cc,
 			i,
@@ -276,7 +276,7 @@ static void ts_main (struct isoservent *is, char *addr) {
 	struct TSAPconnect *tc = &tcs;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect *td = &tds;
-	struct stat st;
+	const struct stat st;
 
 	if ((ta = is2taddr (addr, NULLCP, is)) == NULL)
 		adios (NULLCP, "address translation failed");
@@ -381,7 +381,7 @@ static void ts_main (struct isoservent *is, char *addr) {
 		ts_adios (td, "T-DISCONNECT.REQUEST");
 }
 
-static void ts_datarequest (int sd, char *data, int cc, int expedited) {
+static void ts_datarequest (int sd, char *data, int cc, const int expedited) {
 	struct TSAPdata txs;
 	struct TSAPdata   *tx = &txs;
 	struct TSAPdisconnect   tds;
@@ -445,7 +445,7 @@ static int datamodes[4];
 
 static char userdata[512];
 
-static void ss_main ( struct isoservent *is, char   *addr) {
+static void ss_main ( const struct isoservent *is, char   *addr) {
 	int     sd,
 			cc,
 			i,
@@ -468,7 +468,7 @@ static void ss_main ( struct isoservent *is, char   *addr) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
-	struct stat st;
+	const struct stat st;
 
 	bzero (userdata, sizeof userdata);
 
@@ -750,7 +750,7 @@ push_data:
 	SRFREE (sr);
 }
 
-static void ss_datarequest (int sd, char *data, int cc, int dm, int sync) {
+static void ss_datarequest (int sd, char *data, int cc, const int dm, const int sync) {
 	int     result;
 	struct SSAPdata sxs;
 	struct SSAPdata   *sx = &sxs;
@@ -1082,7 +1082,7 @@ static int prequirements = 0;
 static int nctxs;
 static int datactxs[NPCTX];
 
-static void ps_main (struct isoservent *is, char *addr) {
+static void ps_main (const struct isoservent *is, char *addr) {
 	int     sd,
 			cc,
 			i,
@@ -1120,7 +1120,7 @@ static void ps_main (struct isoservent *is, char *addr) {
 	AEI	    aei;
 	OID	    oid,
 			ode;
-	struct stat st;
+	const struct stat st;
 
 	if (isacs) {
 		if ((aei = str2aei (addr, isacs)) == NULLAEI)
@@ -1609,7 +1609,7 @@ do_release:
 		pe_free (udata[i]);
 }
 
-static void ps_datarequest (int sd, PE pe, int dm, int sync) {
+static void ps_datarequest (int sd, PE pe, const int dm, const int sync) {
 	int     result;
 	struct PSAPdata pxs;
 	struct PSAPdata   *px = &pxs;
@@ -1962,7 +1962,7 @@ static void ps_event (int sd, struct PSAPindication *pi) {
 	}
 }
 
-static void ps_abort (int sd, char *reason) {
+static void ps_abort (int sd, const char *reason) {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
@@ -2022,7 +2022,7 @@ static void acs_advise (struct AcSAPabort *aca, char *event) {
 
 static int turn = 0;
 
-static void rts_main (struct isoservent *is, char *addr) {
+static void rts_main (const struct isoservent *is, char *addr) {
 	int     sd,
 			cc,
 			i,
@@ -2051,7 +2051,7 @@ static void rts_main (struct isoservent *is, char *addr) {
 	AEI	    aei;
 	OID	    oid,
 			ode;
-	struct stat st;
+	const struct stat st;
 
 	if ((pe = int2prim (i = getpid ())) == NULLPE)
 		adios (NULLCP, "unable to allocate hello");
@@ -2382,7 +2382,7 @@ static void  rts_advise (struct RtSAPabort *rta, char *event)
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-static void ros_main (struct isoservent *is, char *addr) {
+static void ros_main (const struct isoservent *is, char *addr) {
 	int     sd,
 			i;
 	char   *cp;
@@ -2539,7 +2539,7 @@ static void do_ros (int sd) {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease *acr = &acrs;
 	PE	pe;
-	struct stat st;
+	const struct stat st;
 
 	if (stdin_regsize (&cc) == OK) {
 		lseek (fileno (stdin), 0L, 0);
@@ -2779,7 +2779,7 @@ static void timer (int cc) {
 			td.tv_sec, td.tv_usec / 10000, bs / 1024);
 }
 
-static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
+static void tvsub (struct timeval *tdiff, const struct timeval *t1, const struct timeval *t0) {
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)
@@ -2844,9 +2844,9 @@ static int qcmp (char *b, struct qbuf *qb, int l) {
 }
 
 #ifndef	lint
-static void	_advise (char *what, char *fmt, va_list ap);
+static void	_advise (char *what, const char *fmt, va_list ap);
 
-void adios (char* what, char* fmt, ...) {
+void adios (char* what, const char* fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_advise (what, fmt, ap);
@@ -2855,20 +2855,20 @@ void adios (char* what, char* fmt, ...) {
 }
 #else
 /* VARARGS */
-void	adios (char *what, char *fmt) {
+void	adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (char* what, char* fmt, ...) {
+void	advise (char* what, const char* fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_advise (what, fmt, ap);
 	va_end (ap);
 }
 
-static void  _advise (char* what, char* fmt, va_list ap) {
+static void  _advise (char* what, const char* fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 	_asprintf (buffer, what, fmt, ap);
 	fflush (stdout);
@@ -2878,7 +2878,7 @@ static void  _advise (char* what, char* fmt, va_list ap) {
 	fflush (stderr);
 }
 #else
-void advise (char *what, char *fmt) {
+void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif

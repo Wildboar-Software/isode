@@ -18,7 +18,7 @@
 #include "dgram.h"
 #include "tailor.h"
 #include "pepsycodec.h"
-static struct type_SNMP_Message *new_message (OID arg, struct type_SNMP_VarBindList *vb, char *community, int next);
+static struct type_SNMP_Message *new_message (OID arg, const struct type_SNMP_VarBindList *vb, char *community, const int next);
 void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community);
 void bulk2 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community);
 static struct request *new_request (char *community);
@@ -63,7 +63,7 @@ struct binding {
 	struct binding *b_next;
 };
 
-static int  new_string (PS ps, struct type_SNMP_VarBindList *vb, char *community, struct binding *bp);
+static int  new_string (PS ps, const struct type_SNMP_VarBindList *vb, char *community, const struct binding *bp);
 
 /* INVOCATION INFORMATION */
 static	int	last_id = 0;
@@ -152,11 +152,11 @@ struct request {
 #define	r_curinvokes  r_invoke.i_curinvokes
 };
 
-static int  wait_for_action (int sd, PS ps), new_thread (PS ps, struct type_SNMP_VarBindList *vb, char *community, OID start, OID stop), next_thread (struct thread *t, PS ps, int next),
-            bulk2_aux (PS ps, int sd, struct binding *bl, struct type_SNMP_VarBindList *vb, char *community), new_bound (char *community, OID start, OID stop);
-static  void print_bulk (struct binding *bl, struct type_SNMP_VarBindList *vb, int partial), free_thread (struct thread *t), free_request (struct request *r),
+static int  wait_for_action (int sd, PS ps), new_thread (PS ps, const struct type_SNMP_VarBindList *vb, char *community, OID start, OID stop), next_thread (struct thread *t, PS ps, const int next),
+            bulk2_aux (PS ps, int sd, struct binding *bl, const struct type_SNMP_VarBindList *vb, char *community), new_bound (char *community, OID start, OID stop);
+static  void print_bulk (const struct binding *bl, const struct type_SNMP_VarBindList *vb, const int partial), free_thread (struct thread *t), free_request (struct request *r),
         free_bound (struct bound *b);
-static int push_requests (PS ps, char *community, int onemore);
+static int push_requests (PS ps, char *community, const int onemore);
 
 static struct request rque;	/* active request list */
 static struct request *RHead = &rque;
@@ -176,8 +176,8 @@ static OID	oid_median (OID a, OID b), oid_copy (OID a);
 extern	int	debug;
 extern	int	watch;
 
-void	adios (char *, char *, ...);
-void	advise (char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (char *, const char *, ...);
 char   *snmp_error (int i);
 
 /* BULK1 */
@@ -559,7 +559,7 @@ drop_request:
 finish_invoke:
 			;
 			if (i -> i_retries == 0) {
-				long    val = timenow - i -> i_lastime;
+				const long    val = timenow - i -> i_lastime;
 				if (maxrtt < val)
 					maxrtt = val;
 				if (timelap < SETTLETIME) {
@@ -616,7 +616,7 @@ next_request:
 						 dtimeout / 1000.0);
 		}
 	} else if (maxrtt > 0 && maxrtt != timeout) {
-		long    timedelta = maxrtt + (maxrtt >> 1);
+		const long    timedelta = maxrtt + (maxrtt >> 1);
 		if (timedelta > timeout) {
 			if ((timeout = timedelta) > MAXTIME)
 				timeout = MAXTIME;
@@ -688,7 +688,7 @@ outta_time:
 	return backoff;
 }
 
-static void print_bulk (struct binding *bl, struct type_SNMP_VarBindList *vb, int partial) {
+static void print_bulk (const struct binding *bl, const struct type_SNMP_VarBindList *vb, const int partial) {
 	int	    i;
 	struct binding *bv, *bz;
 
@@ -738,7 +738,7 @@ static void print_bulk (struct binding *bl, struct type_SNMP_VarBindList *vb, in
 	printf ("\n");
 }
 
-static struct type_SNMP_Message *new_message (OID arg, struct type_SNMP_VarBindList *vb, char *community, int next) {
+static struct type_SNMP_Message *new_message (OID arg, const struct type_SNMP_VarBindList *vb, char *community, const int next) {
 	struct type_SNMP_Message *msg;
 	struct type_SNMP_PDUs *pdu;
 	struct type_SNMP_PDU *parm;
@@ -785,7 +785,7 @@ static struct type_SNMP_Message *new_message (OID arg, struct type_SNMP_VarBindL
 	return msg;
 }
 
-static int new_thread (PS ps, struct type_SNMP_VarBindList *vb, char *community, OID start, OID stop) {
+static int new_thread (PS ps, const struct type_SNMP_VarBindList *vb, char *community, OID start, OID stop) {
 	struct thread *t;
 
 	t = (struct thread *) calloc (1, sizeof *t);
@@ -808,7 +808,7 @@ static int new_thread (PS ps, struct type_SNMP_VarBindList *vb, char *community,
 	return next_thread (t, ps, 1);
 }
 
-static int  new_string (PS ps, struct type_SNMP_VarBindList *vb, char *community, struct binding *bp) {
+static int  new_string (PS ps, const struct type_SNMP_VarBindList *vb, char *community, const struct binding *bp) {
 	struct thread *t;
 
 	t = (struct thread *) calloc (1, sizeof *t);
@@ -844,7 +844,7 @@ static void free_thread (struct thread *t) {
 	free ((char *) t);
 }
 
-static int next_thread (struct thread *t, PS ps, int next) {
+static int next_thread (struct thread *t, PS ps, const int next) {
 	if (++t -> t_rid >= t -> t_mid)
 		t -> t_rid = t -> t_mid - MAXSPACE;
 	t -> t_info = 0;
@@ -1034,7 +1034,7 @@ losing:
 	print_bulk (bl, vb, dedrequests || dedthreads);
 }
 
-static int bulk2_aux (PS ps, int sd, struct binding *bl, struct type_SNMP_VarBindList *vb, char *community) {
+static int bulk2_aux (PS ps, int sd, struct binding *bl, const struct type_SNMP_VarBindList *vb, char *community) {
 	int	    backoff;
 	struct thread *t;
 
@@ -1181,7 +1181,7 @@ static void free_bound (struct bound *b) {
 	free ((char *) b);
 }
 
-static int push_requests (PS ps, char *community, int onemore) {
+static int push_requests (PS ps, char *community, const int onemore) {
 	int    nbound,
 		   nrequest,
 		   tbound;

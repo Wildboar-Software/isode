@@ -3,9 +3,9 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
-Filter strfilter (AttributeType at, char *s, char type);
+Filter strfilter (AttributeType at, char *s, const char type);
 Filter ocfilter (char *s);
-Filter joinfilter (Filter f, char type);
+Filter joinfilter (Filter f, const char type);
 
 
 extern LLog * log_dsap;
@@ -53,7 +53,7 @@ void filter_append (Filter a, Filter b)
 	trail->flt_next = b;
 }
 
-Filter strfilter (AttributeType at, char *s, char type)
+Filter strfilter (AttributeType at, char *s, const char type)
 {
 	Filter filt;
 
@@ -150,7 +150,7 @@ Filter ocfilter (char *s)
 	return filt;
 }
 
-Filter joinfilter (Filter f, char type)
+Filter joinfilter (Filter f, const char type)
 {
 	Filter filt;
 
@@ -161,7 +161,7 @@ Filter joinfilter (Filter f, char type)
 	return filt;
 }
 
-void fi_print (PS ps, Filter fi, int format)
+void fi_print (PS ps, Filter fi, const int format)
 {
 	print_filter (ps, fi, 0);
 }

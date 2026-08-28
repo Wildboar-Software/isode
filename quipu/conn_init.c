@@ -14,7 +14,7 @@ extern LLog * log_stat;
 #endif
 extern  struct PSAPaddr		* dsaladdr;
 
-void ds_log(struct DSAPabort *da, char *str, int fd);
+void ds_log(const struct DSAPabort *da, char *str, const int fd);
 
 struct connection	* conn_alloc(void);
 
@@ -218,7 +218,7 @@ void conn_init_err (struct connection *cn) {
 	}
 }
 
-void conn_pre_init (int newfd, int vecp, char **vec) {
+void conn_pre_init (const int newfd, const int vecp, char **vec) {
 	struct connection	* cn = NULLCONN;
 	for (cn = connlist; cn != NULLCONN; cn = cn->cn_next)
 		if (newfd == cn->cn_ad)
@@ -248,7 +248,7 @@ void conn_pre_init (int newfd, int vecp, char **vec) {
 		DLOG (log_dsap,LLOG_NOTICE, ("opening association on %d",newfd ));
 }
 
-void warn_conn_init (int newfd) {
+void warn_conn_init (const int newfd) {
 	/* An association will come soon... */
 	struct connection * cn = NULLCONN;
 	for (cn = connlist; cn != NULLCONN; cn = cn->cn_next)

@@ -31,7 +31,7 @@ typedef struct avlnode {
 extern int	avl_insert(Avlnode **root, caddr_t data, int (*fcmp)(caddr_t data1, caddr_t data2), int (*fdup)(caddr_t data1, caddr_t data2));
 extern caddr_t	avl_delete(Avlnode **root, caddr_t data, int (*fcmp)(caddr_t data1, caddr_t data2));
 extern caddr_t	avl_find(Avlnode *root, caddr_t data, int (*fcmp)(caddr_t data1, caddr_t data2));
-extern caddr_t	avl_getfirst(Avlnode *root);
+extern caddr_t	avl_getfirst(const Avlnode *root);
 extern caddr_t	avl_getnext(void);
 extern int	avl_dup_error(caddr_t data1, caddr_t data2);
 
@@ -79,7 +79,7 @@ typedef struct index {
 	Avlnode		*i_sroot;	/* tree of soundex values	    */
 } Index;
 
-int idn_cmp(DN a, Index *b);
+int idn_cmp(DN a, const Index *b);
 int idn_cmp_from_caddrs(caddr_t data1, caddr_t data2);
 int th_prefix(DN a, DN b);
 
@@ -110,7 +110,7 @@ int avl_free(
 	void (*dfree)(caddr_t data)
 );
 
-caddr_t avl_getfirst(Avlnode *root);
+caddr_t avl_getfirst(const Avlnode *root);
 caddr_t avl_getnext (void);
 int avl_dup_error (caddr_t data1, caddr_t data2);
 caddr_t avl_find(
@@ -119,20 +119,20 @@ caddr_t avl_find(
 	int (*fcmp)(caddr_t data1, caddr_t data2)
 );
 int avl_prefixapply(
-	Avlnode *root,
+	const Avlnode *root,
 	caddr_t data,
 	int (*fmatch)(caddr_t data1, caddr_t data2),
 	caddr_t marg,
 	int (*fcmp)(caddr_t data1, caddr_t data2, caddr_t carg),
 	caddr_t carg,
-	int stopflag
+	const int stopflag
 );
 int avl_apply(
-	Avlnode *root,
+	const Avlnode *root,
 	int (*fn)(caddr_t data, caddr_t arg),
 	caddr_t arg,
-	int stopflag,
-	int type
+	const int stopflag,
+	const int type
 );
 caddr_t avl_delete(
 	Avlnode **root,

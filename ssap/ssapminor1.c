@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
-static int SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si);
+static int SMinSyncRequestAux (struct ssapblk *sb, const int type, long *ssn, const char *data, int cc, struct SSAPindication *si);
 
 
-static int SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si);
+static int SMinSyncRequestAux (struct ssapblk *sb, const int type, long *ssn, const char *data, int cc, struct SSAPindication *si);
 
 /* S-MINOR-SYNC.REQUEST */
 
-int SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPindication *si) {
+int SMinSyncRequest (int sd, const int type, long *ssn, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -34,7 +34,7 @@ int SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSA
 	return result;
 }
 
-static int SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si) {
+static int SMinSyncRequestAux (struct ssapblk *sb, const int type, long *ssn, const char *data, int cc, struct SSAPindication *si) {
 	int     result;
 
 	if (!(sb -> sb_requirements & SR_MINORSYNC))

@@ -5,11 +5,11 @@
 #include "tailor.h"
 
 static PElement pe_eoc = { PE_CLASS_UNIV, PE_FORM_PRIM, PE_UNIV_EOC, 0 };
-static int  pe2ps_aux2 (PS ps, PE pe, int eval);
+static int  pe2ps_aux2 (PS ps, PE pe, const int eval);
 int  ps_write_id (PS ps, PE pe);
 int  ps_write_len (PS ps, PE pe);
 
-int pe2ps_aux (PS ps, PE pe, int eval) {
+int pe2ps_aux (PS ps, PE pe, const int eval) {
 	int     result;
 
 	if (eval > 0)
@@ -26,7 +26,7 @@ int pe2ps_aux (PS ps, PE pe, int eval) {
 	return result;
 }
 
-static int pe2ps_aux2 (PS ps, PE pe, int eval) {
+static int pe2ps_aux2 (PS ps, PE pe, const int eval) {
 	PE p;
 
 	if (pe -> pe_form == PE_FORM_ICONS) {
@@ -125,7 +125,7 @@ int ps_write_len (PS ps, PE pe) {
 			bp--;
 		}
 		{
-			ptrdiff_t nb = ep - bp;
+			const ptrdiff_t nb = ep - bp;
 
 			if (int2u8 (PE_LEN_XTND | (int) (nb & 0xff), bp) != 0)
 				return NOTOK;

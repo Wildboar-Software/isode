@@ -13,7 +13,7 @@ typedef int (*ds_result_t)(int sd, int id, int dummy, caddr_t result, struct RoS
 typedef void (*ds_error_t)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi);
 
 struct dispatch {
-	char   *ds_name;
+	const char   *ds_name;
 	int	    ds_operation;
 
 	/* parameter is a void pointer intentionally: it seems that the way this was
@@ -25,11 +25,11 @@ struct dispatch {
 	ds_result_t ds_result;
 	ds_error_t ds_error;
 
-	char   *ds_help;
+	const char   *ds_help;
 };
 
-void adios (char* what, char* fmt, ...), advise (char* what, char* fmt, ...);
-void acs_adios (struct AcSAPabort *aca, char *event), acs_advise (struct AcSAPabort *aca, char *event);
-void ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
+void adios (char* what, const char* fmt, ...), advise (char* what, const char* fmt, ...);
+void acs_adios (struct AcSAPabort *aca, const char *event), acs_advise (struct AcSAPabort *aca, const char *event);
+void ros_adios (struct RoSAPpreject *rop, const char *event), ros_advise (struct RoSAPpreject *rop, const char *event);
 
-void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation *ops, struct dispatch *dispatches, ds_argument_t quit);
+void ryinitiator (const int argc, char **argv, const char *myservice, const char *mycontext, const char *mypci, struct RyOperation *ops, const struct dispatch *dispatches, ds_argument_t quit);

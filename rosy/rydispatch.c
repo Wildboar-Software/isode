@@ -21,9 +21,9 @@
 /* DISPATCH */
 
 int	RyDispatch (
-	int sd,
-	struct RyOperation *ryo,
-	int op,
+	const int sd,
+	const struct RyOperation *ryo,
+	const int op,
 	int (*fnx)(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi),
 	struct RoSAPindication *roi
 ) {

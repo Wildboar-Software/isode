@@ -15,7 +15,7 @@ extern	char	frompipe;
 extern	PS	opt, rps;
 
 char           *TidyString(char *a);
-static int getop (char *str, char *ch);
+static int getop (const char *str, char *ch);
 int filteritem (char *str, Filter fltr);
 
 static Filter          get_filter_aux (char *str) {
@@ -114,7 +114,7 @@ Filter          get_filter (char *str) {
 	return (f);
 }
 
-static int getop (char *str, char *ch) {
+static int getop (const char *str, char *ch) {
 	int             i,
 					bracket = 0;
 

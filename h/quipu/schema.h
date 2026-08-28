@@ -8,8 +8,8 @@ int check_avs_schema (AttributeType at, AV_Sequence avs_oc);
 
 /** see if b in oc a */
 int test_hierarchy (
-	objectclass *a,
-	objectclass *b
+	const objectclass *a,
+	const objectclass *b
 );
 
 int test_schema (AV_Sequence tree, AV_Sequence oc);

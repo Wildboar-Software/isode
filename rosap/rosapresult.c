@@ -10,11 +10,11 @@
 #include "ROS-types.h"
 #include "ropkt.h"
 
-static int  RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi);
+static int  RoResultRequestAux (struct assocblk *acb, const int invokeID, const int op, PE result, const int priority, struct RoSAPindication *roi);
 
 /* RO-RESULT.REQUEST */
 
-int RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi) {
+int RoResultRequest (int sd, const int invokeID, const int op, PE result, const int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     status;
 	struct assocblk   *acb;
@@ -32,7 +32,7 @@ int RoResultRequest (int sd, int invokeID, int op, PE result, int priority, stru
 	return status;
 }
 
-static int RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi) {
+static int RoResultRequestAux (struct assocblk *acb, const int invokeID, const int op, PE result, const int priority, struct RoSAPindication *roi) {
 	PE pe,
 	p,
 	q;

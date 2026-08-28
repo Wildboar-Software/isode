@@ -38,7 +38,7 @@ static struct la_cache {
 
 int free_oid_cache (void);
 
-static void preloadcache (char *str) {
+static void preloadcache (const char *str) {
 	struct la_cache *cp = &Cache[0];
 	struct isobject *io;
 
@@ -67,7 +67,7 @@ static void preloadcache (char *str) {
 }
 
 OID
-ode2oid (char *descriptor) {
+ode2oid (const char *descriptor) {
 	struct isobject *io;
 	int i, least;
 	struct la_cache *cp, *cpn;

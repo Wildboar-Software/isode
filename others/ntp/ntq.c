@@ -17,7 +17,7 @@ static int ac_failed (struct AcSAPconnect *acc);
 static int send_request (int sd);
 static int query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi);
 static PE build_bind_arg (void);
-static void  _advise (char *what, char *fmt, va_list ap);
+static void  _advise (char *what, const char *fmt, va_list ap);
 
 
 char	*myname;
@@ -29,8 +29,8 @@ char	*mypci = "ntp pci";
 int	query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi), query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi);
 
 void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event), acs_adios (struct AcSAPabort *aca, char *event), acs_advise (struct AcSAPabort *aca, char *event);
-static void	adios (char *, char *, ...);
-static void	advise (char *, char *, ...);
+static void	adios (char *, const char *, ...);
+static void	advise (char *, const char *, ...);
 PE	build_bind_arg ();
 
 int main (int argc, char **argv) {
@@ -331,7 +331,7 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 #ifndef lint
 void    _advise ();
 
-static void    adios (char *what, char *fmt, ...) {
+static void    adios (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -342,13 +342,13 @@ static void    adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-static void    adios (char *what, char *fmt) {
+static void    adios (char *what, const char *fmt) {
     adios (what, fmt);
 }
 #endif
 
 #ifndef lint
-static void    advise (char *what, char *fmt, ...) {
+static void    advise (char *what, const char *fmt, ...) {
     va_list ap;
 
     va_start (ap, fmt);
@@ -356,7 +356,7 @@ static void    advise (char *what, char *fmt, ...) {
 	va_end (ap);
 }
 
-static void  _advise (char *what, char *fmt, va_list ap)
+static void  _advise (char *what, const char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
 
@@ -370,13 +370,13 @@ static void  _advise (char *what, char *fmt, va_list ap)
 #else
 /* VARARGS */
 
-static void    advise (char *what, char *fmt) {
+static void    advise (char *what, const char *fmt) {
     advise (what, fmt);
 }
 #endif
 
 #ifndef lint
-void    ryr_advise (char *what, char *fmt, ...) {
+void    ryr_advise (char *what, const char *fmt, ...) {
     va_list ap;
 
     va_start (ap, fmt);
@@ -386,7 +386,7 @@ void    ryr_advise (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, const char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

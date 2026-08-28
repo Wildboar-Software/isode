@@ -13,7 +13,7 @@ PS _opt = NULLPS;
 int parse_line = 1;
 extern LLog * log_dsap;
 
-void parse_error (char *a, char *b)
+void parse_error (char *a, const char *b)
 {
 	char buffer [LINESIZE];
 

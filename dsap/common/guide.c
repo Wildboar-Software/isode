@@ -33,23 +33,23 @@
 static void Criteria_free (struct Criteria *arg);
 static void free_CriteriaItem (struct CriteriaItem *arg);
 static void guidefree (void *value);
-static struct CriteriaItem *CriteriaItem_cpy (struct CriteriaItem *arg);
-static struct Criteria *Criteria_cpy (struct Criteria *a);
+static struct CriteriaItem *CriteriaItem_cpy (const struct CriteriaItem *arg);
+static struct Criteria *Criteria_cpy (const struct Criteria *a);
 static void *guidecpy (void *value);
 static struct CriteriaItem *CriteriaItem_parse (char *str);
-static int getop (char *str, char *ch);
+static int getop (const char *str, char *ch);
 static struct Criteria *Criteria_parse (char *str);
 static void *guideparse (char *str);
 static void *nadfparse (char *str);
 static void CriteriaItem_print(
 	PS ps,
-	struct CriteriaItem * parm,
-	int format
+	const struct CriteriaItem * parm,
+	const int format
 );
 static void Criteria_print (
 	PS ps,
-	struct Criteria * a,
-	int format
+	const struct Criteria * a,
+	const int format
 );
 static void guideprint (
 	PS ps,
@@ -60,8 +60,8 @@ static PE guideenc (void *value);
 static void * guidedec (PE pe);
 static PE nadfenc (void *value);
 static void *nadfdec (PE pe);
-static int criteriaItem_cmp (struct CriteriaItem *a, struct CriteriaItem *b);
-static int criteria_cmp (struct Criteria *a, struct Criteria *b);
+static int criteriaItem_cmp (const struct CriteriaItem *a, const struct CriteriaItem *b);
+static int criteria_cmp (const struct Criteria *a, const struct Criteria *b);
 static int guidecmp (void *value1, void *value2);
 void guide_syntax (void);
 
@@ -125,7 +125,7 @@ static void guidefree (void *value) {
 	free ((char *)arg);
 }
 
-static struct CriteriaItem *CriteriaItem_cpy (struct CriteriaItem *arg) {
+static struct CriteriaItem *CriteriaItem_cpy (const struct CriteriaItem *arg) {
 	struct CriteriaItem *parm = arg;
 	struct CriteriaItem *res;
 
@@ -137,7 +137,7 @@ static struct CriteriaItem *CriteriaItem_cpy (struct CriteriaItem *arg) {
 	return (res);
 }
 
-static struct Criteria *Criteria_cpy (struct Criteria *a) {
+static struct Criteria *Criteria_cpy (const struct Criteria *a) {
 	struct Criteria *b;
 
 	if (a == NULL)
@@ -228,7 +228,7 @@ static struct CriteriaItem *CriteriaItem_parse (char *str) {
 	return (res);
 }
 
-static int getop (char *str, char *ch) {
+static int getop (const char *str, char *ch) {
 	int             i,
 					bracket = 0;
 
@@ -388,8 +388,8 @@ static void *nadfparse (char *str) {
 
 static void CriteriaItem_print(
 	PS ps,
-	struct CriteriaItem * parm,
-	int format
+	const struct CriteriaItem * parm,
+	const int format
 ) {
 	char *ptr;
 
@@ -408,8 +408,8 @@ static void CriteriaItem_print(
 
 static void Criteria_print (
 	PS ps,
-	struct Criteria * a,
-	int format
+	const struct Criteria * a,
+	const int format
 ) {
 	char * sep;
 
@@ -511,7 +511,7 @@ static void *nadfdec (PE pe)
 	return (m);
 }
 
-static int criteriaItem_cmp (struct CriteriaItem *a, struct CriteriaItem *b) {
+static int criteriaItem_cmp (const struct CriteriaItem *a, const struct CriteriaItem *b) {
 	if (a == NULL)
 		return (b==NULL ? 0 : -1);
 	if (b == NULL)
@@ -521,7 +521,7 @@ static int criteriaItem_cmp (struct CriteriaItem *a, struct CriteriaItem *b) {
 	return (AttrT_cmp (a->attrib,b->attrib));
 }
 
-static int criteria_cmp (struct Criteria *a, struct Criteria *b) {
+static int criteria_cmp (const struct Criteria *a, const struct Criteria *b) {
 	int result;
 
 	if (a==NULL)

@@ -48,7 +48,7 @@ PE	pe_active = NULLPE;
 #endif
 
 PE
-pe_alloc (PElementClass class, PElementForm form, PElementID id) {
+pe_alloc (const PElementClass class, const PElementForm form, const PElementID id) {
 	int    i;
 	PE	    pe;
 

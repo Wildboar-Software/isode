@@ -5,7 +5,7 @@
 #include "quipu/entry.h"
 
 extern short acl_sntx;
-int acl_cmp (struct acl *acl1, struct acl *acl2);
+int acl_cmp (const struct acl *acl1, const struct acl *acl2);
 
 int avs_cmp (AV_Sequence a, AV_Sequence b) {
 	int i;

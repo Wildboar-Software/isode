@@ -8,16 +8,16 @@
 
 OID	addoid (OID o1, OID o2);
 
-void defineoid (char *name, OID oid);
+void defineoid (const char *name, OID oid);
 OID oidlookup (char *name);
 char *oidname (OID oid);
 OID int2oid (int n);
 void addtable (
 	char *name,
-	int lt,
+	const int lt,
 	int typ	/* Does it allow implicit's to work or not */
 );
-void addtableref (char *name, OID id, int lt);
+void addtableref (char *name, OID id, const int lt);
 int print_expimp(void);
 void check_impexp (YP yp);
 void initoidtbl(void);
@@ -77,7 +77,7 @@ OID	addoid (OID o1, OID o2)
 	return noid;
 }
 
-void defineoid (char *name, OID oid) {
+void defineoid (const char *name, OID oid) {
 	char	*p;
 	OP		op;
 
@@ -143,7 +143,7 @@ OID	int2oid (int n) {
 
 void addtable (
 	char *name,
-	int lt,
+	const int lt,
 	int typ	/* Does it allow implicit's to work or not */
 ) {
 	SYM		sp;
@@ -155,7 +155,7 @@ void addtable (
 	symtab[lt] = sp;
 }
 
-void addtableref (char *name, OID id, int lt) {
+void addtableref (char *name, OID id, const int lt) {
 	SYM		sp;
 	char	*nm;
 	OID		oid;

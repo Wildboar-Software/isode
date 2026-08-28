@@ -18,7 +18,7 @@
 AEI str2aei_stub (char *designator, char *qualifier);
 struct PSAPaddr *aei2addr_stub (AEI aei);
 
-extern int _printent (struct isoentity *ie);
+extern int _printent (const struct isoentity *ie);
 
 #define	fetch_aet	str2aet_seq
 

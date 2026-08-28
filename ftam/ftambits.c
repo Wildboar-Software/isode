@@ -4,7 +4,7 @@
 #include "fpkt.h"
 
 PE
-bits2fpm (struct ftamblk *fsb, struct pair pairs[], int actions, struct FTAMindication *fti) {
+bits2fpm (const struct ftamblk *fsb, struct pair pairs[], const int actions, struct FTAMindication *fti) {
 	struct pair *pp;
 	PE	    fpm;
 
@@ -23,7 +23,7 @@ no_mem:
 	return fpm;
 }
 
-int fpm2bits (struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, struct FTAMindication *fti) {
+int fpm2bits (const struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, struct FTAMindication *fti) {
 	int    i;
 	int	bits_set=0;
 	struct pair *pp;

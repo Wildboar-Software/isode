@@ -109,7 +109,7 @@ int pe2qb_f (PE pe) {
 			*bp-- = b;
 		}
 		{
-			ptrdiff_t nb = ep - bp;
+			const ptrdiff_t nb = ep - bp;
 
 			if (int2u8 (PE_LEN_XTND | (int) (nb & 0xff), &b) != 0)
 				return NOTOK;

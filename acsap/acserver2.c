@@ -7,22 +7,22 @@
 #include "sys.file.h"
 #include "tailor.h"
 int iserver_init_aux (
-	int argc,
+	const int argc,
 	char **argv,
 	AEI aei,
 	int (*initfnx)(int vecp, char **vec),
 	MagicFunction magicfnx,
-	int flag,
+	const int flag,
 	struct TSAPdisconnect *td
 );
 
 static int iserver_initAux (
-	int argc,
+	const int argc,
 	char **argv,
-	struct PSAPaddr *pa,
+	const struct PSAPaddr *pa,
 	int (*initfnx)(int vecp, char **vec),
 	MagicFunction magicfnx,
-	int flag,
+	const int flag,
 	struct TSAPdisconnect *td
 );
 
@@ -31,7 +31,7 @@ static fd_set	is_mask;
 static char	is_single;
 
 int iserver_init (
-	int argc,
+	const int argc,
 	char **argv,
 	AEI aei,
 	int (*initfnx)(int vecp, char **vec),
@@ -39,7 +39,7 @@ int iserver_init (
 );
 
 int iserver_init (
-	int argc,
+	const int argc,
 	char **argv,
 	AEI aei,
 	int (*initfnx)(int vecp, char **vec),
@@ -54,12 +54,12 @@ int iserver_init (
 }
 
 int iserver_init_aux (
-	int argc,
+	const int argc,
 	char **argv,
 	AEI aei,
 	int (*initfnx)(int vecp, char **vec),
 	MagicFunction magicfnx,
-	int flag,
+	const int flag,
 	struct TSAPdisconnect *td
 ) {
 	struct PSAPaddr *pa = NULLPA;
@@ -71,12 +71,12 @@ int iserver_init_aux (
 }
 
 static int iserver_initAux (
-	int argc,
+	const int argc,
 	char **argv,
-	struct PSAPaddr *pa,
+	const struct PSAPaddr *pa,
 	int (*initfnx)(int vecp, char **vec),
 	MagicFunction magicfnx,
-	int flag,
+	const int flag,
 	struct TSAPdisconnect *td
 ) {
 	int	fd;
@@ -152,7 +152,7 @@ static int iserver_initAux (
 	return OK;
 }
 
-int iserver_wait (int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td) {
+int iserver_wait (int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, const int secs, struct TSAPdisconnect *td) {
 	int	    fd,
 			vecp;
 	fd_set  ifds,

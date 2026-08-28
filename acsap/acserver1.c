@@ -7,14 +7,14 @@
 #include "tailor.h"
 
 int iserver_init (
-	int argc,
+	const int argc,
 	char **argv,
 	AEI aei,
 	int (*initfnx)(int vecp, char **vec),
 	struct TSAPdisconnect *td
 );
 
-int isodeserver (int argc, char **argv, AEI aei, int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), struct TSAPdisconnect *td) {
+int isodeserver (const int argc, char **argv, AEI aei, int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), struct TSAPdisconnect *td) {
 	if (iserver_init (argc, argv, aei, initfnx, td) == NOTOK)
 		return NOTOK;
 

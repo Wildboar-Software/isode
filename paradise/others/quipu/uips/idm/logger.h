@@ -124,7 +124,7 @@ else
 #endif
 
 int	ll_open (LLog *lp);
-int	ll_log (LLog *, ...), _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap);
+int	ll_log (LLog *, ...), _ll_log (LLog *lp, int event, char *what, const char *fmt, va_list ap);
 int	ll_close (LLog *lp);
 
 void	ll_hdinit (LLog *lp, char *prefix);
@@ -133,7 +133,7 @@ void	ll_dbinit (LLog *lp, char *prefix);
 int	ll_printf (LLog *, ...);
 int	ll_sync (LLog *lp);
 
-char   *ll_preset (char *fmt, ...);
+char   *ll_preset (const char *fmt, ...);
 
 int	ll_check (LLog *lp);
 

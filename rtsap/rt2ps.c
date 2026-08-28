@@ -9,13 +9,13 @@
 #include "tailor.h"
 #include "pvpdu.h"
 #include "pepsycodec.h"
-int ps2rtslose ( struct assocblk *acb, struct RtSAPindication *rti, char *event, struct PSAPabort *pa );
+int ps2rtslose ( struct assocblk *acb, struct RtSAPindication *rti, const char *event, struct PSAPabort *pa );
 
 
 extern int RtWaitRequestAux (
 	struct assocblk *acb,
-	int secs,
-	int trans,
+	const int secs,
+	const int trans,
 	struct RtSAPindication *rti
 );
 
@@ -33,7 +33,7 @@ static int doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RtSAP
 static int doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RtSAPindication *rti);
 static int doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RtSAPindication *rti);
 static int doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindication *rti);
-static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, struct RtSAPindication *rti);
+static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, const int trans, struct RtSAPindication *rti);
 
 int rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	int     result;
@@ -412,7 +412,7 @@ void rt2pslose (struct assocblk *acb, int result) {
 
 /*    AcSAP interface */
 
-int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct AcSAPabort *aca) {
+int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, const char *event, struct AcSAPabort *aca) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -635,7 +635,7 @@ out:
 	return NOTOK;
 }
 
-static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, struct RtSAPindication *rti) {
+static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, const int trans, struct RtSAPindication *rti) {
 	PE	    pe;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
@@ -1073,7 +1073,7 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 int ps2rtslose (
 	struct assocblk *acb,
 	struct RtSAPindication *rti,
-	char *event,
+	const char *event,
 	struct PSAPabort *pa
 ) {
 	int     reason;

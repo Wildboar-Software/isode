@@ -18,7 +18,7 @@
 }
 #endif
 
-int	RyDsResult (int sd, int id, caddr_t out, int priority, struct RoSAPindication *roi) {
+int	RyDsResult (int sd, const int id, caddr_t out, const int priority, struct RoSAPindication *roi) {
 	int	    result;
 	PE	    pe;
 	struct opsblk *opb;

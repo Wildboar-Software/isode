@@ -7,11 +7,11 @@
 #include "cmd_srch.h"
 #include "tailor.h"
 static char *
-soid2gen (char *soid);
+soid2gen (const char *soid);
 static char *
 get_line (void);
 int set_heap (AttributeType x);
-static char *full_gen (oid_table *ot);
+static char *full_gen (const oid_table *ot);
 static char *part_gen (oid_table *ot);
 static void *name2oid_void (char *str);
 static PE oid2pe (OID o);
@@ -33,10 +33,10 @@ extern LLog * log_dsap;
 FILE * f_table;
 
 static char * get_entry (void);
-static int add_entry (char *newname, int towho);
+static int add_entry (char *newname, const int towho);
 char *get_oid(char *str);
 static char * name2gen (char *nodename);
-int add_entry_aux (char *a, caddr_t b, int c, char *d);
+int add_entry_aux (char *a, caddr_t b, const int c, char *d);
 
 oid_table       OIDTable [TABLESIZE];
 oid_table_attr  attrOIDTable [TABLESIZE];
@@ -133,7 +133,7 @@ bad_entry:
 	return OK;
 }
 
-int add_entry_aux (char *a, caddr_t b, int c, char *d)
+int add_entry_aux (char *a, caddr_t b, const int c, char *d)
 {
 	int	    i;
 	struct pair *p;
@@ -181,7 +181,7 @@ int add_entry_aux (char *a, caddr_t b, int c, char *d)
 	return TRUE;
 }
 
-static int add_entry (char *newname, int towho) {
+static int add_entry (char *newname, const int towho) {
 	char *nptr, *ptr, *sep;
 	OID oid;
 	oid_table * Current;
@@ -360,7 +360,7 @@ name2gen (char *nodename) {
 }
 
 static char *
-soid2gen (char *soid) {
+soid2gen (const char *soid) {
 	int i;
 	oid_table * tblptr = &OIDTable[0];
 	for (i=0; i<NumEntries; i++,tblptr++) {
@@ -571,7 +571,7 @@ objectclass *oid2oc(OID oid)
 	return (NULLOBJECTCLASS);
 }
 
-static char *full_gen (oid_table *ot)
+static char *full_gen (const oid_table *ot)
 {
 	static char * buffer;
 	char * ptr;
@@ -646,7 +646,7 @@ char *attr2name_aux (oid_table_attr *oa) {
 }
 #endif
 
-char *attr2name(oid_table_attr *oa, int format)
+char *attr2name(oid_table_attr *oa, const int format)
 {
 	int x;
 
@@ -669,7 +669,7 @@ char *attr2name(oid_table_attr *oa, int format)
 	}
 }
 
-char *oc2name(objectclass *oc, int format)
+char *oc2name(objectclass *oc, const int format)
 {
 	if ( oc != NULLOBJECTCLASS)
 		switch (format) {
@@ -684,7 +684,7 @@ char *oc2name(objectclass *oc, int format)
 		return (NULLCP);
 }
 
-char *oid2name(OID oid, int format)
+char *oid2name(OID oid, const int format)
 {
 	oid_table_attr * at;
 	objectclass * oc;
@@ -784,9 +784,9 @@ static PE oid2pe_void (void *value)
 	return (oid2prim (o));
 }
 
-void oidprint (PS ps, OID o, int format)
+void oidprint (PS ps, OID o, const int format)
 {
-	extern int oidformat;
+	extern const int oidformat;
 
 	if (format == READOUT)
 		ps_printf (ps,"%s",oid2name(o,oidformat));

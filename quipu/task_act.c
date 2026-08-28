@@ -41,7 +41,7 @@ void task_free (struct task_act *tk) {
 /*
 *  Extract task from list held by the connection it was received on.
 */
-void task_conn_extract (struct task_act *tk) {
+void task_conn_extract (const struct task_act *tk) {
 	struct task_act	* tk_tmp;
 	struct task_act	**tk_p;
 	DLOG(log_dsap, LLOG_TRACE, ("task_conn_extract()"));
@@ -79,7 +79,7 @@ void task_extract (struct task_act *tk) {
 	DLOG (log_dsap,LLOG_TRACE, ("task block extracted"));
 }
 
-void task_log (struct task_act *tk, int level) {
+void task_log (const struct task_act *tk, const int level) {
 	struct oper_act	* on;
 	char * state;
 	switch (tk->tk_state) {

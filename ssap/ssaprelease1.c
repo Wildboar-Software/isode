@@ -6,20 +6,20 @@
 #include "spkt.h"
 static int SRelRequestAux (
 	struct ssapblk *sb,
-	char *data,
+	const char *data,
 	int cc,
-	int secs,
+	const int secs,
 	struct SSAPrelease *sr,
 	struct SSAPindication *si
 );
 
 
-static int  SRelRequestAux (struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si);
-static int  SRelRetryRequestAux (struct ssapblk *sb, int secs, struct SSAPrelease *sr, struct SSAPindication *si);
+static int  SRelRequestAux (struct ssapblk *sb, const char *data, int cc, const int secs, struct SSAPrelease *sr, struct SSAPindication *si);
+static int  SRelRetryRequestAux (struct ssapblk *sb, const int secs, struct SSAPrelease *sr, struct SSAPindication *si);
 
 /* S-RELEASE.REQUEST */
 
-int SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
+int SRelRequest (int sd, const char *data, int cc, const int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -43,9 +43,9 @@ int SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, s
 
 static int SRelRequestAux (
 	struct ssapblk *sb,
-	char *data,
+	const char *data,
 	int cc,
-	int secs,
+	const int secs,
 	struct SSAPrelease *sr,
 	struct SSAPindication *si
 ) {
@@ -84,7 +84,7 @@ static int SRelRequestAux (
 
 /*    S-RELEASE-RETRY.REQUEST (pseudo) */
 
-int SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
+int SRelRetryRequest (int sd, const int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	SBV	    smask;
 	int	    result;
 	struct ssapblk *sb;
@@ -105,7 +105,7 @@ int SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindic
 
 static int SRelRetryRequestAux (
 	struct ssapblk *sb,
-	int secs,
+	const int secs,
 	struct SSAPrelease *sr,
 	struct SSAPindication *si
 ) {

@@ -10,33 +10,33 @@
 #include <stdio.h>
 #include "quipu/list.h"
 
-static int common_prefix_len (char *a, char *b);
+static int common_prefix_len (const char *a, const char *b);
 void rc_free (caddr_t data);
-static int oid_in_seq (AttributeType at, struct oid_seq *seq);
+static int oid_in_seq (AttributeType at, const struct oid_seq *seq);
 static int sacl_match (DN binddn, DN selfdn, Saclinfo s);
 static int check_base_sacl (
 	DN binddn,
 	DN selfdn,
 	Entry e,
 	struct ds_search_task *local,
-	char authtype
+	const char authtype
 );
 static struct result_count *make_rc (
 	DN binddn,
 	DN selfdn,
 	Entry e,
-	int scope,
+	const int scope,
 	struct ds_search_task *local
 );
 static int entry_rc_cmp (caddr_t data1, caddr_t data2);
 static int rc_cmp (caddr_t data1, caddr_t data2);
-static int check_one_sacl ( DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_search_task *local, int *saclerror, char authtype );
+static int check_one_sacl ( DN binddn, DN selfdn, Entry ancestor, const int scope, struct ds_search_task *local, int *saclerror, const char authtype );
 
 
 extern int 	selector_rank[];
 extern LLog	*log_dsap;
 
-static int common_prefix_len (char *a, char *b) {
+static int common_prefix_len (const char *a, const char *b) {
 	int	i;
 
 	for ( i = 0; *a && *a++ == *b++; i++ )
@@ -50,7 +50,7 @@ static int common_prefix_len (char *a, char *b) {
  * a running total of the minimum common prefix of <= and >= filters.
  * This information is used later when checking search acls.
  */
-void ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
+void ftype_add (Ftypelist *l, AttributeType type, int len, const char *inequstr) {
 	Ftypelist	new, tmp;
 	int		i, plen;
 
@@ -146,7 +146,7 @@ void rc_free (caddr_t data) {
 	free( (char *) rc );
 }
 
-static int oid_in_seq (AttributeType at, struct oid_seq *seq) {
+static int oid_in_seq (AttributeType at, const struct oid_seq *seq) {
 	for ( ; seq != NULLOIDSEQ; seq = seq->oid_next ) {
 		if ( oid_cmp( at->oa_ot.ot_oid, seq->oid_oid ) == 0 ) {
 			return( 1 );
@@ -187,7 +187,7 @@ static int check_base_sacl (
 	DN selfdn,
 	Entry e,
 	struct ds_search_task *local,
-	char authtype
+	const char authtype
 ) {
 	AV_Sequence		avs;
 	Ftypelist		ft;
@@ -254,7 +254,7 @@ static struct result_count *make_rc (
 	DN binddn,
 	DN selfdn,
 	Entry e,
-	int scope,
+	const int scope,
 	struct ds_search_task *local
 ) {
 	struct result_count	*rc;
@@ -378,10 +378,10 @@ static int check_one_sacl (
 	DN binddn,
 	DN selfdn,
 	Entry ancestor,
-	int scope,
+	const int scope,
 	struct ds_search_task *local,
 	int *saclerror,
-	char authtype
+	const char authtype
 ) {
 	struct result_count	*rc;
 	Typedata		td;
@@ -447,7 +447,7 @@ int check_ancestor_sacls (
 	Entry e,
 	int scope,
 	struct ds_search_task *local,
-	char authtype,
+	const char authtype,
 	int *saclerror
 ) {
 	Entry			stop, ancestor;
@@ -498,7 +498,7 @@ int check_lacl (
 	DN binddn,
 	DN selfdn,
 	AV_Sequence avs,
-	int scope,
+	const int scope,
 	int *sizelimit
 ) {
 	Listacl		save, tmp, l;

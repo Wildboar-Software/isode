@@ -16,8 +16,8 @@ struct certificate *cert_cpy (struct certificate *parm);
 static int str2alg (char *str, struct alg_id *alg);
 static int str2encrypted (char *str, char **cp, int *len);
 struct certificate *str2cert (char *str);
-static void print_algid(PS ps, struct alg_id *parm, int format);
-static void print_encrypted(PS ps, char *str, int n_bits, int format);
+static void print_algid(PS ps, const struct alg_id *parm, const int format);
+static void print_encrypted(PS ps, const char *str, const int n_bits, const int format);
 void certificate_syntax (void);
 
 
@@ -36,7 +36,7 @@ static void *cert_dec(PE pe) {
 	return (result);
 }
 
-int alg_cpy (struct alg_id *a, struct alg_id *b) {
+int alg_cpy (struct alg_id *a, const struct alg_id *b) {
 	a->algorithm = oid_cpy(b->algorithm);
 	if (b->asn)
 		a->asn = pe_cpy(b->asn);
@@ -310,7 +310,7 @@ struct certificate *str2cert (char *str) {
 	return (result);
 }
 
-void print_algid(PS ps, struct alg_id *parm, int format) {
+void print_algid(PS ps, const struct alg_id *parm, const int format) {
 	ps_printf(ps, "%s#", oid2name (parm->algorithm, OIDPART));
 	switch(parm->p_type) {
 	case ALG_PARM_ABSENT:
@@ -343,7 +343,7 @@ void print_algid(PS ps, struct alg_id *parm, int format) {
 	}
 }
 
-void print_encrypted(PS ps, char *str, int n_bits, int format) {
+void print_encrypted(PS ps, const char *str, const int n_bits, const int format) {
 	int i;
 
 	/* The end-user doesn't care what the signature is, so don't display it */

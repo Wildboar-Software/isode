@@ -13,23 +13,23 @@
 
 static int PAsynRetryAux (struct psapblk *pb, struct PSAPconnect *pc, struct PSAPindication *pi);
 static int PConnRequestAux (
-	struct PSAPaddr *calling,
-	struct PSAPaddr *called,
+	const struct PSAPaddr *calling,
+	const struct PSAPaddr *called,
 	struct PSAPctxlist *ctxlist,
 	struct SSAPref *ref,
 	PE data,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
-	int async
+	const int async
 );
 static int PConnRequestAux2 (
 	struct psapblk *pb,
-	struct TSAPaddr *calling,
-	struct TSAPaddr *called,
-	struct QOStype *qos,
+	const struct TSAPaddr *calling,
+	const struct TSAPaddr *called,
+	const struct QOStype *qos,
 	struct PSAPindication *pi,
-	int async
+	const int async
 );
 
 /*    P-(ASYN-)CONNECT.REQUEST */
@@ -38,21 +38,21 @@ static int PConnRequestAux2 (
 #endif
 
 int	PAsynConnRequest (
-	struct PSAPaddr *calling,
-	struct PSAPaddr *called,
+	const struct PSAPaddr *calling,
+	const struct PSAPaddr *called,
 	struct PSAPctxlist *ctxlist,
 	OID defctxname,
-	int prequirements,
-	int srequirements,
-	long isn,
+	const int prequirements,
+	const int srequirements,
+	const long isn,
 	int settings,
 	struct SSAPref *ref,
 	PE *data,
 	int ndata,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
-	int async
+	const int async
 ) {
 	SBV     smask;
 	int     result;
@@ -108,15 +108,15 @@ int	PAsynConnRequest (
 }
 
 static int PConnRequestAux (
-	struct PSAPaddr *calling,
-	struct PSAPaddr *called,
+	const struct PSAPaddr *calling,
+	const struct PSAPaddr *called,
 	struct PSAPctxlist *ctxlist,
 	struct SSAPref *ref,
 	PE data,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
-	int async
+	const int async
 ) {
 	int	    result;
 	OID     asn;
@@ -306,11 +306,11 @@ static struct nsapent {
 
 static int  PConnRequestAux2 (
 	struct psapblk *pb,
-	struct TSAPaddr *calling,
-	struct TSAPaddr *called,
-	struct QOStype *qos,
+	const struct TSAPaddr *calling,
+	const struct TSAPaddr *called,
+	const struct QOStype *qos,
 	struct PSAPindication *pi,
-	int async
+	const int async
 ) {
 	int	    reliability,
 			result;

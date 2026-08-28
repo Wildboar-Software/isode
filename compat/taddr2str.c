@@ -6,7 +6,7 @@
 #include "manifest.h"
 #include "isoaddrs.h"
 
-char *taddr2str (struct TSAPaddr *ta) {
+char *taddr2str (const struct TSAPaddr *ta) {
 	struct PSAPaddr pas;
 	struct PSAPaddr *pa = &pas;
 

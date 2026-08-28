@@ -5,18 +5,18 @@
 extern int  ontty;
 extern int  interrupted;
 
-void	adios (char *what, char *fmt, ...);
-void	advise (char *what, char *fmt, ...);
-int getftamline(char* prompt, char* buffer);
+void	adios (char *what, const char *fmt, ...);
+void	advise (char *what, const char *fmt, ...);
+int getftamline(const char* prompt, const char* buffer);
 char *default_prompt (void);
 
 #ifndef	BRIDGE
-int	ask (char *fmt, ...);
+int	ask (const char *fmt, ...);
 #endif
 
 extern int  ftamfd;
 #ifdef	BRIDGE
-extern int  dataconn (char *modeX);
+extern int  dataconn (const char *modeX);
 int f_type (int mode);
 #endif
 
@@ -61,7 +61,7 @@ char   *str2file (char *s);
 /* DISPATCH */
 
 struct dispatch {
-	char   *ds_name;
+	const char   *ds_name;
 	int (*ds_fnx)(char **vec);
 
 	int	    ds_flags;
@@ -73,7 +73,7 @@ struct dispatch {
 	int	    ds_class;
 	int	    ds_units;
 
-	char   *ds_help;
+	const char   *ds_help;
 };
 
 struct dispatch *getds (char *name);
@@ -100,7 +100,7 @@ extern struct vfsmap *myvf;
 
 void	ftam_advise (struct FTAMabort *fta, char *event);
 void	ftam_chrg (struct FTAMcharging *charges);
-void	ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action);
+void	ftam_diag (struct FTAMdiagnostic diag[], int ndiag, const int peer, const int action);
 
 /* FILES */
 
@@ -128,18 +128,18 @@ extern char *globerr;
 int	blkfree (char **av0), blklen (char **av);
 char  **blkcpy (char **oav, char **bv);
 
-char   *xglob1val (char *v, int remote);
-char  **xglob (char **v, int remote);
+char   *xglob1val (char *v, const int remote);
+char  **xglob (char **v, const int remote);
 void rcinit (void);
 
 int getvf (
 	char *src,
 	char *dst,
 	struct FADUidentity *faduid,
-	struct vfsmap *vf,
+	const struct vfsmap *vf,
 	int (*wfnx) (int fd, struct PSAPdata *px, int status)
 );
-int isdir (char *dir, char *dp, int silent);
+int isdir (const char *dir, char *dp, const int silent);
 int	ncols (FILE *fp);
 int f_cd (char **vec);
 int f_close (char **vec);
@@ -158,12 +158,12 @@ int f_rm (char **vec);
 int f_status (char **vec);
 int f_quit (char **vec);
 
-int fdf_p2names (int fd, PE bits, int *names, struct FTAMindication *fti);
-int fdf_names2p (int fd, int names, PE *bits, struct FTAMindication *fti);
-int fdf_attrs2d (int fd, struct FTAMattributes *fa, struct type_FTAM_Read__Attributes **attrs, struct FTAMindication *fti);
-int fdf_d2attrs (int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMattributes *fa, struct FTAMindication *fti);
-void timer (int cc, char *action);
-int	de2fadu (PE pe, int concat);
+int fdf_p2names (const int fd, PE bits, int *names, struct FTAMindication *fti);
+int fdf_names2p (const int fd, const int names, PE *bits, struct FTAMindication *fti);
+int fdf_attrs2d (const int fd, struct FTAMattributes *fa, struct type_FTAM_Read__Attributes **attrs, struct FTAMindication *fti);
+int fdf_d2attrs (const int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMattributes *fa, struct FTAMindication *fti);
+void timer (int cc, const char *action);
+int	de2fadu (PE pe, const int concat);
 
 extern char *isodeversion;
 #ifdef	BRIDGE

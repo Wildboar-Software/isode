@@ -125,7 +125,7 @@ static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindica
 
 /*    F-WAIT.REQUEST (pseudo) */
 
-int FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
+int FWaitRequest (int sd, const int secs, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -138,7 +138,7 @@ int FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
 	return result;
 }
 
-int FWaitRequestAux (struct ftamblk *fsb, int secs, struct FTAMindication *fti) {
+int FWaitRequestAux (struct ftamblk *fsb, const int secs, struct FTAMindication *fti) {
 	int     result;
 	struct PSAPdata pxs;
 	struct PSAPdata   *px = &pxs;
@@ -1726,7 +1726,7 @@ int FSetIndications (int sd, void (*indication)(int sd, struct FTAMindication *f
 
 /*    AcSAP interface */
 
-int acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct AcSAPabort *aca) {
+int acs2ftamlose (const struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct AcSAPabort *aca) {
 	int     observer,
 			reason;
 	char   *cp,
@@ -1841,7 +1841,7 @@ out:
 
 /*    PSAP interface */
 
-int ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct PSAPabort *pa) {
+int ps2ftamlose (const struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct PSAPabort *pa) {
 	int     observer,
 			reason;
 	char   *cp,

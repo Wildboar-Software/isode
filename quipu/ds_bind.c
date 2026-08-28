@@ -17,7 +17,7 @@
 #include <sys/stat.h>
 #include "osisec-stub.h"
 #include "quipu/find.h"
-void reject_length (char *str);
+void reject_length (const char *str);
 void reject_prefix (char *str);
 void accept_prefix (char *str);
 
@@ -50,7 +50,7 @@ int ds_bind_init (struct connection *cn) {
 	struct oper_act		* on;
 	struct ds_compare_arg	* cma;
 	struct DSError		  err;
-	static struct common_args	  ca_def = default_common_args;
+	static const struct common_args	  ca_def = default_common_args;
 	int 			  res;
 	int				  retval;
 	struct protected_password   * pp;
@@ -514,7 +514,7 @@ void bind_compare_fail_wakeup (struct oper_act *on) {
 	oper_free(on);
 }
 
-void do_ds_unbind (struct connection *conn) {
+void do_ds_unbind (const struct connection *conn) {
 	struct stat st;
 #ifndef NO_STATS
 	char buff[LINESIZE];
@@ -543,7 +543,7 @@ static struct dn_seq * reject_prefix_list = NULLDNSEQ;
 static struct dn_seq * accept_prefix_list = NULLDNSEQ;
 static int reject_len;
 
-void reject_length (char *str) {
+void reject_length (const char *str) {
 	reject_len = atoi (str);
 }
 

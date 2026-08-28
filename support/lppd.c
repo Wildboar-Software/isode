@@ -26,12 +26,12 @@
 #include "tailor.h"
 #include "vt.h"
 
-static int lppd (int vecp, char **vec, struct TSAPaddr *ta);
+static int lppd (const int vecp, char **vec, const struct TSAPaddr *ta);
 
 
-static int lppd (int vecp, char **vec, struct TSAPaddr *ta);
+static int lppd (const int vecp, char **vec, const struct TSAPaddr *ta);
 static void envinit (void);
-static void ts_advise (struct TSAPdisconnect *td, int code, char *event);
+static void ts_advise (struct TSAPdisconnect *td, int code, const char *event);
 static void arginit (char **vec);
 
 static int  debug = 0;
@@ -60,9 +60,9 @@ struct dispatch {
 static struct dispatch *dz;
 static struct dispatch  dps[NTADDRS];
 
-void adios  (char *, char *, ...);
-void advise (int, char *, char *, ...);
-void ts_advise (struct TSAPdisconnect *td, int code, char *event);
+void adios  (char *, const char *, ...);
+void advise (int, char *, const char *, ...);
+void ts_advise (struct TSAPdisconnect *td, int code, const char *event);
 
 int main (int argc, char **argv, char **envp) {
 	int	    listening,
@@ -120,8 +120,8 @@ int main (int argc, char **argv, char **envp) {
 	return 0;
 }
 
-static int lppd (int vecp, char **vec, struct TSAPaddr *ta) {
-	uint16_t port = ta -> ta_addrs[0].na_port;
+static int lppd (const int vecp, char **vec, const struct TSAPaddr *ta) {
+	const uint16_t port = ta -> ta_addrs[0].na_port;
 	struct dispatch *dp;
 	struct isoservent *is;
 
@@ -148,7 +148,7 @@ static int lppd (int vecp, char **vec, struct TSAPaddr *ta) {
 	adios (*is -> is_vec, "unable to exec");
 }
 
-static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
+static void ts_advise (struct TSAPdisconnect *td, int code, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -316,7 +316,7 @@ static void envinit (void) {
 }
 
 #ifndef	lint
-void  adios (char *what, char *fmt, ...)
+void  adios (char *what, const char *fmt, ...)
 {
 	va_list ap;
 	va_start (ap, fmt);
@@ -325,13 +325,13 @@ void  adios (char *what, char *fmt, ...)
 	_exit (1);
 }
 #else
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void  advise (int code, char *what, char *fmt, ...)
+void  advise (int code, char *what, const char *fmt, ...)
 {
 	va_list ap;
 	va_start (ap, fmt);
@@ -339,7 +339,7 @@ void  advise (int code, char *what, char *fmt, ...)
 	va_end (ap);
 }
 #else
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

@@ -18,8 +18,8 @@
 int RtExec (
 	struct SSAPstart *ss,
 	struct RtSAPindication *rti,
-	char *arg1,
-	char *arg2,
+	const char *arg1,
+	const char *arg2,
 	int (*hook)(struct isoservent *is, struct RtSAPindication *rti),
 #ifndef	IAE
 	int (*setperms) (struct isoservent *)

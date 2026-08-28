@@ -156,19 +156,19 @@ struct RtSAPindication {
 extern char *rtsapversion;
 
 /* RTSE primitives */
-int	RtInit_Aux (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti, OID dctx);		/* RT-OPEN.INDICATION */
+int	RtInit_Aux (const int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti, OID dctx);		/* RT-OPEN.INDICATION */
 #define RtInit(vecp,vec,rts,rti) \
 	RtInit_Aux((vecp),(vec),(rts),(rti),NULLOID)
 
 /* RT-OPEN.RESPONSE */
 int RtOpenResponse (
-	int sd,
+	const int sd,
 	int status,
 	OID context,
 	AEI respondtitle,
-	struct PSAPaddr *respondaddr,
+	const struct PSAPaddr *respondaddr,
 	struct PSAPctxlist *ctxlist,
-	int defctxresult,
+	const int defctxresult,
 	PE data,
 	struct RtSAPindication *rti
 );
@@ -179,17 +179,17 @@ int RtOpenResponse (
 
 /* RT-OPEN.REQUEST */
 int	RtOpenRequest2 (
-	int mode,
-	int turn,
+	const int mode,
+	const int turn,
 	OID context,
 	AEI callingtitle,
 	AEI calledtitle,
-	struct PSAPaddr *callingaddr,
-	struct PSAPaddr *calledaddr,
+	const struct PSAPaddr *callingaddr,
+	const struct PSAPaddr *calledaddr,
 	struct PSAPctxlist *ctxlist,
 	OID defctxname,
 	PE data,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	OID tctx,
 	struct RtSAPconnect *rtc,
 	struct RtSAPindication *rti
@@ -204,8 +204,8 @@ int RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti);	/* RT-U-ABOR
 int RtExec (
 	struct SSAPstart *ss,
 	struct RtSAPindication *rti,
-	char *arg1,
-	char *arg2,
+	const char *arg1,
+	const char *arg2,
 	int (*hook)(struct isoservent *is, struct RtSAPindication *rti),
 #ifndef	IAE
 	int (*setperms) (struct isoservent *)
@@ -214,18 +214,18 @@ int RtExec (
 #endif
 );
 
-int RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti);		/* RT-BEGIN.INDICATION (X.410 OPEN.INDICATION) */
+int RtBInit (const int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti);		/* RT-BEGIN.INDICATION (X.410 OPEN.INDICATION) */
 int RtBeginResponse (int sd, int status, PE data, struct RtSAPindication *rti);	/* RT-BEGIN.RESPONSE (X.410 OPEN.RESPONSE) */
-int RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti);	/* RT-BEGIN.REQUEST (X.410 OPEN.REQUEST) */
+int RtBeginRequest2 (const struct RtSAPaddr *called, const struct RtSAPaddr *calling, const int mode, const int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti);	/* RT-BEGIN.REQUEST (X.410 OPEN.REQUEST) */
 #define RtBeginRequest(called, mode, turn, data, rtc, rti) \
 	RtBeginRequest2((called), NULLRtA, (mode), (turn), (data), (rtc), (rti))
 int RtEndRequest (int sd, struct RtSAPindication *rti);	/* RT-END.REQUEST (X.410 CLOSE.REQUEST) */
 int RtEndResponse (int sd, struct RtSAPindication *rti);	/* RT-END.RESPONSE (X.410 CLOSE.RESPONSE) */
 
-int RtPTurnRequest (int sd, int priority, struct RtSAPindication *rti);	/* RT-TURN-PLEASE.REQUEST */
+int RtPTurnRequest (int sd, const int priority, struct RtSAPindication *rti);	/* RT-TURN-PLEASE.REQUEST */
 int RtGTurnRequest (int sd, struct RtSAPindication *rti);	/* RT-TURN-GIVE.REQUEST */
-int RtTransferRequest (int sd, PE data, int secs, struct RtSAPindication *rti);	/* RT-TRANSFER.REQUEST */
-int RtWaitRequest (int sd, int secs, struct RtSAPindication *rti);	/* RT-WAIT.REQUEST (pseudo) */
+int RtTransferRequest (int sd, PE data, const int secs, struct RtSAPindication *rti);	/* RT-TRANSFER.REQUEST */
+int RtWaitRequest (int sd, const int secs, struct RtSAPindication *rti);	/* RT-WAIT.REQUEST (pseudo) */
 
 int RtSetIndications (int sd, int (*indication)(int sd, struct RtSAPindication *rti), struct RtSAPindication *rti);	/* define vectors for INDICATION events */
 int RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti);	/* map reliable transfer descriptors for
@@ -233,13 +233,13 @@ int RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti);
 
 /* set downtrans upcall */
 int RtSetDownTrans (
-	int sd,
+	const int sd,
 	int (*fnx)(int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
 );
 /* set uptrans upcall */
 int RtSetUpTrans (
-	int sd,
+	const int sd,
 	int (*fnx)(int sd, int type, caddr_t addr, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
 );

@@ -7,7 +7,7 @@
 #include "isoservent.h"
 
 struct SSAPaddr *
-is2saddr (char *host, char *service, struct isoservent *is) {
+is2saddr (char *host, char *service, const struct isoservent *is) {
 	AEI	    aei;
 	struct PSAPaddr *pa;
 	struct SSAPaddr *sa;

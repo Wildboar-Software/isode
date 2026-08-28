@@ -9,7 +9,7 @@ static int authp_cmp( void *value1, void *value2 );
 static void * authp_cpy( void *value );
 static void * authp_decode( PE pe );
 static PE authp_enc( void *value );
-static int get_policy (char *str);
+static int get_policy (const char *str);
 static void * str2authp( char *str );
 static void authp_print (PS ps, void *value, int format);
 void authp_syntax (void);
@@ -77,7 +77,7 @@ static PE authp_enc( void *value ) {
 	return( ret_pe );
 }
 
-static int get_policy (char *str) {
+static int get_policy (const char *str) {
 	/* get modification policy */
 	if ( lexnequ( str, "trust", 5 ) == 0 ) {
 		return( AP_TRUST );

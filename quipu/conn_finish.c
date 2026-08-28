@@ -6,10 +6,10 @@
 
 extern  LLog    * log_dsap;
 
-void conn_finish (struct connection *conn, struct DSAPfinish *df) {
+void conn_finish (struct connection *conn, const struct DSAPfinish *df) {
 	int			  result;
 	struct oper_act	* on;
-	extern time_t	  conn_timeout, timenow;
+	extern const time_t	  conn_timeout, timenow;
 	struct DSAPindication	  di_s;
 	struct DSAPindication	* di = &(di_s);
 
@@ -50,7 +50,7 @@ void conn_finish (struct connection *conn, struct DSAPfinish *df) {
 	conn_extract(conn);
 }
 
-void conn_rel_abort (struct connection *conn) {
+void conn_rel_abort (const struct connection *conn) {
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &di_s;
 

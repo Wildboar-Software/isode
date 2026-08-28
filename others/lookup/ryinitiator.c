@@ -10,7 +10,7 @@
 #include "ryresponder.h"
 
 static int invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args);
-static void  _advise (char *what, char *fmt, va_list ap);
+static void  _advise (char *what, const char *fmt, va_list ap);
 
 
 static char *myname = "ryinitiator";
@@ -229,9 +229,9 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_advise (char *what, char *fmt, va_list ap);
+static void	_advise (char *what, const char *fmt, va_list ap);
 
-void adios (char *what, char *fmt, ...) {
+void adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_advise (what, fmt, ap);
@@ -240,20 +240,20 @@ void adios (char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS */
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void advise (char *what, char *fmt, ...) {
+void advise (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_advise (what, fmt, ap);
 	va_end (ap);
 }
 
-static void  _advise (char *what, char *fmt, va_list ap) {
+static void  _advise (char *what, const char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);
@@ -265,13 +265,13 @@ static void  _advise (char *what, char *fmt, va_list ap) {
 }
 #else
 /* VARARGS */
-void advise (char *what, char *fmt) {
+void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void ryr_advise (char *what, char *fmt, ...) {
+void ryr_advise (char *what, const char *fmt, ...) {
     va_list ap;
     va_start (ap, fmt);
     _advise (what, fmt, ap);
@@ -279,7 +279,7 @@ void ryr_advise (char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS */
-void ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, const char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

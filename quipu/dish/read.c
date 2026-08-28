@@ -28,13 +28,13 @@ char            flag_show;
 char 		key_flag;
 char		print_format;
 
-int read_cache_aux (int argc, char **argv, char ali, CommonArgs *ca) {
+int read_cache_aux (int argc, char **argv, const char ali, const CommonArgs *ca) {
 	Entry           read_entry;
 	int             x = 1;
 	char            noread_flag = FALSE;
 	char            do_read = FALSE;
 	Attr_Sequence 	as;
-	extern int	copy_flag;
+	extern const int	copy_flag;
 	char		deref = FALSE;
 	struct ds_read_arg read_arg;
 
@@ -124,8 +124,8 @@ int read_cache_aux (int argc, char **argv, char ali, CommonArgs *ca) {
 	return (argc);
 }
 
-int read_cache (int argc, char **argv) {
-	extern char	doneget;
+int read_cache (const int argc, char **argv) {
+	extern const char	doneget;
 
 	if (doneget)
 		return (argc);
@@ -135,7 +135,7 @@ int read_cache (int argc, char **argv) {
 int set_read_flags (int argc, char **argv) {
 	int x;
 	AttributeType at;
-	extern char allow_move;
+	extern const char allow_move;
 
 	print_format = READOUT;
 	tmp_ignore = NULLATTR;

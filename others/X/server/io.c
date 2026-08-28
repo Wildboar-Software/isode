@@ -77,8 +77,8 @@ extern Bool AnyClientsWriteBlocked;
 static Bool CriticalOutputPending;
 static int timesThisConnection = 0;
 
-extern int Error (char *fmt, ...);
-extern int Fatal (char *fmt, ...);
+extern int Error (const char *fmt, ...);
+extern int Fatal (const char *fmt, ...);
 
 #define request_length(req, cli) ((cli->swapped ? \
 	lswaps((req)->length) : (req)->length) << 2)

@@ -6,7 +6,7 @@
 #include "psap.h"
 
 PE
-str2prim (char *s, int len, PElementClass class, PElementID id) {
+str2prim (char *s, int len, const PElementClass class, const PElementID id) {
 	PE	    pe;
 
 	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)

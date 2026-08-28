@@ -1,12 +1,6 @@
 -- ASN.1 UNIVERSAL defined types
 UNIV DEFINITIONS ::=
 
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 

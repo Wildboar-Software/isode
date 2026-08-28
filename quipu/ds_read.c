@@ -15,24 +15,24 @@ static Attr_Sequence dsa_control_info (void);
 
 extern LLog * log_dsap;
 
-Attr_Sequence eis_select(EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
-Attr_Sequence dsa_eis_select(EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
+Attr_Sequence eis_select(const EntryInfoSelection eis, Entry entryptr, DN dn, const char qctx, DN node);
+Attr_Sequence dsa_eis_select(const EntryInfoSelection eis, Entry entryptr, DN dn, const char qctx, DN node);
 extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
-static int cant_use_cache(Entry ptr, DN dn, EntryInfoSelection eis, DN target);
-static int attribute_not_cached (Entry, DN, OID, DN, int, char);
+static int cant_use_cache(Entry ptr, DN dn, const EntryInfoSelection eis, DN target);
+static int attribute_not_cached (Entry, DN, OID, DN, const int, const char);
 extern AttributeType at_control;
 extern unsigned bind_policy;
 extern unsigned strong_policy;
 extern DN mydsadn;
 extern struct di_block * di_alloc(void);
-extern int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn);
+extern int eis_check (const EntryInfoSelection eis, Entry entryptr, DN dn);
 
 static int need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg);
 static int dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result);
 
-int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char quipu_ctx, char authtype);
+int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, const char dsp, const char quipu_ctx, const char authtype);
 
-int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char quipu_ctx, char authtype) {
+int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, const char dsp, const char quipu_ctx, const char authtype) {
 	Entry  entryptr;
 	int retval;
 #ifdef NOTUSED
@@ -195,7 +195,7 @@ out:
 	return (DS_OK);
 }
 
-static int cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target) {
+static int cant_use_cache (Entry ptr, DN dn, const EntryInfoSelection eis, DN target) {
 	Attr_Sequence as;
 	char dfltacl = FALSE;
 
@@ -236,7 +236,7 @@ static int cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target) 
 	return FALSE;
 }
 
-static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, char dfltacl) {
+static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, const int level, const char dfltacl) {
 	struct acl_attr * aa;
 	struct oid_seq * oidptr;
 
@@ -257,11 +257,11 @@ static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level,
 }
 
 static Attr_Sequence dsa_control_info (void) {
-	extern int slave_edbs;
-	extern int master_edbs;
-	extern int local_master_size;
-	extern int local_slave_size;
-	extern int local_cache_size;
+	extern const int slave_edbs;
+	extern const int master_edbs;
+	extern const int local_master_size;
+	extern const int local_slave_size;
+	extern const int local_cache_size;
 	char buffer [LINESIZE];
 	Attr_Sequence as;
 

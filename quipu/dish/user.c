@@ -19,10 +19,10 @@ extern	PS	opt, rps;
 
 extern  char    fred_flag;
 
-static void new_alias (char *cp);
+static void new_alias (const char *cp);
 
 void call_ds (int argc, char **argv) {
-	extern char bound;
+	extern const char bound;
 	extern char * myname;
 	extern char * dsa_address;
 	extern char * isodeversion;
@@ -62,7 +62,7 @@ void call_ds (int argc, char **argv) {
 		} 		else if (test_arg (argv[1], "-syntax", 2)) {
 			int i;
 			short sntx;
-			char * syntax2str(short sntx);
+			char * syntax2str(const short sntx);
 			for (i=1; i<MAX_AV_SYNTAX; i++) {
 				if (int2short (i, &sntx) != 0)
 					return;
@@ -100,7 +100,7 @@ void call_ds (int argc, char **argv) {
 		ps_printf (RPS, "DAP-listener: %s\n", getenv ("DISHPROC"));
 }
 
-static void new_alias (char *cp) {
+static void new_alias (const char *cp) {
 	int	    seqno;
 	DN	    sdn;
 
@@ -121,8 +121,8 @@ static void new_alias (char *cp) {
 
 int dish_error (PS ps, struct DSError * error) {
 	struct access_point * ap;
-	extern char neverefer;
-	extern int chase_flag;
+	extern const char neverefer;
+	extern const int chase_flag;
 
 	if (error->dse_type == DSE_ABANDONED) {
 		ps_print (ps,"(DAP call interrupted - abandon successful)\n");

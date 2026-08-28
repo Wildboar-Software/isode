@@ -19,7 +19,7 @@
 
 /* U-REJECT */
 
-int	RyDsUReject (int sd, int id, int reason, int priority, struct RoSAPindication *roi) {
+int	RyDsUReject (int sd, const int id, int reason, const int priority, struct RoSAPindication *roi) {
 	int     result;
 	struct opsblk *opb;
 

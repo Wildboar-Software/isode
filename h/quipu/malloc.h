@@ -30,6 +30,6 @@ extern unsigned attr_index;
 		mem_heap = _uh; \
 }}
 
-void start_malloc_trace (char *f);
+void start_malloc_trace (const char *f);
 void stop_malloc_trace (void);
 #endif

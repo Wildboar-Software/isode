@@ -24,7 +24,7 @@ static void	do_response_void (int sd, int id, int dummy, caddr_t value, struct R
 
 /* DISCARD */
 
-int	RyDiscard (int sd, int id, struct RoSAPindication *roi)
+int	RyDiscard (int sd, const int id, struct RoSAPindication *roi)
 {
 	struct opsblk *opb;
 	missingP (roi);

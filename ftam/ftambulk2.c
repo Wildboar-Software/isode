@@ -5,10 +5,10 @@
 #include <stdlib.h>
 #include "fpkt.h"
 
-static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
+static int FTransEndResponseAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
 
 /* F-TRANSFER-END.RESPONSE */
-int FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+int FTransEndResponse (int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -32,7 +32,7 @@ int FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic d
 	return result;
 }
 
-static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+static int FTransEndResponseAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result;
 	PE	    pe;
 	struct PSAPindication   pis;

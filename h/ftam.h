@@ -1142,14 +1142,14 @@ extern char *ftamversion;
 
 extern LLog _ftam_log, *ftam_log;
 
-int	FInit (int vecp, char **vec, struct FTAMstart *fts, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMindication *fti);		/* F-INITIALIZE.INDICATION */
-int	FInitializeResponse (int sd, int state, int action, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-INITIALIZE.RESPONSE */
-int	FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, size_t passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti);	/* F-INITIALIZE.REQUEST */
+int	FInit (const int vecp, char **vec, struct FTAMstart *fts, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMindication *fti);		/* F-INITIALIZE.INDICATION */
+int	FInitializeResponse (int sd, const int state, const int action, OID context, AEI respondtitle, const struct PSAPaddr *respondaddr, const int manage, int class, const int units, const int attrs, PE sharedASE, const int fqos, struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-INITIALIZE.RESPONSE */
+int	FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, const struct PSAPaddr *callingaddr, const struct PSAPaddr *calledaddr, const int manage, int class, const int units, const int attrs, PE sharedASE, const int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, size_t passlen, const struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti);	/* F-INITIALIZE.REQUEST */
 int	FTerminateRequest (int sd, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti);	/* F-TERMINATE.REQUEST */
 int	FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti);	/* F-TERMINATE.RESPONSE */
-int	FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-U-ABORT.REQUEST */
+int	FUAbortRequest (int sd, const int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-U-ABORT.REQUEST */
 
-int	FWaitRequest (int sd, int secs, struct FTAMindication *fti);	/* F-WAIT.REQUEST (pseudo) */
+int	FWaitRequest (int sd, const int secs, struct FTAMindication *fti);	/* F-WAIT.REQUEST (pseudo) */
 
 int	FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-MANAGE.REQUEST (group) */
 int	FManageResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-MANAGE.RESPONSE (group) */
@@ -1158,16 +1158,16 @@ int	FBulkBeginResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *ft
 int	FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-BULK-END.REQUEST (group) */
 int	FBulkEndResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-BULK-END.RESPONSE (group) */
 
-int	FAccessRequest (int sd, int operation, struct FADUidentity *identity, int lock, struct FTAMindication *fti);	/* F-{LOCATE,ERASE}.REQUEST */
-int	FAccessResponse (int sd, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-{LOCATE,ERASE}.RESPONSE */
+int	FAccessRequest (int sd, const int operation, struct FADUidentity *identity, const int lock, struct FTAMindication *fti);	/* F-{LOCATE,ERASE}.REQUEST */
+int	FAccessResponse (int sd, const int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-{LOCATE,ERASE}.RESPONSE */
 
-int	FReadWriteRequest (int sd, int operation, struct FADUidentity *identity, int context, int level, int lock, struct FTAMindication *fti);	/* F-{READ,WRITE}.REQUEST */
-int	FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti);	/* F-DATA.REQUEST */
-int	FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-DATA-END.REQUEST */
-int	FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-CANCEL.REQUEST */
-int	FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-CANCEL.RESPONSE */
+int	FReadWriteRequest (int sd, const int operation, struct FADUidentity *identity, const int context, const int level, const int lock, struct FTAMindication *fti);	/* F-{READ,WRITE}.REQUEST */
+int	FDataRequest (int sd, PE fadus[], const int nfadu, struct FTAMindication *fti);	/* F-DATA.REQUEST */
+int	FDataEndRequest (int sd, const int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-DATA-END.REQUEST */
+int	FCancelRequest (int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-CANCEL.REQUEST */
+int	FCancelResponse (int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-CANCEL.RESPONSE */
 int	FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti);	/* F-TRANSFER-END.REQUEST */
-int	FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-TRANSFER-END.RESPONSE */
+int	FTransEndResponse (int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-TRANSFER-END.RESPONSE */
 
 int	FSetIndications (int sd, void (*indication)(int sd, struct FTAMindication *fti), struct FTAMindication *fti);	/* define vector for INDICATION events */
 int	FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti);		/* map ftam descriptors for select() */
@@ -1188,11 +1188,11 @@ struct isodocument {
 	OID	    id_constraint;
 };
 
-int	setisodocument (int f), endisodocument (void);
+int	setisodocument (const int f), endisodocument (void);
 
 struct isodocument *getisodocument (void);
 
-struct isodocument *getisodocumentbyentry (char *entry);
+struct isodocument *getisodocumentbyentry (const char *entry);
 struct isodocument *getisodocumentbytype (OID type);
 
 #endif

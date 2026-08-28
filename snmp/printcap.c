@@ -40,11 +40,11 @@
 #include "pathnames.h"
 void endprent(void);
 int getprent(char *bp);
-int tgetent(char *bp, char *name);
+int tgetent(char *bp, const char *name);
 static int tnchktc (void);
-static int tnamatch (char *np);
-int tgetnum (char *id);
-static int tgetflag (char *id);
+static int tnamatch (const char *np);
+int tgetnum (const char *id);
+static int tgetflag (const char *id);
 
 
 #ifndef BUFSIZ
@@ -87,10 +87,10 @@ static	FILE *pfp = NULL;	/* printcap data base file pointer */
 static	char *tbuf;
 static	int hopcount;		/* detect infinite loops in termcap, init 0 */
 static char	*tskip(char *bp);
-char	*tgetstr(char *id, char **area);
+char	*tgetstr(const char *id, char **area);
 static char	*tdecode(char *str, char **area);
 int tnchktc(void);
-int tnamatch(char *np);
+int tnamatch(const char *np);
 
 /*
  * Similar to tgetent except it returns the next enrty instead of
@@ -149,7 +149,7 @@ void endprent(void) {
  * from the termcap file.  Parse is very rudimentary;
  * we just notice escaped newlines.
  */
-int tgetent(char *bp, char *name) {
+int tgetent(char *bp, const char *name) {
 	char *cp;
 	int c;
 	int i = 0, cnt = 0;
@@ -295,7 +295,7 @@ int tnchktc(void) {
  * against each such name.  The normal : terminator after the last
  * name (before the first field) stops us.
  */
-int tnamatch(char *np) {
+int tnamatch(const char *np) {
 	char *Np, *Bp;
 
 	Bp = tbuf;
@@ -335,7 +335,7 @@ static char *tskip(char *bp) {
  * a # character.  If the option is not found we return -1.
  * Note that we handle octal numbers beginning with 0.
  */
-int tgetnum(char *id) {
+int tgetnum(const char *id) {
 	int i, base;
 	char *bp = tbuf;
 
@@ -366,7 +366,7 @@ int tgetnum(char *id) {
  * of the buffer.  Return 1 if we find the option, or 0 if it is
  * not given.
  */
-int tgetflag(char *id) {
+int tgetflag(const char *id) {
 	char *bp = tbuf;
 
 	for (;;) {
@@ -390,7 +390,7 @@ int tgetflag(char *id) {
  * placed in area, which is a ref parameter which is updated.
  * No checking on area overflow.
  */
-char *tgetstr(char *id, char **area) {
+char *tgetstr(const char *id, char **area) {
 	char *bp = tbuf;
 
 	for (;;) {

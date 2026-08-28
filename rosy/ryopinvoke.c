@@ -22,17 +22,17 @@
 /* INVOKE */
 
 int	RyOpInvoke (
-	int sd,
-	struct RyOperation *ryo,
-	int op,
+	const int sd,
+	const struct RyOperation *ryo,
+	const int op,
 	caddr_t in,
 	caddr_t *out,
 	int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
 	void (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
-	int class,
-	int invokeID,
-	int *linkedID,
-	int priority,
+	const int class,
+	const int invokeID,
+	const int *linkedID,
+	const int priority,
 	struct RoSAPindication *roi
 ) {
 	int	    result;

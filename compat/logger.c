@@ -114,12 +114,12 @@ int	ll_log (LLog *lp, ...) {
 }
 #else
 /* VARARGS4 */
-int ll_log (LLog *lp, int event, char *what, char *fmt) {
+int ll_log (LLog *lp, int event, char *what, const char *fmt) {
 	return ll_log (lp, event, what, fmt);
 }
 #endif
 
-int _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {
+int _ll_log (LLog *lp, const int event, char *what, const char *fmt, va_list ap) {
 	int	    status;
 	size_t  nbytes,
 			nwritten;
@@ -210,7 +210,7 @@ error:
 	return status;
 }
 
-void ll_hdinit (LLog *lp, char *prefix) {
+void ll_hdinit (LLog *lp, const char *prefix) {
 	char  *cp,
 		  *up;
 	char    buffer[BUFSIZ],
@@ -243,7 +243,7 @@ void ll_hdinit (LLog *lp, char *prefix) {
 	lp -> ll_stat |= LLOGHDR;
 }
 
-void ll_dbinit (LLog *lp, char *prefix) {
+void ll_dbinit (LLog *lp, const char *prefix) {
 	char  *cp;
 	char    buffer[BUFSIZ];
 
@@ -279,7 +279,7 @@ int	ll_printf (LLog*lp, ...) {
 }
 #else
 /* VARARGS2 */
-int ll_printf (LLog *lp, char *fmt) {
+int ll_printf (LLog *lp, const char *fmt) {
 	return ll_printf (lp, fmt);
 }
 #endif
@@ -294,7 +294,7 @@ int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
 	ssize_t nw;
 	char   *bp;
 	char     buffer[BUFSIZ];
-	char    *fmt;
+	const char    *fmt;
 
 	fmt = va_arg (ap, char *);
 	if (strcmp (fmt, "%s") != 0) {
@@ -358,7 +358,7 @@ int ll_sync (LLog *lp) {
 }
 
 #ifndef	lint
-char *ll_preset (char* fmt, ...) {
+char *ll_preset (const char* fmt, ...) {
 	va_list ap;
 	static char buffer[BUFSIZ];
 
@@ -373,7 +373,7 @@ char *ll_preset (char* fmt, ...) {
 #else
 /* VARARGS1 */
 
-char *ll_preset (char *fmt) {
+char *ll_preset (const char *fmt) {
 	return ll_preset (fmt);
 }
 #endif

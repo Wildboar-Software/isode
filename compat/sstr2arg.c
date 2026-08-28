@@ -20,10 +20,10 @@
 */
 
 int sstr2arg (
-	char *srcptr,  /* source data */
+	const char *srcptr,  /* source data */
 	int maxpf,              /* maximum number of permitted fields */
 	char *argv[],           /* where to put the pointers */
-	char *dlmstr           /* Delimiting character */
+	const char *dlmstr           /* Delimiting character */
 ) {
 	char gotquote;		/* currently parsing quoted string */
 	int ind;

@@ -6,7 +6,7 @@
 #include <strings.h>
 #include "fpkt.h"
 
-static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, va_list ap);
+static int _ftamoops (struct FTAMindication *fti, int reason, const int fatal, const int observer, const int source, va_list ap);
 
 #ifndef	lint
 int	fpktlose (struct ftamblk *fsb, ...) {
@@ -37,7 +37,7 @@ int	fpktlose (struct ftamblk *fsb, ...) {
 #else
 /* VARARGS5 */
 
-int fpktlose (struct ftamblk *fsb, struct FTAMindication *fti, int reason, char *what, char *fmt) {
+int fpktlose (struct ftamblk *fsb, struct FTAMindication *fti, int reason, char *what, const char *fmt) {
 	return fpktlose (fsb, fti, reason, what, fmt);
 }
 #endif
@@ -59,7 +59,7 @@ int	ftamlose (struct FTAMindication *fti, ...) {
 #else
 /* VARARGS4 */
 
-int ftamlose (struct FTAMindication *fti, int reason, int fatal, char *what, char *fmt) {
+int ftamlose (struct FTAMindication *fti, int reason, int fatal, char *what, const char *fmt) {
 	return ftamlose (fti, reason, fatal, what, fmt);
 }
 #endif
@@ -83,7 +83,7 @@ int	ftamoops (struct FTAMindication *fti, ...) {
 	return result;
 }
 
-static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, va_list ap) {
+static int _ftamoops (struct FTAMindication *fti, int reason, const int fatal, const int observer, const int source, va_list ap) {
 	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct FTAMabort  *fta;
@@ -113,7 +113,7 @@ static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int obs
 #else
 /* VARARGS7 */
 
-int ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, char *what, char *fmt) {
+int ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, char *what, const char *fmt) {
 	return ftamoops (fti, reason, fatal, observer, source, what, fmt);
 }
 #endif
