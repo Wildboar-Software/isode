@@ -4,9 +4,6 @@
 #include <string.h>
 #include "psap.h"
 
-#define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
-#define	UNYEAR(y)	((y) < 1900 || (y) > 1999 ? (y) : (y) - 1900)
-
 char *time2str (UTC u, int generalized) {
 	int    hours,
 		   mins,
@@ -20,9 +17,9 @@ char *time2str (UTC u, int generalized) {
 	bp = buffer;
 
 	if (generalized)
-		sprintf (bp, "%04d", YEAR (u -> ut_year));
+		sprintf (bp, "%04d", u -> ut_year);
 	else
-		sprintf (bp, "%02d", UNYEAR (u -> ut_year));
+		sprintf (bp, "%02d", u -> ut_year % 100);
 	bp += strlen (bp);
 
 	sprintf (bp, "%02d%02d%02d%02d", u -> ut_mon, u -> ut_mday,

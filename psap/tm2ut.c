@@ -8,12 +8,10 @@
 #include <sys/time.h>
 #endif
 
-#define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
-
 void tm2ut (struct tm *tm, UTC ut) {
 	bzero ((char *) ut, sizeof *ut);
 
-	ut -> ut_year = YEAR (tm -> tm_year);
+	ut -> ut_year = tm -> tm_year + 1900;	/* ut_year is the full year */
 	ut -> ut_mon = tm -> tm_mon + 1;
 	ut -> ut_mday = tm -> tm_mday;
 	ut -> ut_hour = tm -> tm_hour;

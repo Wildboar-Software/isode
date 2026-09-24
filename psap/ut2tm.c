@@ -8,7 +8,6 @@
 #include <sys/time.h>
 #endif
 
-#define	UNYEAR(y)	((y) < 1900 || (y) > 1999 ? (y) : (y) - 1900)
 #define isleap(y)       \
         (((y) % 4) ? 0 : (((y) % 100) ? 1 : (((y) % 400) ? 0 : 1)))
 
@@ -25,7 +24,7 @@ struct tm *ut2tm (UTC ut) {
 	tm -> tm_hour = ut -> ut_hour;
 	tm -> tm_mday = ut -> ut_mday;
 	tm -> tm_mon = ut -> ut_mon - 1;
-	tm -> tm_year = UNYEAR (ut -> ut_year);
+	tm -> tm_year = ut -> ut_year - 1900;
 	tm -> tm_wday = makewkday (ut);
 	tm -> tm_yday = tm -> tm_isdst = 0;
 	tm -> tm_hour -= ut -> ut_zone / 60, tm -> tm_min -= ut -> ut_zone % 60;
@@ -60,13 +59,11 @@ struct tm *ut2tm (UTC ut) {
 #define	dysize(y)	\
 	(((y) % 4) ? 365 : (((y) % 100) ? 366 : (((y) % 400) ? 365 : 366)))
 
-#define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
-
 static int makewkday (UTC ut) {
 	int     d, mon, year;
 
 	mon = ut -> ut_mon;
-	year = YEAR (ut -> ut_year);
+	year = ut -> ut_year;
 	d = 4 + year + (year + 3) / 4;
 	if (year > 1800) {
 		d -= (year - 1701) / 100;
