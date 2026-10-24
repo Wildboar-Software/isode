@@ -424,6 +424,12 @@ outside:
 #define	PWD	"../"
 #define	NPWD	(sizeof PWD - 1)
 
+/* strcpy() for a destination inside the source: the regions overlap,
+   which strcpy() does not allow (glibc's garbles the result) */
+static void strmove (char *dst, const char *src) {
+	memmove (dst, src, strlen (src) + 1);
+}
+
 void compath (char *f) {
 	char  *cp,
 		  *dp;
@@ -448,7 +454,7 @@ void compath (char *f) {
 #endif
 				for (dp = cp; *dp == '/'; dp++)
 					continue;
-				strcpy (cp--, dp);
+				strmove (cp--, dp);
 				continue;
 
 			case '.':
@@ -473,12 +479,12 @@ void compath (char *f) {
 							break;
 					if (dp <= f)
 						dp = f;
-					strcpy (dp, cp + NPWD - 1);
+					strmove (dp, cp + NPWD - 1);
 					cp = dp;
 					continue;
 				}
 				if (strncmp (cp, CWD, NCWD) == 0) {
-					strcpy (cp - 1, cp + NCWD - 1);
+					strmove (cp - 1, cp + NCWD - 1);
 					cp--;
 					continue;
 				}
