@@ -26,4 +26,12 @@
 #endif
 #include <termios.h>
 
+#ifndef FASYNC
+#ifdef O_ASYNC
+#define FASYNC O_ASYNC
+#else
+#define FASYNC 020000
+#endif
+#endif
+
 #endif

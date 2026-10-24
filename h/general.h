@@ -103,6 +103,9 @@
 #ifndef	BSDFORK
 #define	vfork	fork
 #endif
+#ifndef vfork
+#define	vfork	fork
+#endif
 
 /* STRINGS */
 
@@ -141,20 +144,23 @@ int free(char *);
 #endif /* defined BSD44 */
 #endif
 
-#ifndef	BSDSTRS
+#include <string.h>
+#include <strings.h>
 #define	index	strchr
 #define	rindex	strrchr
-#include <string.h>
-#else
-#include <strings.h>
-#endif
 
 #if	defined(SYS5) && !defined(_AIX) && !defined(XOS) && !defined(XOS_2)
 #include <memory.h>
+#endif
 
-#define	bcopy(b1,b2,length)	(void) memcpy ((b2), (b1), (length))
-#define	bcmp(b1,b2,length)	memcmp ((b1), (b2), (length))
-#define	bzero(b,length)		(void) memset ((b), 0, (length))
+#ifndef bcopy
+#define	bcopy(b1,b2,length)	(void) memmove ((b2), (b1), (size_t) (length))
+#define	bcmp(b1,b2,length)	memcmp ((b1), (b2), (size_t) (length))
+#define	bzero(b,length)		(void) memset ((b), 0, (size_t) (length))
+#endif
+
+#ifndef setlinebuf
+#define setlinebuf(f)	setvbuf ((f), NULL, _IOLBF, (size_t) 0)
 #endif
 /* HEXIFY */
 

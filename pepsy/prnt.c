@@ -43,7 +43,8 @@ int prnt_f (
 
 extern PE p_setpresent(PE head, ptpe *p, modtyp *mod);
 extern int (*vfnx)(FILE *, const char *, ...);
-extern FILE *vfp;
+extern FILE *vfp_stream(void);
+#define vfp (vfp_stream())
 
 extern ptpe *next_ptpe(ptpe *p);
 extern int pepsylose (modtyp *module, ...);

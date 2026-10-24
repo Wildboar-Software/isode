@@ -158,9 +158,9 @@ static  SFD cldser (int sig);
 #endif
 #else
 #ifndef	IAE
-	static int (*ssapd)(struct isoservent *, struct TSAPdisconnect *);
+static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td);
 #else
-	static int (*ssapd)(struct IAEntry *, struct TSAPdisconnect *);
+static int  ssapd ( struct IAEntry *is, struct TSAPdisconnect *td);
 #endif
 static int  psapd ( struct isoservent *is, struct SSAPindication *si);
 #endif

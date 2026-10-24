@@ -588,6 +588,7 @@ void vtag (int class, int id);
 void vstring (PE pe);
 void vunknown (PE pe);
 void vprint (char*, ...);
+FILE *vfp_stream (void);
 char *bit2str (PE pe, char *s);
 void vpushfp (FILE *fp, PE pe, char *s, int rw);
 void vpopfp (void);

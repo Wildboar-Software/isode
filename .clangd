@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-x, c, -Ih]
+  Add: [-x, c, -std=c23, -D_XOPEN_SOURCE=700, -Ih]

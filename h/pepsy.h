@@ -26,16 +26,15 @@ typedef struct	{
 #define NULLTPE	((tpe *)0)
 #define NULLPTPE	((ptpe *)0)
 
-#ifdef __GNUC__
-#define PEPSY_EXT __extension__
-#else
-#define PEPSY_EXT
-#endif
-/* Cast that may convert a function pointer into caddr_t (ISO C forbids this). */
-#define PEPSY_PTR(p)	PEPSY_EXT ((caddr_t) (p))
+/*
+ * ISO C forbids converting a function pointer to an object pointer.
+ * Route both directions through uintptr_t so generated tables stay
+ * valid static initializers without GNU __extension__.
+ */
+#define PEPSY_PTR(p)	((caddr_t) (uintptr_t) (p))
 
 /* extract a pointer from the pointer table */
-#define GPTR(mod, ind, type)	  PEPSY_EXT ((type )(mod)->md_ptrtab[ind])
+#define GPTR(mod, ind, type)	((type) (uintptr_t) (mod)->md_ptrtab[ind])
 /* tricky situation with the "type" - it must not contain the brackets of the
  * cast because we supply them here
  */

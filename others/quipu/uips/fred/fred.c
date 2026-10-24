@@ -86,6 +86,8 @@ int main (int argc, char **argv, char **envp) {
 			   *isock = &in_socket;
 
 	arginit (argv);
+	if (stdfp == NULL)
+		stdfp = stdout;
 	rcinit ();
 	rcfile (isodefile ("fredrc", 0), 0, 1);
 	if (init_ufnrc () == OK)

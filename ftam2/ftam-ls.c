@@ -31,14 +31,6 @@ struct filent *filents = NULL;
 
 static  FILE *lsfp;
 
-#ifdef __GNUC__
-__attribute__((constructor))
-static void _init_fp (void)
-{
-	lsfp = stdout;
-}
-#endif
-
 static int filcmp (const void *p, const void *q) {
 	struct filent **a = (struct filent **) p;
 	struct filent **b = (struct filent **) q;
@@ -116,6 +108,9 @@ int f_ls (char **vec) {
 #else
 	char    buffer[BUFSIZ];
 #endif
+
+	if (lsfp == NULL)
+		lsfp = stdout;
 
 	if (dashl = strcmp (*vec, "dir") == 0) {
 		if (!(attrs & FATTR_STORAGE)) {
