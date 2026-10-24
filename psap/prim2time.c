@@ -7,7 +7,9 @@
 #include <strings.h>
 #include "psap.h"
 
-#define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
+/* UTCTime has a two-digit year: 50..99 are 1950..1999, 00..49 are
+   2000..2049 (the window X.509 uses, RFC 5280 4.1.2.5.1) */
+#define	YEAR(y)		((y) >= 50 ? (y) + 1900 : (y) + 2000)
 static long	get_usec (char **cp, size_t *len);
 
 UTC prim2time (PE pe, int generalized) {

@@ -223,7 +223,7 @@ extern int    pe_maxpriv;
 extern char **pe_privlist;
 
 typedef struct UTCtime {
-	int	    ut_year;
+	int	    ut_year;		/* full year, e.g. 2026 */
 	int	    ut_mon;
 	int	    ut_mday;
 	int	    ut_hour;

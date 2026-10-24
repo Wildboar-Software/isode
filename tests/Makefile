@@ -29,6 +29,8 @@ TEST_OBJS=	$(TESTS:%=test_%.o)
 SUT_OBJS=	$(TESTS:%=%.o)
 EXTRA_OBJS=	$(sort $(foreach t,$(TESTS),$($(t)_EXTRA_OBJS)))
 
+time2str_EXTRA_OBJS = tm2ut.o ut2tm.o gtime.o prim2time.o prim2str.o
+
 all:		check
 
 check:		unittests

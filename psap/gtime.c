@@ -25,8 +25,6 @@ int	dmsize[] = {
 #define	dysize(y)	\
 	(((y) % 4) ? 365 : (((y) % 100) ? 366 : (((y) % 400) ? 365 : 366)))
 
-#define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
-
 long
 gtime (struct tm *tm) {
 	int    i,
@@ -52,7 +50,7 @@ gtime (struct tm *tm) {
 		hour = 0;
 		mday++;
 	}
-	year = YEAR (tm -> tm_year);
+	year = tm -> tm_year + 1900;
 
 	result = 0L;
 	for (i = 1970; i < year; i++)
