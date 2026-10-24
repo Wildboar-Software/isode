@@ -533,11 +533,31 @@ void vpopquipu(void)  {
 
 #undef	pvpdu
 
-// This was added by AI. Sorry if this destroys your computer.
+/* Format into a buffer of the right size: a printed value can be far
+   longer than BUFSIZ (an octet string of n octets is 2n + 3 characters). */
 static int ll_vprintf(LLog *lp, const char *fmt, va_list ap) {
 	char buffer[BUFSIZ];
-	_asprintf(buffer, NULLCP, (char *)fmt, ap);
-	return ll_printf(lp, "%s", buffer);
+	char *bp = buffer;
+	va_list aq;
+	int n, result;
+
+	va_copy(aq, ap);
+	n = vsnprintf(buffer, sizeof buffer, fmt, ap);
+	if (n < 0) {
+		va_end(aq);
+		return NOTOK;
+	}
+	if ((size_t) n >= sizeof buffer) {
+		if ((bp = malloc((size_t) n + 1)) == NULL)
+			bp = buffer;	/* log it truncated */
+		else
+			vsnprintf(bp, (size_t) n + 1, fmt, aq);
+	}
+	va_end(aq);
+	result = ll_printf(lp, "%s", bp);
+	if (bp != buffer)
+		free(bp);
+	return result;
 }
 
 static int ll_printf_evil(FILE *fp, const char *format, ...) {
